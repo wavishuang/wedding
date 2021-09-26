@@ -1,0 +1,146 @@
+@import 'variable.scss';
+
+.wrapper-t {
+  padding-top: 80px !important;
+  padding-bottom: 59px !important;
+}
+
+.mb-100 {
+  margin-bottom: 100px;
+}
+
+.cid-rWWj23btGc {
+  margin-top: 45px;
+}
+
+.nav-menu-item {
+  width: 60px;
+  height: 45px;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  position: relative;
+}
+
+.style-th {
+  height: 3rem;
+  line-height: 3rem;
+  background-color: #f9beb8;
+  color: #fff;
+  padding: 0 .5rem;
+  margin-bottom: .5rem;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.sendButtons {
+  text-align: right;
+}
+  
+.sendBtn {
+  padding: 3px;
+  width: max-content;
+}
+  
+.addProfile:after,.listManage:after {
+  font-family:'Glyphicons Halflings';
+  content:"\2212";
+  float: right;
+  color: #fff;
+}
+
+.addProfile.collapsed:after,
+.listManage.collapsed:after{
+  content:"\2b";
+}
+  
+.addProfile:after,
+.listManage:after{
+  font-family:'Glyphicons Halflings';
+  content:"\2212";
+  float: right;
+  color: #fff;
+}
+
+.addProfile.collapsed:after,
+.listManage.collapsed:after{
+  content:"\2b";
+}
+  
+.cid-rWWj2DwwY0 table.table {
+  background: #fff;
+}
+  
+.cid-rWWj2DwwY0 table th {
+  background: #fff
+}
+  
+.cid-rWWj2DwwY0 tr:hover {
+  background-color: #f9beb83d !important;
+}
+
+.nowrap {
+  color: #232323;
+}
+  
+@media screen and (max-width: 600px) {
+  .sendButtons {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+      
+  .rwdtable {
+    border: 0;
+  }
+                              
+  .rwdtable caption {
+    font-size: 1.3em;
+  }
+              
+  .rwdtable thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+                              
+  .rwdtable tr {
+    background-color: #fff;
+    border-bottom: 3px solid #dee2e6;
+    display: block;
+  }
+                              
+  .rwdtable td {
+    border-bottom: 1px solid #dee2e6;
+    display: block;
+    font-size: .8em;
+    text-align: right !important;
+  }
+                                  
+  .rwdtable td:before {
+    color: black;
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+                                  
+  .rwdtable td:last-child {
+    border-bottom: 0;
+  }
+
+  .cid-rWWj2DwwY0 table th, .cid-rWWj2DwwY0 table td {
+    padding: .35rem .75rem;
+  }
+}

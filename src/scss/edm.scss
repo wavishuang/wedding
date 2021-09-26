@@ -1,0 +1,53 @@
+@import 'variable.scss';
+@import 'custom_modal.scss';
+
+@import '../css/formstyler/jquery.formstyler.css';
+@import '../css/formstyler/jquery.formstyler.theme.css';
+@import '../css/datepicker/jquery.datetimepicker.min.css';
+
+@import '../css/recaptcha.css';
+
+.polaroid {
+  box-shadow: 0 1rem 1.2rem rgba(0,0,0,0.6);
+  height: 100%;
+  text-align: center;
+  width: auto;
+}
+
+.polaroid > img{
+  height: 100%;
+  object-fit: scale-down;
+  border: 1vh #fff solid;
+  border-bottom: 3vh #fff solid
+}
+      
+.sliderCheck {
+  border: dashed 4px #eb6383;
+}
+      
+.item {
+  text-align: center;
+  margin: 0 auto;
+  width: auto;
+  display: inline-block;
+  height: 64vh;
+  transform: scale(0.8, 0.8) rotate(-5deg);
+  transition: all 0.35s;
+
+  .polaroid {
+    &:before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      transition: all 0.35s;
+    }
+  }
+}
+
+.mt-05 {
+  margin-top: .5rem;
+}
+
+.fw-600 {
+  font-weight: 600;
+}

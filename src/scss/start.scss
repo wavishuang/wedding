@@ -1,0 +1,41 @@
+.swal2-title {
+  font-size: 1.7rem !important;
+  font-weight: 500;
+  color:#555;
+}
+
+.swal2-popup {
+  padding-bottom: 3em !important;
+}
+
+.swal2-styled.swal2-confirm {
+  background-color: #AEDEF4 !important;
+
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+
+#page_start_nav,
+.page_start-col {
+  .opacity-10 {
+    opacity: 0.1;
+  }
+
+  .font-weight-600 {
+    font-weight: 600;
+  }
+
+  .mt-2-rem {
+    margin-top: 2rem;
+  }
+
+  .opacity-80 {
+    opacity: 0.8;
+  }
+
+  .letter-spacing-3-rem {
+    letter-spacing: 0.3rem;
+  }
+}
+

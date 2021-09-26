@@ -1,0 +1,39 @@
+@import 'variable.scss';
+
+.modal-open .modal {
+  overflow-y: hidden;
+}
+
+.modal-content {
+  height: auto;
+}
+
+.modal-header {
+  border-bottom: 0;
+  color: #555;
+}
+
+.modal-body {
+  padding: 1rem;
+
+  /* 語系 */
+  .lan-btn {
+    color: $lang_btn_color;
+    border: 1px solid $lang_btn_color;
+    cursor: pointer;
+    font-weight: 600;
+
+    &::before {
+      background-color: $lang_bg_color;
+    }
+
+    &.active {
+      color: #fff;
+      background: $lang_btn_color;
+
+      &::before {
+        opacity: 0;
+      }
+    }
+  }
+}

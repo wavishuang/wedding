@@ -1,0 +1,85 @@
+@import 'variable.scss';
+
+.mbr-overlay {
+  &.overlay-40 {
+    opacity: 0.4; 
+    background-color: rgb(35, 35, 35);
+  }
+}
+
+.text-main-color {
+  color: $main_text_color;
+}
+
+.page-form {
+  border-radius: 15px;
+  background-color: $main_color;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.mt-50 {
+  margin-top: 50px;
+}
+
+.btn.btn-3d {
+  font-size: 1.2rem !important;
+}
+
+.mbrib-upload {
+  font-size: 200px;
+  color: $upload_icon_color;
+  fill: $upload_icon_fill_color;
+}
+
+.upload-text-color {
+  color: $upload_icon_color;
+}
+
+// navbar
+.navbar {
+  z-index: 10;
+  background: rgba(255,255,255, .95);
+  box-shadow: -1px -1px 2px rgba(0,0,0,.15);
+}
+
+.nav-menu-item {
+  width: 60px;
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  position: relative;
+}
+
+.nav-menu-item .nav-option-btns {
+  display: none;
+  list-style: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 45px;
+  right: 0;
+}
+
+.nav-menu-item .nav-option-btns.show {
+  display: flex;
+  flex-direction: column;
+  width: 80px;
+  background: #fff;
+}
+
+.cid-rW0yhSdFBy h5 {
+  &.upload-text-color {
+    color: $upload_icon_color;
+  }
+}

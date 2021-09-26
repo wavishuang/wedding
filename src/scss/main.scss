@@ -1,0 +1,374 @@
+@import 'variable.scss';
+@import 'custom_modal.scss';
+
+body {
+  background-color: $main_color;
+}
+
+.mt-45 {
+  margin-top: 45px;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.mt-50 {
+  margin-top: 50px;
+}
+
+.mt-100 {
+  margin-top: 100px;
+}
+
+.pr-20 {
+  padding-right: 20px;
+}
+
+// icon extra css
+.mbr-icon-extra-css {
+  font-size: 70px; 
+  color: $main_icon_color; 
+  fill: $main_icon_color; 
+}
+
+.outter-container {
+  max-width: 1200px;
+}
+
+.logo-cover {
+  width: 100%;
+  padding: 5%;
+
+  img {
+    width: 100%;
+  }
+}
+
+.btn {
+  font-size: 1.0rem !important;
+  padding: 1rem 1rem;
+}
+
+.wp_frame_top {
+  border-radius: 5px 5px 0px 0px;
+  background-color: #ffffffb5;
+}
+
+.wp_frame_bottom {
+  border-radius: 0px 0px 5px 5px;
+  background-color: #ffffffb5;
+}
+
+.wp_frame_dashboard {
+  border-radius: 5px 5px 5px 5px;
+  background-color: #ffffffb5;
+}
+
+h5 {
+  color: #555;
+  line-height: 1.8rem;
+}
+
+h2.mbr-section-title {
+  cursor: pointer;
+}
+
+.menu-outter {
+  border-right: 3px solid rgb(277, 183, 160);
+}
+
+.menu-item {
+  display: flex;
+  margin: 0;
+  padding: 1rem;
+  border-radius: .25rem;
+  margin-bottom: .5rem;
+  width: 95%;
+
+  h2 {
+    margin: 0;
+  }
+
+  &.active {
+    background: #fff;
+
+    h2 {
+      color: $main_text_color;
+    }
+  }
+}
+
+.mbr-section {
+  background: transparent;
+
+  &.content8 {
+    padding-bottom: 110px;
+  } 
+}
+
+/* accordion */
+.card-header {
+  border-bottom: 0;
+  background: transparent;
+  padding-left: 0;
+
+  .btn {
+    &.btn-link {
+      padding: 0;
+      margin: 0;
+      color: $main_text_color;
+      font-size: 1.2rem !important;
+    }
+  }
+}
+
+.card-body {
+  padding: 0 0 0 1rem;
+}
+
+.list-group {
+  width: 90%;
+}
+
+.list-group-item {
+  background: transparent;
+  color: #465052;
+  border: 0;
+  padding: .5rem;
+  font-size: .95rem;
+  cursor: pointer;
+  border-radius: .5rem !important;
+
+  &.active {
+    color: $main_text_color;
+    background: #fff;
+    font-weight: 500;
+    padding: 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  &:hover {
+    color: $main_text_color;
+  }
+}
+
+/*
+.slide-fade-enter-active {
+  transition: all .8s ease;
+}
+
+.slide-fade-enter, .slide-fade-leave-to
+  transform: translateY(-.5rem);
+  opacity: 0;
+}
+*/
+
+.EditButtons {
+  background-color: $main_button_color;
+  color: #fff;
+  font-size: 1.2em;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border-width: 1px 1px 1px;
+  margin: 0 !important;
+}
+
+.form-control {
+  min-height: 2.5;
+  font-size: 1rem;
+}
+
+.form-control-label {
+  font-size: 1rem;
+}
+
+.fixed-title-img {
+  position: fixed;
+  bottom: 1rem;
+  right: 0;
+  opacity: 0.25;
+  width: 450px;
+  height: 450px;
+}
+
+/* 內頁背景色 */
+.bg-color-transparent {
+  background: transparent !important;
+}
+
+.bg-color-pink {
+  background-color: $main_color !important;
+}
+
+.bg-color-white {
+  background-color: #fff;
+}
+
+.sendButtons-retry {
+  background-color: $main_button_color;
+  color: #fff;
+  font-size: 1.2em;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border-width: 1px 1px 1px;
+  margin: 0 !important;
+}
+
+.sendButtons {
+  background-color: #fdf6f1;
+  color: #000000 !important;
+  font-size: 1.2em;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: solid #e26665aa;
+  border-width: 2px 2px 2px;
+  margin: 0 !important;
+}
+
+.addProfile:after, 
+.listManage:after {
+  font-family: 'Glyphicons Halflings';
+  content: "\2212";
+  float: right;
+  color: #e26665aa;
+}
+
+.wrapper-s {
+  padding-top: 35px !important;
+}
+
+.bg-pic {
+  background-image: url("../images/mbr-1068x745.jpg");
+  padding-bottom: 25px;
+}
+
+.cid-rX4jzrRcmX {
+  &.mb-84 {
+    margin-bottom: 84px;
+  }
+}
+
+// navbar
+.nav-menu-item {
+  width: 60px;
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  position: relative;
+}
+
+.nav-menu-item .nav-option-btns {
+  display: none;
+  list-style: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 45px;
+  right: 0;
+}
+
+.nav-menu-item .nav-option-btns.show {
+  display: flex;
+  flex-direction: column;
+  width: 80px;
+  background: #fff;
+}
+
+@media (max-width: 374px) {
+  .wp_frame_bottom {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .wedding-regist-info {
+    h5.title {
+      font-size: 0.8rem;
+    }
+  }
+
+  .wedding-pre-info {
+    h5.title {
+      font-size: 1rem;
+    }
+  }
+}
+
+.cid-rLQ7009Pot .form-control, 
+.cid-rLQ7009Pot .field-input {
+  padding: .5rem;
+  min-height: initial;
+}
+
+.img-fluid {
+  &.img-percent-70 {
+    width: 70%;
+  }
+}
+
+@media (max-width: 991px) {
+  .outter-container {
+    padding: 0;
+  }
+}
+
+@media (max-width: 991px) and (min-width: 768px) {
+  .card-header h2 .btn.btn-link {
+    font-size: 0.9rem !important;
+  }
+
+  .list-group {
+    width: 95%;
+  }
+
+  .list-group-item {
+    font-size: .8rem;
+    &.active {
+      padding: .5rem;
+    }
+  }
+
+  .menu-outter .card,
+  .menu-outter .card .card-body {
+    padding: 0 0 0 .5rem;
+  }
+}
+
+.nav-menu-item .nav-option-btns .btn-link {
+  color: #f9beb8;
+  padding: .1rem .5rem; 
+}
+
+@media (min-width: 768px) {
+  .ads-news a, 
+  .ads-news a:hover {
+    width: auto;
+    flex: 1;
+  }
+
+  .nav-menu-item {
+    width: 160px;
+  }
+
+  .nav-menu-item .nav-option-btns {
+    display: flex;
+    top: 0;
+    right: 0;
+  }
+
+  .nav-menu-item .nav-option-btns.show {
+    flex-direction: row;
+    width: 100%;
+    background: transparent;
+    align-items: center;
+  }
+
+  .nav-menu-item .nav-option-btns .btn-link {
+    color: #fff;
+  }
+}
