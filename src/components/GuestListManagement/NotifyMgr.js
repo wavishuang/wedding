@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -16,29 +17,38 @@ import '../../scss/listmgr.scss';
 const MySwal = withReactContent(Swal);
 
 const NotifyMgr = (props) => {
-  const {SToken, introImage, dtList, dtColumns, WPColumnSetup} = props;
+  const { SToken } = props;
+
+  const introImage = useSelector(state => state.introImages.images);
+  const dtList = useSelector(state => state.clientList.dtList);
+  const dtColumns = useSelector(state => state.clientList.dtColumns);
 
   const titleImg = (imgNum) => {
-    const bgImage = introImage && introImage.length > 0 && `url(http://backend.wedding-pass.com/ERPUpload/4878/${introImage[imgNum].Image})`;
+    const bgImage = introImage && introImage.length > imgNum && `url(http://backend.wedding-pass.com/ERPUpload/4878/${introImage[imgNum].Image})`;
     return (bgImage) ? {backgroundImage: bgImage, backgroundSize: 'cover'} : '';
   }
 
+  const keyColumns = ['賓客姓名', '賓客關係', '通知對象', '簡訊發送電話', '操作'];
+  const [keyColumn1, setKeyColumnName1] = useState({ Name: '賓客姓名', DBColumnName: null });
+  const [keyColumn2, setKeyColumnName2] = useState({ Name: '賓客關係', DBColumnName: null });
+  const [keyColumn3, setKeyColumnName3] = useState({ Name: '報到通知對象', DBColumnName: null }); // 沒有欄位
+  const [columns, setColumns] = useState([]);
+
   // 初始化
   useEffect(() => {
-    MySwal.fire({
-      title: "",
-      html: <Loading />,
-      customClass: {
-        popup: 'bg-transparent',
-      },
-      showConfirmButton: false,
-      showCancelButton: false,
-    });
+    if(dtColumns.length > 0) {
+      let newColumns = [...dtColumns];
 
-    initNotifyMgr(dtColumns);
-  }, []);
+      newColumns.map(item => {
+        if(item.Name === keyColumn1.Name) setKeyColumnName1({...keyColumn1, DBColumnName: item.DBColumnName});
+        if(item.Name === keyColumn2.Name) setKeyColumnName2({...keyColumn2, DBColumnName: item.DBColumnName});
+        if(item.Name === keyColumn3.Name) setKeyColumnName3({...keyColumn3, DBColumnName: item.DBColumnName});
+      });
 
-  // 處理過的資料
+      setColumns([...newColumns]);
+    }
+  }, [dtColumns]);
+
   const notifyTarget = [
     {id: 0, text: '--- 請選擇 ---'},
     {id: 1, text: '不用通知'},
@@ -46,26 +56,8 @@ const NotifyMgr = (props) => {
     {id: 3, text: '新郎'},
     {id: 4, text: '其他'},
   ];
-  const keyColumns = ['賓客姓名', '賓客關係', '通知對象', '簡訊發送電話', '操作'];
-  const [keyColumn1, setKeyColumnName1] = useState({ Name: '賓客姓名', DBColumnName: null });
-  const [keyColumn2, setKeyColumnName2] = useState({ Name: '賓客關係', DBColumnName: null });
-  const [keyColumn3, setKeyColumnName3] = useState({ Name: '報到通知對象', DBColumnName: null }); // 沒有欄位
+  
   const modalTitle = '報到簡訊通知';
-
-  const [columns, setColumns] = useState([]);
-
-  const initNotifyMgr = (dtColumns) => {
-    let newColumns = [...dtColumns];
-
-    newColumns.map(item => {
-      if(item.Name === keyColumn1.Name) setKeyColumnName1({...keyColumn1, DBColumnName: item.DBColumnName});
-      if(item.Name === keyColumn2.Name) setKeyColumnName2({...keyColumn2, DBColumnName: item.DBColumnName});
-      if(item.Name === keyColumn3.Name) setKeyColumnName3({...keyColumn3, DBColumnName: item.DBColumnName});
-    });
-
-    setColumns([...columns, ...newColumns]);
-    MySwal.close();
-  }
 
   // 修改 & 儲存
   const [modalShow, setModalShow] = useState(false);
@@ -173,7 +165,7 @@ const NotifyMgr = (props) => {
 
                   <Col xs={12} className="form-group">
                     <label className="form-control-label mbr-fonts-style display-7">報到時請通知</label>
-                    <select class="form-control display-7" value="formNotifyTargetID" onChange={(e) => setFormNotifyTargetID(e.target.value)}>
+                    <select className="form-control display-7" value="formNotifyTargetID" onChange={(e) => setFormNotifyTargetID(e.target.value)}>
                       {notifyTarget.map(item =>
                       <option value={item.id} key={item.id}>{item.text}</option>
                       )}
@@ -208,4 +200,3 @@ const NotifyMgr = (props) => {
 }
 
 export default NotifyMgr;
-

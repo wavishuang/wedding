@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -19,12 +20,10 @@ import '../../scss/datachart.scss';
 const MySwal = withReactContent(Swal);
 
 const CheckinChart = (props) => {
-  const {SToken, introImage, dtList, dtColumns, WPColumnSetup} = props;
+  const { SToken } = props;
 
-  const titleImg = (imgNum) => {
-    const bgImage = introImage && introImage.length > 0 && `url(http://backend.wedding-pass.com/ERPUpload/4878/${introImage[imgNum].Image})`;
-    return (bgImage) ? {backgroundImage: bgImage, backgroundSize: 'cover'} : '';
-  }
+  const WPColumnSetup = useSelector(state => state.wpColumnSetup);
+  const dtColumns = useSelector(state => state.clientList.dtColumns);
 
   // 初始化
   useEffect(() => {
@@ -38,59 +37,58 @@ const CheckinChart = (props) => {
       showCancelButton: false,
     });
 
-    initDataChart(dtColumns, WPColumnSetup);
-  }, []);
+    if(WPColumnSetup && dtColumns && dtColumns.length > 0) {
+      let newColumns = [...dtColumns];
+      let newChart = [];
+
+      newColumns.map((item, index) => {
+        let obj = WPColumnSetup.find(clientItem => clientItem.Name === item.Name);
+        item._wp = obj;
+
+        const getQueryData = async () => {
+          const formData = new FormData();
+          formData.append('SToken', SToken);
+          formData.append('DBColumnName', item.DBColumnName);
+          
+          const res = await api_query_event_column_group_statistics(formData);;
+          if(res.data.rows && res.data.rows.length > 0) {
+            let doughnutData = {
+              Title: '',
+              labels: [],
+              datasets: [{
+                data: [],
+                backgroundColor: ["rgba(254, 82, 91, 0.8)", "#b5b8ed", "#dedede", "#b5b8cf"],
+                borderColor: ['#fff', '#fff','#fff', '#fff'],
+                borderWidth: 2,
+              }]
+            };
+            const rows = res.data.rows;
+            rows.map(row => {
+              doughnutData.labels.push(`${row.Label}：${row.Count}人`);
+              doughnutData.datasets[0].data.push(row.Count);
+            });
+
+            doughnutData.Title = item.Name;
+            newChart.push(doughnutData);
+          }
+
+          setChartArray([...newChart]);
+        }
+
+        if(obj.WP_IsAnalysis && obj.WP_IsAnalysis === 1) {
+          getQueryData();
+        }
+      });
+
+      setColumns([...columns, ...newColumns]);
+    }
+
+    MySwal.close();
+  }, [WPColumnSetup, dtColumns]);
 
   // 處理過的資料
   const [columns, setColumns] = useState([]);
   const [chartArray, setChartArray] = useState([]);
-
-  const initDataChart = (dtColumns, clientColumnSetup) => {
-    let newColumns = [...dtColumns];
-    let newChart = [];
-
-    newColumns.map((item, index) => {
-      let obj = clientColumnSetup.find(clientItem => clientItem.Name === item.Name);
-      item._wp = obj;
-
-      const getQueryData = async () => {
-        const formData = new FormData();
-        formData.append('SToken', SToken);
-        formData.append('DBColumnName', item.DBColumnName);
-        
-        const res = await api_query_event_column_group_statistics(formData);;
-        if(res.data.rows && res.data.rows.length > 0) {
-          let doughnutData = {
-            Title: '',
-            labels: [],
-            datasets: [{
-              data: [],
-              backgroundColor: ["rgba(254, 82, 91, 0.8)", "#b5b8ed", "#dedede", "#b5b8cf"],
-              borderColor: ['#fff', '#fff','#fff', '#fff'],
-              borderWidth: 2,
-            }]
-          };
-          const rows = res.data.rows;
-          rows.map(row => {
-            doughnutData.labels.push(`${row.Label}：${row.Count}人`);
-            doughnutData.datasets[0].data.push(row.Count);
-          });
-
-          doughnutData.Title = item.Name;
-          newChart.push(doughnutData);
-        }
-
-        setChartArray([...newChart]);
-      }
-
-      if(obj.WP_IsAnalysis && obj.WP_IsAnalysis === 1) {
-        getQueryData();
-      }
-    });
-
-    setColumns([...columns, ...newColumns]);
-    MySwal.close();
-  }
 
   // render Chart
   const renderChart = () => {

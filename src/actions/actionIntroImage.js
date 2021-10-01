@@ -1,19 +1,24 @@
-import ApiCaller from "../utils/ApiCaller";
-// 圖片
-export const SET_INTRO_IMAGES = 'SET_INTRO_IMAGES'; // 取得 intro images
+import { api_query_intro_image } from '../utils/api';
 
-export const introImages = introImages => ({
-  type: SET_INTRO_IMAGES,
-  data: introImages
-});
+export const GET_INTRO_IMAGES = 'GET_INTRO_IMAGES';
 
-// 非同步
-export const queryIntroImage = (formData, callback) => async (dispatch) => {
-  console.log('action:', formData);
-  const response = await ApiCaller.query_intro_image(formData, (res, err) => {
-    console.log('action:', res, err);
-  })
-  //const products = await response.json();
-  console.log("response:", response);
-  dispatch(introImages(response.result));
+export const getIntroImages = (formData, callback) => {
+  return (dispatch) => {
+    api_query_intro_image(formData).then(res => {
+      //console.log("res:", res, res.data);
+      if(res.data && res.data.Msg === 'OK') {
+        const images = JSON.parse(res.data.JSONContent);
+        dispatch({
+          type: GET_INTRO_IMAGES,
+          data: images
+        })
+
+        if (callback) callback('images:', images);
+      } else {
+        callback(null, {Msg: 'api error'});
+      }
+    }).catch(err => {
+      callback(null, err);
+    });;
+  }
 }

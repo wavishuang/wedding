@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { useSelector } from 'react-redux';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -21,39 +22,23 @@ import '../../scss/edm.scss';
 const MySwal = withReactContent(Swal);
 
 const SendDemo = (props) => {
-  const {SToken, MobilePhone, orderInfo} = props;
+  const {SToken, MobilePhone} = props;
 
-  const initData = async () => {
-    MySwal.fire({
-      title: "",
-      html: <Loading />,
-      customClass: {
-        popup: 'bg-transparent',
-      },
-      showConfirmButton: false,
-      showCancelButton: false,
-    });
+  const orderInfo = useSelector(state => state.orderInfo);
 
-    initSendDemo();
-  }
-
-  useEffect(() => {
-    initData();
-  }, []);
-  
-  // 處理過的資料
   const [ident, setIdent] = useState('');
   const [inviteCardID, setInviteCardID] = useState(null);
   const [groomEmail, setGroomEmail] = useState('');
   const [brideEmail, setBrideEmail] = useState('');
 
-  const initSendDemo = () => {
-    setIdent(orderInfo.Ident)
-    setInviteCardID(orderInfo.InviteCardID);
-    setGroomEmail(orderInfo.GroomEmail);
-    setBrideEmail(orderInfo.BrideEmail);
-    MySwal.close();
-  }
+  useEffect(() => {
+    if(orderInfo) {
+      setIdent(orderInfo.Ident)
+      setInviteCardID(orderInfo.InviteCardID);
+      setGroomEmail(orderInfo.GroomEmail);
+      setBrideEmail(orderInfo.BrideEmail);
+    }
+  }, [orderInfo]);
 
   // MMS Modal
   const [modalMMSShow, setMMSModalShow] = useState(false);

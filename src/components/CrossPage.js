@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
@@ -7,15 +8,16 @@ import Row from 'react-bootstrap/Row';
 const CrossPage = (props) => {
   const {
     SToken,
-    introImage, 
     introNum,
     webRegistrationPaymentDone, 
     goToWebRegistrationFrontend,
-    PaymentDone,
     downloadWeddingExcel,
     upload,
     fileUpload
   } = props;
+
+  const introImage = useSelector(state => state.introImages.images);
+  const paymentDone = useSelector(state => state.paymentInfo && state.paymentInfo.PaymentDone);
 
   const renderContent = () => {
     let modalBody = null;
@@ -48,7 +50,7 @@ const CrossPage = (props) => {
                   <label className="display-7" style={{fontSize: '1rem'}}>WEDDING PASS 提供您Excel範本，<br />讓您們輕鬆自行管理賓客清單。</label>
                 </div>
                 <div className="my-0 form-group">
-                {PaymentDone 
+                {paymentDone 
                   ? <button type="button" className="btn btn-3d rounded-sm btn-block" onClick={() => downloadWeddingExcel('emptyExcel')}>下載專屬Excel範本</button>
                   : <button type="button" className="btn btn-3d rounded-sm btn-block">升級並啟用所有功能</button>
                 }
@@ -67,7 +69,7 @@ const CrossPage = (props) => {
                   <label className="display-7" style={{fontSize: '1rem'}}>您可以在此匯入您們設定好的Excel賓客清單</label>
                 </div>
                 <div className="my-0 form-group">
-                {PaymentDone 
+                {paymentDone 
                   ? (<>
                     <button type="button" className="btn btn-3d rounded-sm btn-block" onClick={() => upload('UploadExcel')}>上傳Excel設定檔</button>
                     <input type="file" className="form-control" hidden readOnly={true} id="UploadExcel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onChange={() => fileUpload(false, 'UploadExcel')} />
@@ -89,7 +91,7 @@ const CrossPage = (props) => {
                 <label className="display-7" style={{fontSize: '1rem'}}>您可以隨時在此匯出目前的婚宴賓客清單<br />與婚禮當天賓客的出席紀錄<br />檔案會以Excel格式下載<br />或是賓客在報名系統的登記。</label>
                 </div>
                 <div className="my-0 form-group">
-                {PaymentDone 
+                {paymentDone 
                   ? <button type="button" className="btn btn-3d rounded-sm btn-block" onClick={() => downloadWeddingExcel('customerList')}>匯出婚宴賓客清單</button>
                   : <button type="button" className="btn btn-3d rounded-sm btn-block">升級並啟用所有功能</button>
                 }

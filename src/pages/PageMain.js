@@ -46,24 +46,25 @@ import CheckinChart from '../components/RealTimeAnalysis/CheckinChart'; // 6-2 �
 import Congratulation from '../components/GuestMessage/Congratulation'; // 7-1 賓客賀詞
 
 import { MenuGroup, Language, IconCollection } from '../utils/config';
-import { isNumber, _uuid } from '../utils/tools';
-import {
-  api_check_token,
-  api_query_intro_image,
-  api_query_client_list,
-  api_query_order_info,
-  api_query_dashboard_info_multi_checkin,
-  api_query_dashboard_info_checkin,
-  api_query_payment_info,
-  api_query_base_data, // 1-4 query base data
-  api_save_base_data, // 1-4 save base data
-  api_query_client_column_setup, // WPColumnSetup
-} from '../utils/api';
+import { _uuid } from '../utils/tools';
 
 import '../scss/base.scss';
 import '../scss/main.scss';
 
 const MySwal = withReactContent(Swal);
+
+// actions 
+import { check_token } from '../actions/actionAuth';
+import { getIntroImages } from '../actions/actionIntroImage';
+import { getWPColumnSetup } from '../actions/actionWPColumnSetup';
+import { getClientList } from '../actions/actionClientList';
+import { getOrderInfo } from '../actions/actionOrderInfo';
+import { 
+  getDashboardInfoMultiCheckin,
+  getDashboardInfoCheckin
+} from '../actions/actionCheckinInfo';
+import { getPaymentInfo } from '../actions/actionPaymentInfo';
+
 
 const mqStandAlone = '(display-mode: standalone)';
 let IsPWA = false;
@@ -78,243 +79,89 @@ const PageMain = function() {
   const SToken = LoginInfo ? LoginInfo.Token : null;
   const MobilePhone = LoginInfo.MobilePhoneCountryCode + LoginInfo.MobilePhone;
 
-  if(!LoginInfo || !SToken) location.href = 'start.html';
-  useEffect(() => {
-    MySwal.fire({
-      title: "",
-      html: <Loading />,
-      customClass: {
-        popup: 'bg-transparent',
-      },
-      showConfirmButton: false,
-      showCancelButton: false,
-    });
+  const dispatch = useDispatch();
 
+  const orderInfo = useSelector(state => state.orderInfo);
+  const paymentDone = useSelector(state => state.paymentInfo && state.paymentInfo.PaymentDone);
+
+  // 確認是否登入 && 檢查token是否有效
+  useEffect(() => {
     if(LoginInfo && SToken) { 
+      MySwal.fire({
+        title: "",
+        html: <Loading />,
+        customClass: {
+          popup: 'bg-transparent',
+        },
+        showConfirmButton: false,
+        showCancelButton: false,
+      });
+
       // 檢查 token 是否有效
       const formData = new FormData();
       formData.append('SToken', SToken);
 
-      api_check_token(formData)
-        .then(res => {
-          const result = res.data;
-          if(!result.Msg || result.Msg !== 'OK') {
-            location.href = 'start.html';
-          }
-        })
-        .catch(err => {
+      dispatch(check_token(formData, (res, err) => {
+        if(err) {
           location.href = 'start.html';
-        });
+        }
+      }));
+
+      // 取得 intro images
+      dispatch(getIntroImages(formData, null));
+
+      // 取得 WPColumnSetup
+      dispatch(getWPColumnSetup(formData, (res, err) => {
+        if(err) {
+          MySwal.fire('Oops...', '系統發生錯誤', 'error');
+        }
+      }));
+    
+      // 取得 Client List, Client columns
+      dispatch(getClientList(formData, (res, err) => {
+        if(err) {
+          MySwal.fire('Oops...', '系統發生錯誤', 'error');
+        }
+      }));
+
+      // 取得 Order Info
+      dispatch(getOrderInfo(formData, (res, err) => {
+        if(err) {
+          MySwal.fire('Oops...', '系統發生錯誤', 'error');
+        }
+      }));
+
+      // 取得 Dashboard Info Multi Checkin
+      dispatch(getDashboardInfoMultiCheckin(formData, (res, err) => {
+        if(err) {
+          MySwal.fire('Oops...', '系統發生錯誤', 'error');
+        }
+      }));
+
+      // 取得 Dashboard Info Checkin
+      dispatch(getDashboardInfoCheckin(formData, (res, err) => {
+        if(err) {
+          MySwal.fire('Oops...', '系統發生錯誤', 'error');
+        }
+      }));
+
+      // 取得 Payment Info
+      dispatch(getPaymentInfo(formData, (res, err) => {
+        if(err) {
+          MySwal.fire('Oops...', '系統發生錯誤', 'error');
+        }
+      }));
+
+      MySwal.close();
     } else {
       location.href = 'start.html';
     }
   }, []);
 
+  // 圖片 intro images
+  const introImage = useSelector(state => state.introImages.images);
+
   // ＊＊＊＊＊＊ initial Data ＊＊＊＊＊＊
-  // Client List(dtColumns, dtList)
-  const [colunms, setColumns] = useState([]); // dtColumns
-  const [list, setList] = useState([]); // dtList
-
-  // Order Info
-  const [orderInfo, setOrderInfo] = useState(null); // Order Info
-  
-  // Dashboard Info Multi Check in
-  const [dashboardInfoMultiCheckIn, setDashboardInfoMultiCheckIn] = useState({
-    Count: 0
-  });
-
-  // Dashboard Info Check in
-  const [dashboardInfoCheckIn, setDashboardInfoCheckIn] = useState({
-    CheckIn: 0, // 報到人數
-    Total: 0, // 總報到人數
-    CheckInRate: 0, // 報到率
-  });
-
-  // Payment Info
-  const [paymentInfo, setPaymentInfo] = useState({
-    PaymentDone: true
-  });
-
-  // 圖片 Intro Image
-  const [introImage, setIntroImage] = useState([]);
-
-  // ＊＊＊＊＊＊ 處理過的資料 ＊＊＊＊＊＊
-  // 婚禮籌備即時資訊
-  const [weddingInfo, setWeddingInfo] = useState({
-    CountOfGuest: 0,  // 賓客數
-    CountOfTotal: 0,  // 總出席人數
-    CountOfCake: 0,   // 喜餅數量
-    PeopleDesktop: 0, // 每桌幾人
-    CountOfTotalCheckIn: 0  // 目前總出席人數
-  });
-
-  // 婚禮報到即時資訊
-  const [registInfo, setRegistInfo] = useState({
-    CheckIn: 0, // 報到人數
-    Total: 0, // 賓客數
-    CheckInRate: 0, // 報到率
-    CountOfTotal: 0, // 總出席人數
-    CountOfTotalCheckIn: 0, // 目前總出席人數
-    EstimateCheckInRate: 0, // 預估出席率
-    DashboardInfoMultiCheckInCount: 0,  // 已領取喜餅數量
-    CountOfCake: 0, // 預計喜餅數量
-    ReceiveCakeRate: 0 // 領取率
-  });
-
-  // 婚禮基本資料編輯 base data
-  const [baseData, setBaseData] = useState({});
-
-  // WPColumnSetup
-  const [wpColumnSetup, setWpColumnSetup] = useState([]);
-
-  // 初始化
-  const initFixedData = async () => {
-    const formData = new FormData();
-    formData.append('SToken', SToken);
-    
-    try {
-      const introImage = await api_query_intro_image(formData); // 圖片
-      const queryWPColumnSetup = await api_query_client_column_setup(formData); // api_query_client_column_setup
-
-      if(introImage.data && introImage.data.Msg === 'OK'
-        && queryWPColumnSetup.data && queryWPColumnSetup.data.Msg === 'OK'
-      ) {
-        // intro image
-        const images = JSON.parse(introImage.data.JSONContent);
-        setIntroImage([...images]);
-
-        // WPColumnSetup
-        const resWpColumnSetup = JSON.parse(queryWPColumnSetup.data.JSONContent);
-        setWpColumnSetup([...resWpColumnSetup]);
-      } else {
-        MySwal.fire('Oops...', '系統發生錯誤', 'error');
-      }
-    } catch(err) {
-      MySwal.fire('Oops...', '系統發生錯誤', 'error');
-    };
-  }
-
-  const initData = async () => {
-    const formData = new FormData();
-    formData.append('SToken', SToken);
-    
-    try {
-      //const introImage = await api_query_intro_image(formData); // 圖片
-      const clientList = await api_query_client_list(formData); // ClientList
-      const orderInfo = await api_query_order_info(formData); // OrderInfo
-      const queryDashboardInfoMultiCheckin = await api_query_dashboard_info_multi_checkin(formData);
-      const queryDashboardInfoCheckin = await api_query_dashboard_info_checkin(formData);
-      const queryPaymentInfo = await api_query_payment_info(formData);
-      const baseData = await api_query_base_data(formData); // BaseData
-
-      if(clientList.data && clientList.data.Msg === 'OK'
-        && orderInfo.data && orderInfo.data.Msg === 'OK'
-        && queryDashboardInfoMultiCheckin.data && queryDashboardInfoMultiCheckin.data.length > 0
-        && queryDashboardInfoCheckin.data && queryDashboardInfoCheckin.data.rows && queryDashboardInfoCheckin.data.rows.length > 0
-        && queryPaymentInfo.data && queryPaymentInfo.data.Msg === 'OK'
-        && baseData.data && baseData.data.Msg === 'OK'
-      ) {
-        // client list
-        const {dtColumns, dtList} = clientList.data;
-        setColumns([...dtColumns]);
-        setList([...dtList]);
-        
-        // order info
-        const resOrderInfo = JSON.parse(orderInfo.data.JSONContent)[0];
-        setOrderInfo({...resOrderInfo});
-        
-        // dashboard info multi checkin
-        const resDashboardInfoMultiCheckin = queryDashboardInfoMultiCheckin.data[0];
-        setDashboardInfoMultiCheckIn({...dashboardInfoMultiCheckIn, ...resDashboardInfoMultiCheckin});
-        
-        // dashboard info checkin
-        const resDashboardInfoCheckin = queryDashboardInfoCheckin.data.rows[0];
-        setDashboardInfoCheckIn({...dashboardInfoCheckIn, ...resDashboardInfoCheckin});
-
-        // payment info
-        const resPaymentInfo = JSON.parse(queryPaymentInfo.data.JSONContent)[0];
-        setPaymentInfo({...paymentInfo, ...resPaymentInfo});
-        
-        // 處理 '婚禮籌備即時資訊' & '婚禮報到即時資訊'
-        initWeddingInfo(resOrderInfo, dtList, dtColumns, resDashboardInfoMultiCheckin, resDashboardInfoCheckin, );
-
-        // 婚禮基本基料編輯
-        const resBaseData = JSON.parse(baseData.data.JSONContent)[0];
-        setBaseData({...resBaseData});
-
-        MySwal.close();
-      } else {
-        MySwal.fire('Oops...', '系統發生錯誤', 'error');
-      }
-    } catch(err) {
-      console.log(err);
-      MySwal.fire('Oops...', '系統發生錯誤', 'error');
-    };
-  }
-  
-  useEffect(() => {
-    initFixedData();
-    initData();
-    setMenuGid(1);
-    setMenuId(11);
-  }, []);
-
-  const initWeddingInfo = (resOrderInfo, dtList, dtColumns, resDashboardInfoMultiCheckin, resDashboardInfoCheckin) => {
-    const PeopleDesktop = resOrderInfo.CountOfDesktop; // 每桌幾人
-    const CountOfGuest = dtList.length; // 賓客數
-
-    const totalObj = dtColumns.find(item => item.Name === '出席人數');
-    const DBColumnTotalName = totalObj.DBColumnName;
-    const cakeObj = dtColumns.find(item => item.Name === '喜餅數量');
-    const DBColumnCakeName = cakeObj.DBColumnName;
-
-    let CountOfTotal = 0; // 總出席人數
-    let CountOfCake = 0;  // 喜餅數量
-    let CountOfTotalCheckIn = 0; // 出席數
-
-    for(let i = 0; i < dtList.length; i++) {
-      let vv1 = dtList[i][DBColumnTotalName];
-      if(!isNumber(vv1)) vv1 = 1;
-      CountOfTotal += parseInt(vv1);
-
-      let vv2 = dtList[i][DBColumnCakeName];
-      if(isNumber(vv2)) CountOfCake += parseInt(vv2);
-
-      if(dtList[i]['CheckInTimeStamp']) CountOfTotalCheckIn += vv1;
-    }
-        
-    // 婚禮籌備即時資訊
-    setWeddingInfo({...weddingInfo, 
-      CountOfGuest,
-      CountOfTotal,
-      CountOfCake,
-      PeopleDesktop,
-      CountOfTotalCheckIn
-    });
-
-    const CheckIn = Number(resDashboardInfoCheckin.CheckIn);
-    const Total = Number(resDashboardInfoCheckin.Total);
-    const CheckInRate = (Total === 0 || CheckIn === 0) ? 0 : ((CheckIn / Total)*100).toFixed(2);
-
-    let CountOfCheckIn = Number(resDashboardInfoMultiCheckin.Count);
-
-    // 婚禮報到即時資訊
-    const EstimateCheckInRate = (CountOfTotal === 0 || CountOfTotalCheckIn === 0) ? 0 : ((CountOfTotalCheckIn/CountOfTotal)*100).toFixed(2);
-    const ReceiveCakeRate = (CountOfCake === 0 || CountOfCheckIn === 0) ? 0 : ((CountOfCheckIn/CountOfCake)*100).toFixed(2);
-
-    setRegistInfo({...registInfo, 
-      CheckIn, // 報到人數
-      Total, // 賓客數
-      CheckInRate, // 報到率
-      CountOfTotal, // 總出席人數
-      CountOfTotalCheckIn, // 目前總出席人數
-      EstimateCheckInRate, // 預估出席率
-      DashboardInfoMultiCheckInCount: CountOfCheckIn,  // 已領取喜餅數量
-      CountOfCake, // 預計喜餅數量
-      ReceiveCakeRate // 領取率
-    });
-  }
-
   const [menuGid, setMenuGid] = useState(1);  // menu Group ID
   const [menuId, setMenuId] = useState(11); // menu ID
 
@@ -362,7 +209,7 @@ const PageMain = function() {
     });
   }
 
-  // WebRegistrationPaymentDone
+  // WebRegistrationPaymentDone ???
   const [webRegistrationPaymentDone, setWebRegistrationPaymentDone] = useState(true);
 
   // popShow
@@ -420,7 +267,7 @@ const PageMain = function() {
               <label className="display-7" style={{fontSize: '1rem'}}>您可以在此管理您們婚禮的賓客清單<br />無論來源是匯入的賓客資訊<br />或是賓客在報名系統的登記。</label>
             </Col>
             <div className="col-auto form-group">
-              {paymentInfo.PaymentDone 
+              {paymentDone
               ? <a href="listmgr.html" className="btn btn-3d rounded-sm btn-block">前往名單管理</a>
               : <button type="button" className="btn btn-3d rounded-sm btn-block">升級並啟用所有功能</button>
               }
@@ -436,7 +283,7 @@ const PageMain = function() {
               <label className="display-7" style={{fontSize: '1rem'}}>WEDDING PASS 提供您Excel範本，<br />讓您們輕鬆自行管理賓客清單。</label>
             </Col>
             <div className="col-auto form-group">
-              {paymentInfo.PaymentDone 
+              {paymentDone
               ? <button type="button" className="btn btn-3d rounded-sm btn-block" onClick={() => downloadWeddingExcel('emptyExcel')}>下載專屬Excel範本</button>
               : <button type="button" className="btn btn-3d rounded-sm btn-block">升級並啟用所有功能</button>
               }
@@ -452,7 +299,7 @@ const PageMain = function() {
               <label className="display-7" style={{fontSize: '1rem'}}>您可以在此匯入您們設定好的Excel賓客清單</label>
             </Col>
             <div className="col-auto form-group">
-              {paymentInfo.PaymentDone 
+              {paymentDone
               ? (<>
                 <button type="button" className="btn btn-3d rounded-sm btn-block" onClick={() => upload('UploadExcel')}>上傳Excel設定檔</button>
                 <input type="file" className="form-control" hidden readOnly={true} id="UploadExcel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onChange={() => fileUpload(false, 'UploadExcel')} />
@@ -471,7 +318,7 @@ const PageMain = function() {
               <label className="display-7" style={{fontSize: '1rem'}}>您可以隨時在此匯出目前的婚宴賓客清單<br />與婚禮當天賓客的出席紀錄<br />檔案會以Excel格式下載<br />或是賓客在報名系統的登記。</label>
             </Col>
             <div className="col-auto form-group">
-              {paymentInfo.PaymentDone 
+              {paymentDone
               ? <button type="button" className="btn btn-3d rounded-sm btn-block" onClick={() => downloadWeddingExcel('customerList')}>匯出婚宴賓客清單</button>
               : <button type="button" className="btn btn-3d rounded-sm btn-block">升級並啟用所有功能</button>
               }
@@ -487,7 +334,7 @@ const PageMain = function() {
               <label className="display-7" style={{fontSize: '1rem'}}>新娘在休息室就可以利用手機簡訊得知重要閨蜜、朋友已經前來現場給予祝福。<br />當然、新郎也可以第一時間得知重要的好友、長官的參與。</label>
             </Col>
             <div className="col-auto form-group">
-              {paymentInfo.PaymentDone 
+              {paymentDone
               ? <a href="notifymgr.html" className="btn btn-3d rounded-sm btn-block">前往設定</a>
               : <button type="button" className="btn btn-3d rounded-sm btn-block">升級並啟用所有功能</button>
               }
@@ -504,7 +351,7 @@ const PageMain = function() {
               <label className="display-7" style={{fontSize: '1rem'}}>您可以在此手動逐一發送、批次自動發送賓客專屬邀請函。</label>
             </Col>
             <div className="col-auto form-group">
-              {paymentInfo.PaymentDone 
+              {paymentDone
               ? <a href="send.html" className="btn btn-3d rounded-sm btn-block">前往發送婚禮專屬邀請函</a>
               : <button type="button" className="btn btn-3d rounded-sm btn-block">升級並啟用所有功能</button>
               }
@@ -520,7 +367,7 @@ const PageMain = function() {
               <label className="display-7" style={{fontSize: '1rem'}}>您可以在此手動逐一發送、批次自動發送賓客專屬邀請函。</label>
             </Col>
             <div className="col-auto form-group">
-              {paymentInfo.PaymentDone 
+              {paymentDone
               ? <a href="SendMMS.html" className="btn btn-3d rounded-sm btn-block">前往發送婚禮專屬邀請函</a>
               : <button type="button" className="btn btn-3d rounded-sm btn-block">升級並啟用所有功能</button>
               }
@@ -536,7 +383,7 @@ const PageMain = function() {
               <label className="display-7" style={{fontSize: '1rem'}}>您可以在此手動逐一發送、批次自動發送賓客專屬邀請函。</label>
             </Col>
             <div className="col-auto form-group">
-              {paymentInfo.PaymentDone 
+              {paymentDone
               ? <a href="SendSMS.html" className="btn btn-3d rounded-sm btn-block">前往發送婚禮專屬邀請函</a>
               : <button type="button" className="btn btn-3d rounded-sm btn-block">升級並啟用所有功能</button>
               }
@@ -556,7 +403,7 @@ const PageMain = function() {
               <label className="display-7" style={{fontSize: '1rem', marginTop: '10px'}}>WEDDING-PASS 婚禮報到<br />可以提供您賓客專屬QRCode貼紙<br />您可以貼在傳統喜帖上<br />遵循傳統的長輩賓客<br />也可以享受科技化的數位報到服務。</label>
             </Col>
             <div className="col-auto form-group">
-              {paymentInfo.PaymentDone 
+              {paymentDone
               ? <a href="sticker.html" className="btn btn-3d rounded-sm btn-block">我要索取</a>
               : <button type="button" className="btn btn-3d rounded-sm btn-block">升級並啟用所有功能</button>
               }
@@ -616,7 +463,7 @@ const PageMain = function() {
               <label className="display-7" style={{fontSize: '1rem'}}>您可以在婚禮籌備時/婚禮結束後隨時得知賓客相關資料統計。</label>
             </Col>
             <div className="col-auto form-group">
-              {paymentInfo.PaymentDone 
+              {paymentDone
               ? <a href="datachart.html" className="btn btn-3d rounded-sm btn-block">賓客資料圖表分析</a>
               : <button type="button" className="btn btn-3d rounded-sm btn-block">升級並啟用所有功能</button>
               }
@@ -632,7 +479,7 @@ const PageMain = function() {
               <label className="display-7" style={{fontSize: '1rem'}}>您可以在婚禮結束後可以在此了解婚宴當天婚禮報到狀況。</label>
             </Col>
             <div className="col-auto form-group">
-              {paymentInfo.PaymentDone 
+              {paymentDone
               ? <a href="checkinchart.html" className="btn btn-3d rounded-sm btn-block">賓客報到分析</a>
               : <button type="button" className="btn btn-3d rounded-sm btn-block">升級並啟用所有功能</button>
               }
@@ -649,7 +496,7 @@ const PageMain = function() {
               <label className="display-7" style={{fontSize: '1rem'}}>賓客在婚禮報名系統報名時<br />特地留下給您們夫妻倆的祝福語</label>
             </Col>
             <div className="col-auto form-group">
-              {paymentInfo.PaymentDone 
+              {paymentDone
               ? <a href="Congratulation.html" className="btn btn-3d rounded-sm btn-block">前往查看</a>
               : <button type="button" className="btn btn-3d rounded-sm btn-block">升級並啟用所有功能</button>
               }
@@ -695,7 +542,6 @@ const PageMain = function() {
     document.body.appendChild(element);
 
     element.click();
-
     document.body.removeChild(element);
 
     // window.open(url);
@@ -777,44 +623,6 @@ const PageMain = function() {
     }, 500);
   }
 
-  // Event 1-4 儲存婚禮基本資料
-  const save_wedding_info_base_data = (formData) => {
-    const save_data = async () => {
-      const res = await api_save_base_data(formData);
-      
-      if(res.data && res.data.Msg === 'OK') {
-        initData();
-        MySwal.fire({
-          title: '更新完成',
-          icon: 'success'
-        });
-      } else {
-        MySwal.fire({
-          title: '更新失敗',
-          icon: 'error'
-        });
-      }
-    }
-
-    save_data();
-  }
-
-  // query client list
-  const query_client_list = (formData) => {
-    const save_data = async () => {
-      const res = await api_query_client_list(formData);
-      
-      if(res.data && res.data.Msg === 'OK') {
-        const {dtList} = res.data;
-        setList([...dtList]);
-      }
-
-      return res;
-    }
-
-    return save_data();
-  }
-
   return (
     <Fragment>
       <HeaderMain handleLangModalShow={handleLangModalShow} handleLogout={handleLogout} />
@@ -841,72 +649,64 @@ const PageMain = function() {
             {/* 右側選單 */}
             <Col md={9} className="d-none d-lg-block">
               <SectionTitle title={renderDesktopTitle()} />
-              {menuId === 11 && <WeddingPreInfo weddingInfo={weddingInfo} />}
-              {menuId === 12 && <WeddingRegistInfo registInfo={registInfo} />}
-              {menuId === 13 && <SetUpEDM orderInfo={orderInfo} MobilePhone={MobilePhone} SToken={SToken} />}
-              {menuId === 14 && <WeddingBaseSetting SToken={SToken} introImage={introImage} baseData={baseData} saveWeddingInfoBaseData={save_wedding_info_base_data} />}
+              {menuId === 11 && <WeddingPreInfo />}
+              {menuId === 12 && <WeddingRegistInfo />}
+              {menuId === 13 && <SetUpEDM SToken={SToken} MobilePhone={MobilePhone} />}
+              {menuId === 14 && <WeddingBaseSetting SToken={SToken} />}
 
-              {menuId === 21 && <WebRegistrationSetup SToken={SToken} introImage={introImage} />}
+              {menuId === 21 && <WebRegistrationSetup SToken={SToken} />}
               {menuId === 22 && <CrossPage 
-                introImage={introImage} 
                 introNum={12}
                 webRegistrationPaymentDone={webRegistrationPaymentDone}
                 goToWebRegistrationFrontend={goToWebRegistrationFrontend}
               />}
 
-              {menuId === 31 && <ListMgr SToken={SToken} introImage={introImage} dtList={list} dtColumns={colunms} WPColumnSetup={wpColumnSetup} queryClientList={query_client_list} />}
+              {menuId === 31 && <ListMgr SToken={SToken} />}
+              
               {menuId === 32 && <CrossPage 
-                introImage={introImage} 
-                introNum={11}
-                PaymentDone={paymentInfo.PaymentDone}
+                introNum={11} 
                 downloadWeddingExcel={downloadWeddingExcel}
               />}
               {menuId === 33 && <CrossPage 
-                introImage={introImage} 
                 introNum={1}
-                PaymentDone={paymentInfo.PaymentDone}
                 upload={upload}
                 fileUpload={fileUpload}
               />}
               {menuId === 34 && <CrossPage 
-                introImage={introImage} 
                 introNum={3}
-                PaymentDone={paymentInfo.PaymentDone}
                 downloadWeddingExcel={downloadWeddingExcel}
               />}
-              {/** ========== not yet ================= */}
-              {menuId === 35 && <NotifyMgr SToken={SToken} introImage={introImage} dtList={list} dtColumns={colunms} WPColumnSetup={wpColumnSetup} queryClientList={query_client_list} />}
 
-              {menuId === 41 && <SendEmail SToken={SToken} introImage={introImage} dtList={list} dtColumns={colunms} WPColumnSetup={wpColumnSetup} queryClientList={query_client_list} />}
-              {menuId === 42 && <SendMMS SToken={SToken} introImage={introImage} dtList={list} dtColumns={colunms} WPColumnSetup={wpColumnSetup} queryClientList={query_client_list} />}
-              {menuId === 43 && <SendSMS SToken={SToken} introImage={introImage} dtList={list} dtColumns={colunms} WPColumnSetup={wpColumnSetup} queryClientList={query_client_list} />}
-              {menuId === 44 && <Sticker SToken={SToken} introImage={introImage} />}
+              {menuId === 35 && <NotifyMgr SToken={SToken} />}
 
-              {menuId === 51 && <CrossPage 
-                introNum={51}
-              />}
+              {menuId === 41 && <SendEmail SToken={SToken} />}
+              {menuId === 42 && <SendMMS SToken={SToken} />}
+              {menuId === 43 && <SendSMS SToken={SToken} />}
+              {menuId === 44 && <Sticker SToken={SToken} />}
+
+              {menuId === 51 && <CrossPage introNum={51} />}
               {menuId === 52 && <CrossPage 
-                SToken={SToken}
-                introNum={52}
+                SToken={SToken} 
+                introNum={52} 
               />}
 
-              {menuId === 61 && <DataChart SToken={SToken} introImage={introImage} dtList={list} dtColumns={colunms} WPColumnSetup={wpColumnSetup} />}
-              {menuId === 62 && <CheckinChart SToken={SToken} introImage={introImage} dtList={list} dtColumns={colunms} WPColumnSetup={wpColumnSetup} />}
+              {menuId === 61 && <DataChart SToken={SToken} />}
+              {menuId === 62 && <CheckinChart SToken={SToken} />}
 
-              {menuId === 71 && <Congratulation SToken={SToken} introImage={introImage} dtList={list} dtColumns={colunms} />}
+              {menuId === 71 && <Congratulation />}
             </Col>
 
             {/* 手機版內容 */}
             {/* 婚禮籌備即時資訊 */}
             <Col sm={12} className="d-lg-none px-0 py-3">
               <SectionTitle title={'婚禮籌備即時資訊'} />
-              <WeddingPreInfo weddingInfo={weddingInfo} />
+              <WeddingPreInfo />
             </Col>
 
             {/* 婚禮報到即時資訊 */}
             <Col sm={12} className="d-lg-none px-0 py-3">
               <SectionTitle title={'婚禮報到即時資訊'} />
-              <WeddingRegistInfo registInfo={registInfo} />
+              <WeddingRegistInfo />
             </Col>
 
             {/* 手機版 標題 & Icons */}
@@ -917,7 +717,6 @@ const PageMain = function() {
                 title={item.title} 
                 text={item.text} 
                 icons={item.icons} key={item.id}
-                introImage={introImage}
                 popModalShow={popModalShow}
               />
             )}

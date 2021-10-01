@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -11,7 +12,10 @@ import withReactContent from 'sweetalert2-react-content';
 import ButtonModalClose from '../../components/ButtonModalClose';
 import Loading from '../../components/Loading';
 
-import { 
+// actions
+import { getClientList } from '../../actions/actionClientList';
+
+import {
   api_event_update_client,
   api_event_insert_client,
 } from '../../utils/api';
@@ -21,29 +25,18 @@ import '../../scss/listmgr.scss';
 const MySwal = withReactContent(Swal);
 
 const ListMgr = (props) => {
-  const {SToken, introImage, dtList, dtColumns, WPColumnSetup} = props;
+  const { SToken } = props;
+
+  const introImage = useSelector(state => state.introImages.images);
+  const WPColumnSetup = useSelector(state => state.wpColumnSetup);
+  const dtList = useSelector(state => state.clientList.dtList);
+  const dtColumns = useSelector(state => state.clientList.dtColumns);
 
   const titleImg = (imgNum) => {
-    const bgImage = introImage && introImage.length > 0 && `url(http://backend.wedding-pass.com/ERPUpload/4878/${introImage[imgNum].Image})`;
+    const bgImage = introImage && introImage.length > imgNum && `url(http://backend.wedding-pass.com/ERPUpload/4878/${introImage[imgNum].Image})`;
     return (bgImage) ? {backgroundImage: bgImage, backgroundSize: 'cover'} : '';
   }
 
-  // 初始化
-  useEffect(() => {
-    MySwal.fire({
-      title: "",
-      html: <Loading />,
-      customClass: {
-        popup: 'bg-transparent',
-      },
-      showConfirmButton: false,
-      showCancelButton: false,
-    });
-
-    initListMgr(dtColumns, WPColumnSetup);
-  }, []);
-
-  // 處理過的資料
   const keyColumns = ['賓客姓名', '賓客關係', '是否會參加婚禮', '出席人數', '操作'];
   const [keyColumn1, setKeyColumnName1] = useState({ Name: '賓客姓名', DBColumnName: null });
   const [keyColumn2, setKeyColumnName2] = useState({ Name: '賓客關係', DBColumnName: null });
@@ -52,32 +45,34 @@ const ListMgr = (props) => {
 
   const [columns, setColumns] = useState([]);
 
-  const initListMgr = (dtColumns, clientColumnSetup) => {
-    let newColumns = [...dtColumns];
+  // 初始化
+  useEffect(() => {
+    if(dtColumns.length > 0 && WPColumnSetup.length > 0) {
+      let newColumns = [...dtColumns];
 
-    newColumns.map(item => {
-      if(item.Name === keyColumn1.Name) setKeyColumnName1({...keyColumn1, DBColumnName: item.DBColumnName});
-      if(item.Name === keyColumn2.Name) setKeyColumnName2({...keyColumn2, DBColumnName: item.DBColumnName});
-      if(item.Name === keyColumn3.Name) setKeyColumnName3({...keyColumn3, DBColumnName: item.DBColumnName});
-      if(item.Name === keyColumn4.Name) setKeyColumnName4({...keyColumn4, DBColumnName: item.DBColumnName});
-    
-      let wpObj = clientColumnSetup.find(subItem => subItem.Name === item.Name);
-      item._wp = wpObj;
+      newColumns.map(item => {
+        if(item.Name === keyColumn1.Name) setKeyColumnName1({...keyColumn1, DBColumnName: item.DBColumnName});
+        if(item.Name === keyColumn2.Name) setKeyColumnName2({...keyColumn2, DBColumnName: item.DBColumnName});
+        if(item.Name === keyColumn3.Name) setKeyColumnName3({...keyColumn3, DBColumnName: item.DBColumnName});
+        if(item.Name === keyColumn4.Name) setKeyColumnName4({...keyColumn4, DBColumnName: item.DBColumnName});
+      
+        let wpObj = WPColumnSetup.find(subItem => subItem.Name === item.Name);
+        item._wp = wpObj;
 
-      let opts = wpObj.Option;
-      if (opts == null || opts.length <= 0) {
-        item._rt_opts = null;
-      } else {
-        opts = opts.split(",");
-        item._rt_opts = opts.map(optItem => {
-          return { text: optItem, value: optItem };
-        });
-      }
-    });
+        let opts = wpObj.Option;
+        if (opts == null || opts.length <= 0) {
+          item._rt_opts = null;
+        } else {
+          opts = opts.split(",");
+          item._rt_opts = opts.map(optItem => {
+            return { text: optItem, value: optItem };
+          });
+        }
+      });
 
-    setColumns([...columns, ...newColumns]);
-    MySwal.close();
-  }
+      setColumns([...newColumns]);
+    }
+  }, [dtColumns, WPColumnSetup]);
 
   // 修改 & 新增
   const [modalShow, setModalShow] = useState(false);
@@ -136,6 +131,8 @@ const ListMgr = (props) => {
     }
   }
 
+  const dispatch = useDispatch();
+
   // 儲存設定
   const handleSubmit = () => {
     const Array = [];
@@ -177,22 +174,25 @@ const ListMgr = (props) => {
         if(res.data && res.data.Msg === 'OK') {
           setInfo(false);
           setCuomerData({});
-          setFormEmail(null);
-          setFormMobilePhone(null);
+          setFormEmail('');
+          setFormMobilePhone('');
           formData = new FormData();
           formData.append('SToken', SToken);
-          const queryClientList = await props.queryClientList(formData);
 
-          if(queryClientList.data && queryClientList.data.Msg === 'OK') {
-            MySwal.fire({
-              title: '儲存成功',
-              icon: "success"
-            }).then(() => {
-              setModalShow(false);
-            });
-          }
+          setModalShow(false);
+          // 取得 Client List, Client columns
+          dispatch(getClientList(formData, (res, err) => {
+            if(err) {
+              MySwal.fire('Oops...', '系統發生錯誤', 'error');
+            } else {
+              MySwal.fire({
+                title: '儲存成功',
+                icon: "success"
+              });
+            }
+          }));
         } else {
-          MySwal.fire('儲存失敗', '', "success");
+          MySwal.fire('儲存失敗', '', "error");
         }
       }
 
@@ -222,31 +222,31 @@ const ListMgr = (props) => {
             });
 
             tipCols.push(
-              <Col xs={4} className="form-group" key={item.ID}>
+              <Col xs={4} className="form-group" key={`col1_${item.ID}`}>
                 <label className="form-control-label mbr-fonts-style display-7">{item.Name}</label>
                 {item._rt_opts ?
                   <select className="form-control display-7" required={item._wp.WP_IsRequired === 1} value={itemValue} onChange={(e) => handleChangeForm(e, item.DBColumnName)}>
-                    <option value='' disabled>--- 請選擇 ---</option>
+                    <option value='' key={'op1_disabled'} disabled>--- 請選擇 ---</option>
                     {item._rt_opts && item._rt_opts.length > 0 && item._rt_opts.map(opt => 
-                    <option value={opt.value} key={opt.value}>{opt.text}</option>
+                    <option value={opt.value} key={`opt1_${item.ID}_${opt.value}`}>{opt.text}</option>
                     )}
                   </select> : 
                   <input type="text" name={item.Name} placeholder={item.Name} className="form-control display-7" required={item._wp.WP_IsRequired === 1} value={itemValue} onChange={(e) => handleChangeForm(e, item.DBColumnName)} />
                 }
                 {tips.map((tip, index) => {
-                  return (<p className="mb-0" key={index}><small className="text-main-color">{tip}</small></p>);
+                  return (<p className="mb-0" key={`p1_${index}`}><small className="text-main-color">{tip}</small></p>);
                 })}
               </Col>
             );
           } else {
             noTipCols.push(
-              <Col xs={4} className="form-group" key={item.ID}>
+              <Col xs={4} className="form-group" key={`col2_${item.ID}`}>
                 <label className="form-control-label mbr-fonts-style display-7">{item.Name}</label>
                 {item._rt_opts ?
                   <select className="form-control display-7" required={item._wp.WP_IsRequired === 1} value={itemValue} onChange={(e) => handleChangeForm(e, item.DBColumnName)}>
-                    <option value='' disabled>--- 請選擇 ---</option>
+                    <option value='' key={'op2_disabled'} disabled>--- 請選擇 ---</option>
                     {item._rt_opts && item._rt_opts.length > 0 && item._rt_opts.map(opt => 
-                    <option value={opt.value} key={opt.value}>{opt.text}</option>
+                    <option value={opt.value} key={`opt2_${item.ID}_${opt.value}`}>{opt.text}</option>
                     )}
                   </select> : 
                   <input type="text" name={item.Name} placeholder={item.Name} className="form-control display-7" required={item._wp.WP_IsRequired === 1} value={itemValue} onChange={(e) => handleChangeForm(e, item.DBColumnName)} />
@@ -280,13 +280,13 @@ const ListMgr = (props) => {
                     <thead>
                       <tr>
                         {keyColumns.map((item, index) => 
-                        <th className="head-item mbr-fonts-style display-7 bg-color-transparent" key={index}>{item}</th>
+                        <th className="head-item mbr-fonts-style display-7 bg-color-transparent" key={'th_' + index}>{item}</th>
                         )}
                       </tr>
                     </thead>
                     <tbody>
                       {dtList.map((item, index) =>
-                        <tr key={index}>
+                        <tr key={'td_'+ index}>
                           <td className="text-center">{item[keyColumn1.DBColumnName]}</td>
                           <td className="text-center">{item[keyColumn2.DBColumnName]}</td>
                           <td className="text-center">{item[keyColumn3.DBColumnName]}</td>

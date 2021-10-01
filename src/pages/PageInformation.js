@@ -1,4 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import moment from 'moment';
 
 import Swal from 'sweetalert2'
@@ -10,14 +12,10 @@ import Col from 'react-bootstrap/Col';
 
 import HeaderDiv from '../components/HeaderDiv';
 import Loading from '../components/Loading';
-//import ButtonPageClose from '../components/ButtonPageClose';
 
-import { 
-  api_check_token,
-  api_query_intro_image,
-  api_query_base_data,
-  api_save_base_data
-} from '../utils/api';
+import { check_token } from '../actions/actionAuth';
+import { getIntroImages } from '../actions/actionIntroImage';
+import { getBaseData, setBaseData } from '../actions/actionBaseData';
 
 import '../scss/base.scss';
 import '../scss/information.scss';
@@ -28,37 +26,40 @@ const PageInformation = function() {
   const LoginInfo = (sessionStorage && sessionStorage.data) ? JSON.parse(sessionStorage.data) : null;
   const SToken = LoginInfo ? LoginInfo.Token : null;
   if(!LoginInfo || !SToken) location.href = 'start.html';
+
+  const dispatch = useDispatch();
+
   // 確認是否登入 && 檢查token是否有效
   useEffect(() => {
-    MySwal.fire({
-      title: "",
-      html: <Loading />,
-      customClass: {
-        popup: 'bg-transparent',
-      },
-      showConfirmButton: false,
-      showCancelButton: false,
-    });
-
     if(LoginInfo && SToken) { 
+      MySwal.fire({
+        title: "",
+        html: <Loading />,
+        customClass: {
+          popup: 'bg-transparent',
+        },
+        showConfirmButton: false,
+        showCancelButton: false,
+      });
+
       // 檢查 token 是否有效
       const formData = new FormData();
       formData.append('SToken', SToken);
 
-      api_check_token(formData)
-        .then(res => {
-          const result = res.data;
-          if(!result.Msg || result.Msg !== 'OK') {
-            location.href = 'start.html';
-          }
-        })
-        .catch(err => {
+      dispatch(check_token(formData, (res, err) => {
+        if(err) {
           location.href = 'start.html';
-        });
+        } else {
+          initData();
+        }
+      }));
     } else {
       location.href = 'start.html';
     }
   }, []);
+
+  // 圖片 intro images
+  const introImage = useSelector(state => state.introImages.images);
 
   // main data => baseData
   const [main, setMain] = useState({
@@ -81,46 +82,29 @@ const PageInformation = function() {
     showCountOfDesktop: ""
   });
 
-  // 圖片 intro images
-  const [introImage, setIntroImage] = useState([]);
-
   // 初始化
-  const initData = async () => {
+  const initData = () => {
     const formData = new FormData();
     formData.append('SToken', SToken);
-    
-    try {
-      const baseData = await api_query_base_data(formData);
-      const introImage = await api_query_intro_image(formData);
-      // console.log(baseData, introImage);
 
-      let resMain = null;
-      let images = null;
-      if(baseData.data && baseData.data.Msg === 'OK' 
-        && introImage.data && introImage.data.Msg === 'OK') {
-        resMain = JSON.parse(baseData.data.JSONContent)[0];
-        images = JSON.parse(introImage.data.JSONContent);
-
-        let weddingDate = new Date(resMain.WeddingDate).getTime();
+    // 取得圖片
+    dispatch(getIntroImages(formData, null));
+    // 取得婚禮資訊
+    dispatch(getBaseData(formData, (res, err) => {
+      if(res.Msg === 'OK') {
+        let result = res.data;
+        let weddingDate = new Date(result.WeddingDate).getTime();
         let momentWeddingDate = moment(weddingDate).format('YYYY-MM-DD');
-        resMain.WeddingDate = momentWeddingDate;
-        resMain.showCountOfDesktop = (resMain.CountOfDesktop).toString();
+        result.WeddingDate = momentWeddingDate;
+        result.showCountOfDesktop = (result.CountOfDesktop).toString();
 
-        setMain({...main, ...resMain});
-        setIntroImage({...images});
+        setMain({...main, ...result});
         MySwal.close();
       } else {
         MySwal.fire('Oops...', '系統發生錯誤', 'error');
       }
-    } catch(err) {
-      console.log(err);
-      MySwal.fire('Oops...', '系統發生錯誤', 'error');
-    };
+    }));
   }
-  
-  useEffect(() => {
-    initData();
-  }, []);
 
   // 修改欄位
   const handleChangeForm = (e, columnName) => {
@@ -192,30 +176,6 @@ const PageInformation = function() {
 
   // 儲存設定
   const handleSubmit = () => {
-    const formColumns = [
-      'CountOfDesktop',
-      'BrideEmail',
-      'BrideName',
-      'BrideNickName',
-      'GroomEmail',
-      'GroomName',
-      'GroomNickName',
-      'ContactEmail',
-      'ContactName',
-      'ContactPhone',
-      'VenueRoom',
-      'WeddingAddress',
-      'WeddingDate',
-      'WeddingDateDesc',
-      'WeddingVenue',
-      'WhoAmI'
-    ];
-    const formData = new FormData();
-    formData.append('SToken', SToken);
-    formColumns.map(item => {
-      formData.append(item, main[item]);
-    });
-
     MySwal.fire({
       title: "更新中請稍候",
       html: <Loading />,
@@ -227,41 +187,36 @@ const PageInformation = function() {
     });
 
     setTimeout(() => {
-      // 婚禮資訊
-      api_save_base_data(formData)
-        .then(res => {
-          // console.log(res);
-          const result = res.data;
-          if(result.Msg && result.Msg === 'OK') {
-            MySwal.fire({
-              title: '更新完成',
-              icon: 'success'
-            }).then(result => {
-              if(result.isConfirmed) {
-                location.href = 'main.html';
-              }
-            });
-          }
-        })
-        .catch(err => {
+      // 儲存婚禮資訊
+      dispatch(setBaseData(SToken, main, (res, err) => {
+        if(res.Msg === 'OK') {
+          MySwal.fire({
+            title: '更新完成',
+            icon: 'success'
+          }).then(result => {
+            if(result.isConfirmed) {
+              location.href = 'main.html';
+            }
+          });
+        } else {
           MySwal.fire({
             title: '更新失敗',
             icon: 'error'
           });
-        });
+        }
+      }));
     }, 500);
   }
 
   return (
     <Fragment>
       <HeaderDiv goBack={true} />
-      {/*<ButtonPageClose />*/}
       
       <section className="form cid-rLQ7009Pot pt-0">
         <Container>
           <Row>
             <Col xs={{ span: 10, offset: 1 }} md={{ span: 5, offset: 4}} className="form-group">
-              {introImage && introImage[7] && introImage[7].Image && 
+              {introImage && introImage.length > 7 && 
               <img src={`http://backend.wedding-pass.com/ERPUpload/4878/${introImage[7].Image}`} className="img-fluid" />}
             </Col>
 

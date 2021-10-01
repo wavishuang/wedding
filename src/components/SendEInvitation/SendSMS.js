@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -21,13 +22,50 @@ import '../../scss/send.scss';
 
 const MySwal = withReactContent(Swal);
 
+// actions
+import { getClientList } from '../../actions/actionClientList';
+
 const SendSMS = (props) => {
-  const {SToken, introImage, dtList, dtColumns, WPColumnSetup} = props;
+  const { SToken } = props;
+
+  const dispatch = useDispatch();
+
+  const introImage = useSelector(state => state.introImages.images);
+  const dtList = useSelector(state => state.clientList.dtList);
+  const dtColumns = useSelector(state => state.clientList.dtColumns);
 
   const titleImg = (imgNum) => {
-    const bgImage = introImage && introImage.length > 0 && `url(http://backend.wedding-pass.com/ERPUpload/4878/${introImage[imgNum].Image})`;
+    const bgImage = introImage && introImage.length > imgNum && `url(http://backend.wedding-pass.com/ERPUpload/4878/${introImage[imgNum].Image})`;
     return (bgImage) ? {backgroundImage: bgImage, backgroundSize: 'cover'} : '';
   }
+
+  const [keyColumn1, setKeyColumnName1] = useState({ Name: '賓客關係', DBColumnName: null });
+  const [keyColumn2, setKeyColumnName2] = useState({ Name: '賓客姓名', DBColumnName: null });
+
+  const [columns, setColumns] = useState([]);
+  const [listCount, setListCount] = useState(0); // list count
+
+  useEffect(() => {
+    if(dtList.length > 0 && dtColumns.length > 0) {
+      let listCount = 0;
+      dtList.map(item => {
+        if(!!item.SMSSendDateTime) {
+          listCount++;
+        }
+      })
+
+      setListCount(listCount);
+
+      let newColumns = [...dtColumns];
+
+      newColumns.map(item => {
+        if(item.Name === keyColumn1.Name) setKeyColumnName1({...keyColumn1, DBColumnName: item.DBColumnName});
+        if(item.Name === keyColumn2.Name) setKeyColumnName2({...keyColumn2, DBColumnName: item.DBColumnName});
+      });
+
+      setColumns([...columns, ...newColumns]);
+    }
+  }, [dtList, dtColumns]);
 
   // 初始化
   useEffect(() => {
@@ -44,15 +82,8 @@ const SendSMS = (props) => {
     UpdateProgress();
     updateInterval = setInterval(UpdateProgress, 3000);
 
-    initSend(dtList, dtColumns);
+    MySwal.close();
   }, []);
-
-  // 處理過的資料
-  const [keyColumn1, setKeyColumnName1] = useState({ Name: '賓客關係', DBColumnName: null });
-  const [keyColumn2, setKeyColumnName2] = useState({ Name: '賓客姓名', DBColumnName: null });
-
-  const [columns, setColumns] = useState([]);
-  const [listCount, setListCount] = useState(0); // list count
 
   // Update Progress
   const [isBatchProcess, setIsBatchProcess] = useState(true);
@@ -73,27 +104,6 @@ const SendSMS = (props) => {
         clearInterval(updateInterval);
       }
     }
-  }
-
-  const initSend = (dtList, dtColumns) => {
-    let listCount = 0;
-    dtList.map(item => {
-      if(!!item.SMSSendDateTime) {
-        listCount++;
-      }
-    })
-
-    setListCount(listCount);
-
-    let newColumns = [...dtColumns];
-
-    newColumns.map(item => {
-      if(item.Name === keyColumn1.Name) setKeyColumnName1({...keyColumn1, DBColumnName: item.DBColumnName});
-      if(item.Name === keyColumn2.Name) setKeyColumnName2({...keyColumn2, DBColumnName: item.DBColumnName});
-    });
-
-    setColumns([...columns, ...newColumns]);
-    MySwal.close();
   }
 
   // Event
@@ -122,21 +132,14 @@ const SendSMS = (props) => {
           formData = new FormData();
           formData.append('SToken', SToken);
 
-          const queryClientList = await props.queryClientList(formData);
-          if(queryClientList.data && queryClientList.data.Msg === 'OK') {
-            let listCount = 0;
-            dtList.map(item => {
-              if(!!item.SMSSendDateTime) {
-                listCount++;
-              }
-            })
-
-            setListCount(listCount);
-
-            MySwal.fire("發送成功", "", "success");
-          } else {
-            MySwal.fire("發送失敗", "", "error");
-          }
+          // 取得 Client List, Client columns
+          dispatch(getClientList(formData, (res, err) => {
+            if(err) {
+              MySwal.fire('發送失敗', '請洽客服人員', 'error');
+            } else {
+              MySwal.fire("發送成功", "", "success");
+            }
+          }));
         }
       }
 
@@ -350,4 +353,3 @@ const SendSMS = (props) => {
 }
 
 export default SendSMS;
-

@@ -24,8 +24,8 @@ const SetUpEDM = (props) => {
         <Row className="justify-content-center p-0">
           <Col xs={12}>
             {nowPage === 'EDM'
-            ? <EDM orderInfo={orderInfo} MobilePhone={MobilePhone} SToken={SToken} goNextPage={goNextPage} />
-            : <SendDemo orderInfo={orderInfo} MobilePhone={MobilePhone} SToken={SToken} goNextPage={goNextPage} />
+            ? <EDM SToken={SToken} goNextPage={goNextPage} />
+            : <SendDemo SToken={SToken} MobilePhone={MobilePhone} goNextPage={goNextPage} />
             }
           </Col>
         </Row>

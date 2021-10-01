@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -13,13 +14,20 @@ import '../../scss/congratulation.scss';
 
 const MySwal = withReactContent(Swal);
 
-const Congratulation = (props) => {
-  const {SToken, introImage, dtList, dtColumns, WPColumnSetup} = props;
+const Congratulation = () => {
+  const introImage = useSelector(state => state.introImages.images);
+  const dtList = useSelector(state => state.clientList.dtList);
+  const dtColumns = useSelector(state => state.clientList.dtColumns);
 
   const titleImg = (imgNum) => {
-    const bgImage = introImage && introImage.length > 0 && `url(http://backend.wedding-pass.com/ERPUpload/4878/${introImage[imgNum].Image})`;
+    const bgImage = introImage && introImage.length > imgNum && `url(http://backend.wedding-pass.com/ERPUpload/4878/${introImage[imgNum].Image})`;
     return (bgImage) ? {backgroundImage: bgImage, backgroundSize: 'cover'} : '';
   }
+
+  const [keyColumn1, setKeyColumnName1] = useState({ Name: '賓客姓名', DBColumnName: null });
+  const [keyColumn2, setKeyColumnName2] = useState({ Name: '賓客關係', DBColumnName: null });
+  const [keyColumn3, setKeyColumnName3] = useState({ Name: '前台報名_婚禮賀詞', DBColumnName: null });
+  const [congrationList, setCongrationList] = useState([]);
 
   // 初始化
   useEffect(() => {
@@ -33,34 +41,27 @@ const Congratulation = (props) => {
       showCancelButton: false,
     });
 
-    initCongratulation(dtList, dtColumns);
-  }, []);
+    if(dtList && dtList.length > 0 && dtColumns && dtColumns.length > 0) {
+      let congrationList = [];
 
-  // 處理過的資料
-  const [keyColumn1, setKeyColumnName1] = useState({ Name: '賓客姓名', DBColumnName: null });
-  const [keyColumn2, setKeyColumnName2] = useState({ Name: '賓客關係', DBColumnName: null });
-  const [keyColumn3, setKeyColumnName3] = useState({ Name: '前台報名_婚禮賀詞', DBColumnName: null });
-  const [congrationList, setCongrationList] = useState([]);
+      dtColumns.map(item => {
+        if(item.Name === keyColumn1.Name) setKeyColumnName1({...keyColumn1, DBColumnName: item.DBColumnName});
+        if(item.Name === keyColumn2.Name) setKeyColumnName2({...keyColumn2, DBColumnName: item.DBColumnName});
+        if(item.Name === keyColumn3.Name){
+          setKeyColumnName3({...keyColumn3, DBColumnName: item.DBColumnName});
+          dtList.map(subItem => {
+            if(!!subItem[item.DBColumnName]){
+              congrationList.push(subItem);
+            }
+          });
 
-  const initCongratulation = (dtList, dtColumns) => {
-    let congrationList = [];
+          setCongrationList([...congrationList]);
+        }
+      });
+    }
 
-    dtColumns.map(item => {
-      if(item.Name === keyColumn1.Name) setKeyColumnName1({...keyColumn1, DBColumnName: item.DBColumnName});
-      if(item.Name === keyColumn2.Name) setKeyColumnName2({...keyColumn2, DBColumnName: item.DBColumnName});
-      if(item.Name === keyColumn3.Name){
-        setKeyColumnName3({...keyColumn3, DBColumnName: item.DBColumnName});
-        dtList.map(subItem => {
-          if(!!subItem[item.DBColumnName]){
-            congrationList.push(subItem);
-          }
-        });
-
-        setCongrationList([...congrationList]);
-        MySwal.close();
-      }
-    });
-  }
+    MySwal.close();
+  }, [dtList, dtColumns]);
 
   return (
     <section className="features1 cid-rX4jzrRcmX bg-color-pink">

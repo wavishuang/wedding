@@ -36,6 +36,7 @@ const systemInstance = axios.create({
   }
 });
 
+/** 驗證 api */
 // 取得簡訊驗證碼
 export const api_login = formData => weddingInstance.post('/Login', formData);
 
@@ -45,16 +46,26 @@ export const api_check_login = formData => weddingInstance.post('/CheckLogin', f
 // 檢查 Token 是否失效
 export const api_check_token = formData => systemInstance.post('/CheckToken', formData);
 
-
-
-// 取得 婚禮籌備即時資訊
-export const api_query_client_list = formData => weddingInstance.post('/QueryClientList', formData);
+/** 共用 */
+// 取得圖片
+export const api_query_intro_image = formData => weddingInstance.post('/QueryIntroImage', formData);
 
 // 取得 Client欄位設置
 export const api_query_client_column_setup = formData => weddingInstance.post('/QueryClientColumnSetup', formData);
 
-// 取得
+// 取得 Order Info
 export const api_query_order_info = formData => weddingInstance.post('/QueryOrderInfo', formData);
+
+
+
+
+// 取得婚禮基本資料 Query Base Data
+export const api_query_base_data = formData => weddingInstance.post('/QueryBaseData', formData);
+
+// 取得 婚禮籌備即時資訊
+export const api_query_client_list = formData => weddingInstance.post('/QueryClientList', formData);
+
+
 
 // 取得 Dashboard Info Check in 資訊
 export const api_query_dashboard_info_checkin = formData => weddingInstance.post('/QueryDashboardInfo_Checkin', formData);
@@ -62,11 +73,7 @@ export const api_query_dashboard_info_checkin = formData => weddingInstance.post
 // 取得 Dashboard Info Multi Check in 資訊
 export const api_query_dashboard_info_multi_checkin = formData => weddingInstance.post('/QueryDashboardInfo_MultiCheckIn', formData);
 
-// 取得圖片
-export const api_query_intro_image = formData => weddingInstance.post('/QueryIntroImage', formData);
 
-// 取得婚禮基本資料 Query Base Data
-export const api_query_base_data = formData => weddingInstance.post('/QueryBaseData', formData);
 
 // 儲存婚禮基本資料 1-4
 export const api_save_base_data = formData => weddingInstance.post('/SaveBaseData', formData);

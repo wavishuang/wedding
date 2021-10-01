@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -22,10 +23,12 @@ import '../../scss/webregistrationsetup.scss';
 const MySwal = withReactContent(Swal);
 
 const WebRegistrationSetup = (props) => {
-  const { SToken, introImage } = props;
+  const { SToken } = props;
+
+  const introImage = useSelector(state => state.introImages.images);
 
   const titleImg = (imgNum) => {
-    const bgImage = introImage && introImage.length > 0 && `url(http://backend.wedding-pass.com/ERPUpload/4878/${introImage[imgNum].Image})`;
+    const bgImage = introImage && introImage.length > imgNum && `url(http://backend.wedding-pass.com/ERPUpload/4878/${introImage[imgNum].Image})`;
     return (bgImage) ? {backgroundImage: bgImage, backgroundSize: 'cover'} : '';
   }
 
@@ -278,7 +281,7 @@ const WebRegistrationSetup = (props) => {
         <div className="fixed-title-img" style={titleImg(15)}></div>
         <Container className="bg-transparent">
           <Row className="bg-transparent">
-            <Col xs={12} md={10} className="mx-auto mbr-form page-form">
+            <Col xs={12} md={10} className="bg-transparent mx-auto mbr-form page-form">
               <form className="mbr-form pb-4" id="form" method="post">
                 <div className="dragArea form-row">
                   <Col xs={12}>

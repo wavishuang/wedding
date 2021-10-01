@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { useSelector } from 'react-redux';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -21,11 +22,24 @@ import '../../scss/edm.scss';
 const MySwal = withReactContent(Swal);
 
 const EDM = (props) => {
-  const {SToken, MobilePhone, orderInfo} = props;
+  const { SToken } = props;
+
+  const orderInfo = useSelector(state => state.orderInfo);
+
+  const [isUpload, setIsUpload] = useState(0);
+  const [ident, setIdent] = useState('');
+
+  useEffect(() => {
+    if(orderInfo) {
+      const isUpload = (orderInfo.UserUpload_Photo !== null) ? 1 : 0;
+      setIsUpload(isUpload);
+      setIdent(orderInfo.Ident);
+    }
+  }, [orderInfo]);
 
   const [inviteCard, setInviteCard] = useState([]);
 
-  const initData = async () => {
+  useEffect(() => {
     MySwal.fire({
       title: "",
       html: <Loading />,
@@ -36,41 +50,30 @@ const EDM = (props) => {
       showCancelButton: false,
     });
 
-    const formData = new FormData();
-    formData.append('SToken', SToken);
+    const initEDM = async () => {
+      const formData = new FormData();
+      formData.append('SToken', SToken);
 
-    try {
-      const inviteCardSetup = await api_query_invite_card_setup(formData);
+      try {
+        const inviteCardSetup = await api_query_invite_card_setup(formData);
 
-      if(inviteCardSetup.data && inviteCardSetup.data.Msg === 'OK') {
-        const resInviteCardSetup = inviteCardSetup.data.InviteCard;
-
-        setInviteCard([...resInviteCardSetup]);
-        initEDM();
-      } else {
+        if(inviteCardSetup.data && inviteCardSetup.data.Msg === 'OK') {
+          const resInviteCardSetup = inviteCardSetup.data.InviteCard;
+          setInviteCard([...resInviteCardSetup]);
+          MySwal.close();
+        } else {
+          MySwal.fire('Oops...', '系統發生錯誤', 'error');
+        }
+      } catch(err) {
+        console.log(err);
         MySwal.fire('Oops...', '系統發生錯誤', 'error');
-      }
-    } catch(err) {
-      console.log(err);
-      MySwal.fire('Oops...', '系統發生錯誤', 'error');
-    };
-  }
-
-  useEffect(() => {
-    initData();
+      };
+    }
+    
+    initEDM();
   }, []);
   
   // 處理過的資料
-  const [isUpload, setIsUpload] = useState(0);
-  const [ident, setIdent] = useState('');
-
-  const initEDM = () => {
-    const isUpload = (orderInfo.UserUpload_Photo !== null) ? 1 : 0;
-    setIsUpload(isUpload);
-    setIdent(orderInfo.Ident)
-    MySwal.close();
-  }
-
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex, e) => {
@@ -116,7 +119,9 @@ const EDM = (props) => {
 
         if(res.data && res.data.Msg === 'OK') {
           props.goNextPage('SendDemo');
+          MySwal.close();
         } else {
+          console.log('err');
           MySwal.fire("Error", data.Msg, "error");
         }
       }

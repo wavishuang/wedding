@@ -1,16 +1,17 @@
-import ApiCaller from '../utils/ApiCaller';
+import { api_check_token } from '../utils/api';
 
-export default class actionAuth {
-  // 檢查 token 是否過期
-  static check_token = (token, callback) => {
-    if(token) {
-      const formData = new FormData();
-      formData.append('SToken', token);
-      ApiCaller.connector().check_token(formData, (res) => {
-        callback(res);
-      });
-    } else {
-      callback({Msg: 'token 過期'});
-    }
+export const check_token = (formData, callback) => {
+  return (dispatch) => {
+    api_check_token(formData).then(res => {
+      //console.log("res:", res, res.data);
+      if(!res.data.Msg || res.data.Msg !== 'OK') {
+        callback(null, err);
+      } else {
+        callback('OK', null);
+      }
+      callback(res, null);
+    }).catch(err => {
+      callback(null, err);
+    });;
   }
-};
+}

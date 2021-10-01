@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 
 import Swal from 'sweetalert2'
@@ -12,13 +13,53 @@ import Loading from '../../components/Loading';
 
 const MySwal = withReactContent(Swal);
 
+import { getBaseData, setBaseData } from '../../actions/actionBaseData';
+import { setCountOfDesktop } from '../../actions/actionOrderInfo';
+
 const WeddingBaseSetting = (props) => {
-  const {introImage, baseData} = props;
+  const { SToken } = props;
+
+  const introImage = useSelector(state => state.introImages.images);
 
   const titleImg = (imgNum) => {
-    const bgImage = introImage && introImage.length > 0 && `url(http://backend.wedding-pass.com/ERPUpload/4878/${introImage[imgNum].Image})`;
+    const bgImage = introImage && introImage.length > imgNum && `url(http://backend.wedding-pass.com/ERPUpload/4878/${introImage[imgNum].Image})`;
     return (bgImage) ? {backgroundImage: bgImage, backgroundSize: 'cover'} : '';
   }
+
+  const dispatch = useDispatch();
+
+  // 確認是否登入 && 檢查token是否有效
+  useEffect(() => {
+    MySwal.fire({
+      title: "",
+      html: <Loading />,
+      customClass: {
+        popup: 'bg-transparent',
+      },
+      showConfirmButton: false,
+      showCancelButton: false,
+    });
+
+    // 檢查 token 是否有效
+    const formData = new FormData();
+    formData.append('SToken', SToken);
+
+    // 取得婚禮資訊
+    dispatch(getBaseData(formData, (res, err) => {
+      if(res.Msg === 'OK') {
+        let result = res.data;
+        let weddingDate = new Date(result.WeddingDate).getTime();
+        let momentWeddingDate = moment(weddingDate).format('YYYY-MM-DD');
+        result.WeddingDate = momentWeddingDate;
+        result.showCountOfDesktop = (result.CountOfDesktop).toString();
+
+        setMain({...main, ...result});
+        MySwal.close();
+      } else {
+        MySwal.fire('Oops...', '系統發生錯誤', 'error');
+      }
+    }));
+  }, []);
   
   const [main, setMain] = useState({
     CountOfDesktop: 0,
@@ -39,23 +80,6 @@ const WeddingBaseSetting = (props) => {
     WhoAmI: 0,
     showCountOfDesktop: ""
   });
-
-  // 初始化
-  const initData = async () => {
-    // main data => baseData
-    const resMain = Object.assign({}, baseData);
-
-    const weddingDate = new Date(baseData.WeddingDate).getTime();
-    const momentWeddingDate = moment(weddingDate).format('YYYY-MM-DD');
-    resMain.WeddingDate = momentWeddingDate;
-    resMain.showCountOfDesktop = (baseData.CountOfDesktop).toString();
-
-    setMain({...main, ...resMain});
-  }
-  
-  useEffect(() => {
-    initData();
-  }, []);
 
   // 修改欄位
   const handleChangeForm = (e, columnName) => {
@@ -127,30 +151,6 @@ const WeddingBaseSetting = (props) => {
 
   // 儲存設定
   const handleSubmit = () => {
-    const formColumns = [
-      'CountOfDesktop',
-      'BrideEmail',
-      'BrideName',
-      'BrideNickName',
-      'GroomEmail',
-      'GroomName',
-      'GroomNickName',
-      'ContactEmail',
-      'ContactName',
-      'ContactPhone',
-      'VenueRoom',
-      'WeddingAddress',
-      'WeddingDate',
-      'WeddingDateDesc',
-      'WeddingVenue',
-      'WhoAmI'
-    ];
-    const formData = new FormData();
-    formData.append('SToken', props.SToken);
-    formColumns.map(item => {
-      formData.append(item, main[item]);
-    });
-
     MySwal.fire({
       title: "更新中請稍候",
       html: <Loading />,
@@ -162,8 +162,27 @@ const WeddingBaseSetting = (props) => {
     });
 
     setTimeout(() => {
-      // 婚禮資訊
-      props.saveWeddingInfoBaseData(formData);
+      // 儲存婚禮資訊
+      dispatch(setBaseData(SToken, main, (res, err) => {
+        console.log(res);
+        if(res.Msg === 'OK') {
+          MySwal.fire({
+            title: '更新完成',
+            icon: 'success'
+          }).then(() => {
+            console.log("更改單桌人數");
+            // 更改單桌人數
+            dispatch(setCountOfDesktop(main.CountOfDesktop), null);
+          });
+        } else {
+          MySwal.fire({
+            title: '更新失敗',
+            icon: 'error'
+          });
+        }
+      }));
+
+      
     }, 500);
   }
 

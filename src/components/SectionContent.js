@@ -6,12 +6,11 @@ import Col from 'react-bootstrap/Col';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faQrcode, faChartPie, faChartBar } from "@fortawesome/free-solid-svg-icons";
 
-
 import IconCard from './IconCard';
 import SectionTitle from './SectionTitle';
 
 const SectionContent = (props) => {
-  const {title, icons, introImage} = props;
+  const {title, icons} = props;
 
   const returnFaIcons = (faId) => {
     switch(faId) {
