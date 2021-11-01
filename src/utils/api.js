@@ -36,6 +36,15 @@ const systemInstance = axios.create({
   }
 });
 
+// Step 3: 新人名字
+export const api_update_name = formData => weddingInstance.post('/UpdateName', formData);
+
+// Step 4: 婚禮日期
+export const api_update_date = formData => weddingInstance.post('/UpdateDate', formData);
+
+// Step 5: 婚禮地點
+export const api_update_location = formData => weddingInstance.post('/UpdateLocation', formData);
+
 /** 驗證 api */
 // 取得簡訊驗證碼
 export const api_login = formData => weddingInstance.post('/Login', formData);

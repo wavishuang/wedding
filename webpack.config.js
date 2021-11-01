@@ -41,6 +41,9 @@ module.exports = {
     language: './js/language.js',
     start: './js/start.js',
     main: './js/main.js',
+    name: './js/name.js', // 新人姓名
+    date: './js/date.js', // 預計婚禮日期
+    location: './js/location.js',  // 預計婚禮地點
     edm: './js/edm.js', // 電子邀請函
     senddemo: './js/senddemo', // Send Demo
     information: './js/information.js',  // 婚禮基本資料編緝
@@ -174,6 +177,33 @@ module.exports = {
       //description: '',
       //Keywords: '',
       chunks: ['start']
+    }),
+    new HtmlWebpackPlugin({
+      title: 'WEDDING PASS',
+      filename: 'name.html',
+      template: 'html/main.html',
+      viewport: 'width=device-width, initial-scale=1.0',
+      //description: '',
+      //Keywords: '',
+      chunks: ['name']
+    }),
+    new HtmlWebpackPlugin({
+      title: 'WEDDING PASS',
+      filename: 'date.html',
+      template: 'html/main.html',
+      viewport: 'width=device-width, initial-scale=1.0',
+      //description: '',
+      //Keywords: '',
+      chunks: ['date']
+    }),
+    new HtmlWebpackPlugin({
+      title: 'WEDDING PASS',
+      filename: 'location.html',
+      template: 'html/main.html',
+      viewport: 'width=device-width, initial-scale=1.0',
+      //description: '',
+      //Keywords: '',
+      chunks: ['location']
     }),
     new HtmlWebpackPlugin({
       title: 'WEDDING PASS',

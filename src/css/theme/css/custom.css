@@ -7,9 +7,12 @@
 .bg-pic-one {
     background-image: url("../../../assets/images/mbr-5-1920x1280.jpg");
 }
+/** 2021/10/23 */
 .bg-pic-start {
-    background-image: url("../../../assets/images/mbr-9-1920x1280.jpg");
+    position: relative;
+    background-image: url("../../../assets/images/bg-start.png");
 }
+/** ./2021/10/23 */
 .bg-pic-date {
     background-image: url(../../../assets/images/mbr-2-1920x1277.jpg);
 }
@@ -20,7 +23,7 @@
     background-image: url(../../../assets/images/mbr-1920x710.jpg);
 }
 .bg-pic-edm {
-    background-image: url(../../../assets/images/mbr-1920x1249.jpg);
+    background-image: url("../../../assets/images/bg-start.png");
 }
 .custom-breadcrumb {
     margin-bottom: 0px;

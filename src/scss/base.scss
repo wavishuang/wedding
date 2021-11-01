@@ -16,6 +16,32 @@
 @import '../css/mobirise/css/mbr-additional.css';
 @import '../css/loader.css';
 
+.bg-linear {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.47;
+  //z-index: 1;
+
+  &.bg-yellow {
+    background: transparent linear-gradient(180deg, $main_yellow 0%, #E5DFC1 100%) 0% 0% no-repeat padding-box;
+  }
+
+  &.bg-purple {
+    background: transparent linear-gradient(180deg, $main_purple 0%, #EBABDA 100%) 0% 0% no-repeat padding-box;
+  }
+
+  &.bg-blue {
+    background: transparent linear-gradient(180deg, $main_blue 0%, #98E7EF 100%) 0% 0% no-repeat padding-box;
+  }
+
+  &.bg-red {
+    background: transparent linear-gradient(180deg, $main_red 0%, #F5E0DD 100%) 0% 0% no-repeat padding-box;
+  }
+}
+
 .bg-img-01 {
   background: rgba(0,0,0,0.5) url(../images/mbr-1920x1256.jpg);
   background-size: cover;

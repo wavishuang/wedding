@@ -1752,7 +1752,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 99111:
+/***/ 66185:
 /***/ (function(__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4017,6 +4017,337 @@ var sweetalert2_all_default = /*#__PURE__*/__webpack_require__.n(sweetalert2_all
 // EXTERNAL MODULE: ../node_modules/sweetalert2-react-content/dist/sweetalert2-react-content.umd.js
 var sweetalert2_react_content_umd = __webpack_require__(9161);
 var sweetalert2_react_content_umd_default = /*#__PURE__*/__webpack_require__.n(sweetalert2_react_content_umd);
+;// CONCATENATED MODULE: ./components/Loading.js
+
+
+var Loading = function Loading() {
+  return /*#__PURE__*/react.createElement("div", {
+    className: "loader"
+  }, /*#__PURE__*/react.createElement("div", {
+    className: "loader-inner ball-spin-fade-loader"
+  }, /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null)));
+};
+
+/* harmony default export */ var components_Loading = (Loading);
+// EXTERNAL MODULE: ./images/modal/modal_upload-red.png
+var modal_upload_red = __webpack_require__(29702);
+// EXTERNAL MODULE: ./images/modal/modal_upload-purple.png
+var modal_upload_purple = __webpack_require__(68979);
+// EXTERNAL MODULE: ./images/modal/modal_upload-yellow.png
+var modal_upload_yellow = __webpack_require__(85510);
+// EXTERNAL MODULE: ./images/modal/modal_upload-blue.png
+var modal_upload_blue = __webpack_require__(96252);
+;// CONCATENATED MODULE: ./components/UploadProcessing.js
+
+
+
+
+
+
+var UploadProcessing = function UploadProcessing(props) {
+  console.log(props);
+  var theme = props.theme ? props.theme : '';
+  var img = '';
+
+  switch (theme) {
+    case 'red':
+      img = modal_upload_red;
+      break;
+
+    case 'yellow':
+      img = modal_upload_yellow;
+      break;
+
+    case 'purple':
+      img = modal_upload_purple;
+      break;
+
+    case 'blue':
+      img = modal_upload_blue;
+      break;
+  }
+
+  return /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement("img", {
+    src: img,
+    alt: "\u4E0A\u50B3\u4E2D\u8ACB\u7A0D\u5019",
+    title: "\u4E0A\u50B3\u4E2D\u8ACB\u7A0D\u5019"
+  }));
+};
+
+/* harmony default export */ var components_UploadProcessing = (UploadProcessing);
+// EXTERNAL MODULE: ./images/modal/modal_loading-red.png
+var modal_loading_red = __webpack_require__(68152);
+// EXTERNAL MODULE: ./images/modal/modal_loading-purple.png
+var modal_loading_purple = __webpack_require__(58181);
+// EXTERNAL MODULE: ./images/modal/modal_loading-yellow.png
+var modal_loading_yellow = __webpack_require__(8983);
+// EXTERNAL MODULE: ./images/modal/modal_loading-blue.png
+var modal_loading_blue = __webpack_require__(86720);
+;// CONCATENATED MODULE: ./components/LoadProcessing.js
+
+
+
+
+
+
+var LoadProcessing = function LoadProcessing(props) {
+  console.log(props);
+  var theme = props.theme ? props.theme : '';
+  var img = '';
+
+  switch (theme) {
+    case 'red':
+      img = modal_loading_red;
+      break;
+
+    case 'yellow':
+      img = modal_loading_yellow;
+      break;
+
+    case 'purple':
+      img = modal_loading_purple;
+      break;
+
+    case 'blue':
+      img = modal_loading_blue;
+      break;
+  }
+
+  return /*#__PURE__*/react.createElement("div", null, /*#__PURE__*/react.createElement("img", {
+    src: img,
+    alt: "\u8655\u7406\u4E2D\u8ACB\u7A0D\u5019",
+    title: "\u8655\u7406\u4E2D\u8ACB\u7A0D\u5019"
+  }));
+};
+
+/* harmony default export */ var components_LoadProcessing = (LoadProcessing);
+;// CONCATENATED MODULE: ./utils/tools.js
+Date.prototype.Format = function (fmt) {
+  var o = {
+    "M+": this.getMonth() + 1,
+    //月份 
+    "d+": this.getDate(),
+    //日 
+    "h+": this.getHours(),
+    //小时 
+    "m+": this.getMinutes(),
+    //分 
+    "s+": this.getSeconds(),
+    //秒 
+    "q+": Math.floor((this.getMonth() + 3) / 3),
+    //季度 
+    "S": this.getMilliseconds() //毫秒 
+
+  };
+  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+
+  for (var k in o) {
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+  }
+
+  return fmt;
+};
+
+var getNow = function getNow() {
+  return new Date(Date.now()).Format("yyyy-MM-dd hh:mm:ss");
+};
+var isNumber = function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+};
+var s4 = function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+};
+var _uuid = function _uuid() {
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+};
+// EXTERNAL MODULE: ../node_modules/axios/index.js
+var axios = __webpack_require__(14206);
+var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
+// EXTERNAL MODULE: ../node_modules/core-js/index.js
+var core_js = __webpack_require__(32020);
+// EXTERNAL MODULE: ../node_modules/regenerator-runtime/runtime.js
+var runtime = __webpack_require__(86248);
+;// CONCATENATED MODULE: ./utils/api.js
+
+
+
+/*
+// 配置公共的請求地址
+axios.defaults.baseURL = 'http://backend.wedding-pass.com';
+
+// 配置超過時間
+axios.defaults.timeout = 2500;
+
+// 配置公共的 headers
+axios.defaults.headers['mytoken'] = AUTH_TOKEN;
+axios.defaults.headers['Authorization'] = AUTH_TOKEN;
+
+// 配置公共的 post 的 Content-Type
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
+*/
+
+var weddingUrl = 'http://backend.wedding-pass.com/WebService_SF_WEDDING_PASS.asmx';
+var systemUrl = 'http://backend.wedding-pass.com/WebService_System_Ryan.asmx';
+var weddingInstance = axios_default().create({
+  baseURL: weddingUrl,
+  timeout: 8000,
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+  }
+});
+var systemInstance = axios_default().create({
+  baseURL: systemUrl,
+  timeout: 2000,
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+  }
+}); // Step 3: 新人名字
+
+var api_update_name = function api_update_name(formData) {
+  return weddingInstance.post('/UpdateName', formData);
+}; // Step 4: 婚禮日期
+
+var api_update_date = function api_update_date(formData) {
+  return weddingInstance.post('/UpdateDate', formData);
+}; // Step 5: 婚禮地點
+
+var api_update_location = function api_update_location(formData) {
+  return weddingInstance.post('/UpdateLocation', formData);
+};
+/** 驗證 api */
+// 取得簡訊驗證碼
+
+var api_login = function api_login(formData) {
+  return weddingInstance.post('/Login', formData);
+}; // 送出簡訊驗證碼
+
+var api_check_login = function api_check_login(formData) {
+  return weddingInstance.post('/CheckLogin', formData);
+}; // 檢查 Token 是否失效
+
+var api_check_token = function api_check_token(formData) {
+  return systemInstance.post('/CheckToken', formData);
+};
+/** 共用 */
+// 取得圖片
+
+var api_query_intro_image = function api_query_intro_image(formData) {
+  return weddingInstance.post('/QueryIntroImage', formData);
+}; // 取得 Client欄位設置
+
+var api_query_client_column_setup = function api_query_client_column_setup(formData) {
+  return weddingInstance.post('/QueryClientColumnSetup', formData);
+}; // 取得 Order Info
+
+var api_query_order_info = function api_query_order_info(formData) {
+  return weddingInstance.post('/QueryOrderInfo', formData);
+}; // 取得婚禮基本資料 Query Base Data
+
+var api_query_base_data = function api_query_base_data(formData) {
+  return weddingInstance.post('/QueryBaseData', formData);
+}; // 取得 婚禮籌備即時資訊
+
+var api_query_client_list = function api_query_client_list(formData) {
+  return weddingInstance.post('/QueryClientList', formData);
+}; // 取得 Dashboard Info Check in 資訊
+
+var api_query_dashboard_info_checkin = function api_query_dashboard_info_checkin(formData) {
+  return weddingInstance.post('/QueryDashboardInfo_Checkin', formData);
+}; // 取得 Dashboard Info Multi Check in 資訊
+
+var api_query_dashboard_info_multi_checkin = function api_query_dashboard_info_multi_checkin(formData) {
+  return weddingInstance.post('/QueryDashboardInfo_MultiCheckIn', formData);
+}; // 儲存婚禮基本資料 1-4
+
+var api_save_base_data = function api_save_base_data(formData) {
+  return weddingInstance.post('/SaveBaseData', formData);
+}; // Query PaymentInfo
+
+var api_query_payment_info = function api_query_payment_info(formData) {
+  return weddingInstance.post('/QueryPaymentInfo', formData);
+}; // Query Post Man Progress
+
+var api_query_postman_progress = function api_query_postman_progress(formData) {
+  return weddingInstance.post('/QueryPostManProgress', formData);
+}; // Send Email Invite Card 發送電子邀請函(單一)
+
+var api_send_email_invite_card = function api_send_email_invite_card(formData) {
+  return weddingInstance.post('/SendEmailInviteCard', formData);
+}; // SendMMSInviteCard 發送 MMS 圖文簡訊(單一)
+
+var api_send_mms_invite_card = function api_send_mms_invite_card(formData) {
+  return weddingInstance.post('/SendMMSInviteCard', formData);
+}; // SendSMSInviteCard 發送 ＳMS 文字簡訊(單一)
+
+var api_send_sms_invite_card = function api_send_sms_invite_card(formData) {
+  return weddingInstance.post('/SendSMSInviteCard', formData);
+}; // AddStickerRequest 賓客專屬QRCode索取貼紙 - 送出索取
+
+var api_add_sticker_request = function api_add_sticker_request(formData) {
+  return weddingInstance.post('/AddStickerRequest', formData);
+}; // SendAllEmailEDM 批次發送 Email 電子邀請函(全部)
+
+var api_send_all_email_edm = function api_send_all_email_edm(formData) {
+  return weddingInstance.post('/SendAllEmailEDM', formData);
+}; // QueryClientInviteCardImage 線上檢視
+
+var api_query_client_invite_card_image = function api_query_client_invite_card_image(formData) {
+  return weddingInstance.post('/QueryClientInviteCardImage', formData);
+}; // 婚宴報名模組 - 婚禮報名網站設定 QueryWebRegistrationSetup20101501
+
+var api_query_web_registration_setup_20101501 = function api_query_web_registration_setup_20101501(formData) {
+  return weddingInstance.post('/QueryWebRegistrationSetup20101501', formData);
+}; // 婚宴報名模組 - 儲存婚禮報名網站設定 SaveWebRegistrationSetup20101501
+
+var api_save_web_registration_setup_20101501 = function api_save_web_registration_setup_20101501(formData) {
+  return weddingInstance.post('/SaveWebRegistrationSetup20101501', formData);
+}; // 婚宴報名模組 - 婚禮報名網站設定 QueryWebRegistrationSetup20101501_PhotoList
+
+var api_query_web_registration_setup_20101501_photo_list = function api_query_web_registration_setup_20101501_photo_list(formData) {
+  return weddingInstance.post('/QueryWebRegistrationSetup20101501_PhotoList', formData);
+}; // 婚宴報名模組 - 婚禮報名網站設定 AddWebRegistrationSetup20101501_PhotoList
+
+var api_add_web_registration_setup_20101501_photo_list = function api_add_web_registration_setup_20101501_photo_list(formData) {
+  return weddingInstance.post('/AddWebRegistrationSetup20101501_PhotoList', formData);
+}; // 完整名單管理 - 修改 EventUpdateClient
+
+var api_event_update_client = function api_event_update_client(formData) {
+  return weddingInstance.post('/EventUpdateClient', formData);
+}; // 完整名單管理 - 新增 EventInsertClient
+
+var api_event_insert_client = function api_event_insert_client(formData) {
+  return weddingInstance.post('/EventInsertClient', formData);
+}; // 賓客資料分析 - 資料 QueryEventColumnGroupStatistics
+
+var api_query_event_column_group_statistics = function api_query_event_column_group_statistics(formData) {
+  return weddingInstance.post('/QueryEventColumnGroupStatistics', formData);
+}; // 賓客報到分析 - 資料 QueryCheckinStatistics
+
+var api_query_checkin_statistics = function api_query_checkin_statistics(formData) {
+  return weddingInstance.post('/QueryCheckinStatistics', formData);
+}; // EDM QueryInviteCardSetup
+
+var api_query_invite_card_setup = function api_query_invite_card_setup(formData) {
+  return weddingInstance.post('/QueryInviteCardSetup', formData);
+}; // UpdateActiveInviteCardSetup
+
+var api_update_active_invite_card_setup = function api_update_active_invite_card_setup(formData) {
+  return weddingInstance.post('/UpdateActiveInviteCardSetup', formData);
+}; // SendEMailDemoEDM
+
+var api_send_email_demo_edm = function api_send_email_demo_edm(formData) {
+  return weddingInstance.post('/SendEMailDemoEDM', formData);
+}; // SendMMSDemoEDM
+
+var api_send_mms_demo_edm = function api_send_mms_demo_edm(formData) {
+  return weddingInstance.post('/SendMMSDemoEDM', formData);
+};
+// EXTERNAL MODULE: ./scss/base.scss
+var base = __webpack_require__(72778);
+// EXTERNAL MODULE: ./scss/edm.scss
+var edm = __webpack_require__(26760);
+// EXTERNAL MODULE: ./images/logo_b-2x.png
+var logo_b_2x = __webpack_require__(83882);
 ;// CONCATENATED MODULE: ../node_modules/@fortawesome/fontawesome-svg-core/index.es.js
 /*!
  * Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com
@@ -12869,318 +13200,15 @@ var _iconsCache = {
 
 
 
-;// CONCATENATED MODULE: ./components/HeaderDiv.js
-function HeaderDiv_slicedToArray(arr, i) { return HeaderDiv_arrayWithHoles(arr) || HeaderDiv_iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || HeaderDiv_nonIterableRest(); }
-
-function HeaderDiv_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function HeaderDiv_iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function HeaderDiv_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-var HeaderDiv = function HeaderDiv(props) {
-  var goBack = props.goBack,
-      menuList = props.menuList;
-
-  var _useState = (0,react.useState)(false),
-      _useState2 = HeaderDiv_slicedToArray(_useState, 2),
-      showMenu = _useState2[0],
-      setShowMenu = _useState2[1];
-
-  var toggleMenu = function toggleMenu() {
-    if (showMenu) setShowMenu(false);else setShowMenu(true);
-  };
-
-  var handleGoBack = function handleGoBack() {
-    history.back(-1); // location.href = 'main.html';
-  };
-
-  return /*#__PURE__*/react.createElement("section", {
-    className: "mbr-first-section ".concat(!goBack && !menuList ? 'mb-0' : '')
-  }, /*#__PURE__*/react.createElement("div", {
-    className: "fixed-top ads-news text-center d-flex justify-content-space-between align-items-center"
-  }, goBack ? /*#__PURE__*/react.createElement("div", {
-    className: "nav-menu-item"
-  }, /*#__PURE__*/react.createElement(FontAwesomeIcon, {
-    icon: faChevronLeft,
-    className: "text-white",
-    onClick: handleGoBack
-  })) : /*#__PURE__*/react.createElement("div", {
-    className: "nav-menu-item"
-  }), /*#__PURE__*/react.createElement("a", {
-    className: "full-link"
-  }, "WEDDING PASS"), menuList ? /*#__PURE__*/react.createElement("div", {
-    className: "nav-menu-item"
-  }, /*#__PURE__*/react.createElement("span", {
-    className: "mobi-nav-right d-md-none",
-    onClick: function onClick() {
-      return toggleMenu();
-    }
-  }, /*#__PURE__*/react.createElement(FontAwesomeIcon, {
-    icon: faBars,
-    className: "text-white"
-  })), /*#__PURE__*/react.createElement("ul", {
-    className: showMenu ? 'nav-option-btns show' : 'nav-option-btns'
-  }, /*#__PURE__*/react.createElement("li", null, /*#__PURE__*/react.createElement("button", {
-    type: "button",
-    className: "btn btn-link",
-    onClick: function onClick() {
-      return props.handleLangModalShow();
-    }
-  }, "\u8A9E\u7CFB")), /*#__PURE__*/react.createElement("li", null, /*#__PURE__*/react.createElement("button", {
-    type: "button",
-    className: "btn btn-link",
-    onClick: function onClick() {
-      return props.handleLogout();
-    }
-  }, "\u767B\u51FA")))) : /*#__PURE__*/react.createElement("div", {
-    className: "nav-menu-item"
-  })));
-};
-
-/* harmony default export */ var components_HeaderDiv = (HeaderDiv);
-;// CONCATENATED MODULE: ./components/Loading.js
-
-
-var Loading = function Loading() {
-  return /*#__PURE__*/react.createElement("div", {
-    className: "loader"
-  }, /*#__PURE__*/react.createElement("div", {
-    className: "loader-inner ball-spin-fade-loader"
-  }, /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null), /*#__PURE__*/react.createElement("div", null)));
-};
-
-/* harmony default export */ var components_Loading = (Loading);
-;// CONCATENATED MODULE: ./utils/tools.js
-Date.prototype.Format = function (fmt) {
-  var o = {
-    "M+": this.getMonth() + 1,
-    //月份 
-    "d+": this.getDate(),
-    //日 
-    "h+": this.getHours(),
-    //小时 
-    "m+": this.getMinutes(),
-    //分 
-    "s+": this.getSeconds(),
-    //秒 
-    "q+": Math.floor((this.getMonth() + 3) / 3),
-    //季度 
-    "S": this.getMilliseconds() //毫秒 
-
-  };
-  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-
-  for (var k in o) {
-    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
-  }
-
-  return fmt;
-};
-
-var getNow = function getNow() {
-  return new Date(Date.now()).Format("yyyy-MM-dd hh:mm:ss");
-};
-var isNumber = function isNumber(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-};
-var s4 = function s4() {
-  return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-};
-var _uuid = function _uuid() {
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-};
-// EXTERNAL MODULE: ../node_modules/axios/index.js
-var axios = __webpack_require__(14206);
-var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
-// EXTERNAL MODULE: ../node_modules/core-js/index.js
-var core_js = __webpack_require__(32020);
-// EXTERNAL MODULE: ../node_modules/regenerator-runtime/runtime.js
-var runtime = __webpack_require__(86248);
-;// CONCATENATED MODULE: ./utils/api.js
-
-
-
-/*
-// 配置公共的請求地址
-axios.defaults.baseURL = 'http://backend.wedding-pass.com';
-
-// 配置超過時間
-axios.defaults.timeout = 2500;
-
-// 配置公共的 headers
-axios.defaults.headers['mytoken'] = AUTH_TOKEN;
-axios.defaults.headers['Authorization'] = AUTH_TOKEN;
-
-// 配置公共的 post 的 Content-Type
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
-*/
-
-var weddingUrl = 'http://backend.wedding-pass.com/WebService_SF_WEDDING_PASS.asmx';
-var systemUrl = 'http://backend.wedding-pass.com/WebService_System_Ryan.asmx';
-var weddingInstance = axios_default().create({
-  baseURL: weddingUrl,
-  timeout: 8000,
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-  }
-});
-var systemInstance = axios_default().create({
-  baseURL: systemUrl,
-  timeout: 2000,
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-  }
-});
-/** 驗證 api */
-// 取得簡訊驗證碼
-
-var api_login = function api_login(formData) {
-  return weddingInstance.post('/Login', formData);
-}; // 送出簡訊驗證碼
-
-var api_check_login = function api_check_login(formData) {
-  return weddingInstance.post('/CheckLogin', formData);
-}; // 檢查 Token 是否失效
-
-var api_check_token = function api_check_token(formData) {
-  return systemInstance.post('/CheckToken', formData);
-};
-/** 共用 */
-// 取得圖片
-
-var api_query_intro_image = function api_query_intro_image(formData) {
-  return weddingInstance.post('/QueryIntroImage', formData);
-}; // 取得 Client欄位設置
-
-var api_query_client_column_setup = function api_query_client_column_setup(formData) {
-  return weddingInstance.post('/QueryClientColumnSetup', formData);
-}; // 取得 Order Info
-
-var api_query_order_info = function api_query_order_info(formData) {
-  return weddingInstance.post('/QueryOrderInfo', formData);
-}; // 取得婚禮基本資料 Query Base Data
-
-var api_query_base_data = function api_query_base_data(formData) {
-  return weddingInstance.post('/QueryBaseData', formData);
-}; // 取得 婚禮籌備即時資訊
-
-var api_query_client_list = function api_query_client_list(formData) {
-  return weddingInstance.post('/QueryClientList', formData);
-}; // 取得 Dashboard Info Check in 資訊
-
-var api_query_dashboard_info_checkin = function api_query_dashboard_info_checkin(formData) {
-  return weddingInstance.post('/QueryDashboardInfo_Checkin', formData);
-}; // 取得 Dashboard Info Multi Check in 資訊
-
-var api_query_dashboard_info_multi_checkin = function api_query_dashboard_info_multi_checkin(formData) {
-  return weddingInstance.post('/QueryDashboardInfo_MultiCheckIn', formData);
-}; // 儲存婚禮基本資料 1-4
-
-var api_save_base_data = function api_save_base_data(formData) {
-  return weddingInstance.post('/SaveBaseData', formData);
-}; // Query PaymentInfo
-
-var api_query_payment_info = function api_query_payment_info(formData) {
-  return weddingInstance.post('/QueryPaymentInfo', formData);
-}; // Query Post Man Progress
-
-var api_query_postman_progress = function api_query_postman_progress(formData) {
-  return weddingInstance.post('/QueryPostManProgress', formData);
-}; // Send Email Invite Card 發送電子邀請函(單一)
-
-var api_send_email_invite_card = function api_send_email_invite_card(formData) {
-  return weddingInstance.post('/SendEmailInviteCard', formData);
-}; // SendMMSInviteCard 發送 MMS 圖文簡訊(單一)
-
-var api_send_mms_invite_card = function api_send_mms_invite_card(formData) {
-  return weddingInstance.post('/SendMMSInviteCard', formData);
-}; // SendSMSInviteCard 發送 ＳMS 文字簡訊(單一)
-
-var api_send_sms_invite_card = function api_send_sms_invite_card(formData) {
-  return weddingInstance.post('/SendSMSInviteCard', formData);
-}; // AddStickerRequest 賓客專屬QRCode索取貼紙 - 送出索取
-
-var api_add_sticker_request = function api_add_sticker_request(formData) {
-  return weddingInstance.post('/AddStickerRequest', formData);
-}; // SendAllEmailEDM 批次發送 Email 電子邀請函(全部)
-
-var api_send_all_email_edm = function api_send_all_email_edm(formData) {
-  return weddingInstance.post('/SendAllEmailEDM', formData);
-}; // QueryClientInviteCardImage 線上檢視
-
-var api_query_client_invite_card_image = function api_query_client_invite_card_image(formData) {
-  return weddingInstance.post('/QueryClientInviteCardImage', formData);
-}; // 婚宴報名模組 - 婚禮報名網站設定 QueryWebRegistrationSetup20101501
-
-var api_query_web_registration_setup_20101501 = function api_query_web_registration_setup_20101501(formData) {
-  return weddingInstance.post('/QueryWebRegistrationSetup20101501', formData);
-}; // 婚宴報名模組 - 儲存婚禮報名網站設定 SaveWebRegistrationSetup20101501
-
-var api_save_web_registration_setup_20101501 = function api_save_web_registration_setup_20101501(formData) {
-  return weddingInstance.post('/SaveWebRegistrationSetup20101501', formData);
-}; // 婚宴報名模組 - 婚禮報名網站設定 QueryWebRegistrationSetup20101501_PhotoList
-
-var api_query_web_registration_setup_20101501_photo_list = function api_query_web_registration_setup_20101501_photo_list(formData) {
-  return weddingInstance.post('/QueryWebRegistrationSetup20101501_PhotoList', formData);
-}; // 婚宴報名模組 - 婚禮報名網站設定 AddWebRegistrationSetup20101501_PhotoList
-
-var api_add_web_registration_setup_20101501_photo_list = function api_add_web_registration_setup_20101501_photo_list(formData) {
-  return weddingInstance.post('/AddWebRegistrationSetup20101501_PhotoList', formData);
-}; // 完整名單管理 - 修改 EventUpdateClient
-
-var api_event_update_client = function api_event_update_client(formData) {
-  return weddingInstance.post('/EventUpdateClient', formData);
-}; // 完整名單管理 - 新增 EventInsertClient
-
-var api_event_insert_client = function api_event_insert_client(formData) {
-  return weddingInstance.post('/EventInsertClient', formData);
-}; // 賓客資料分析 - 資料 QueryEventColumnGroupStatistics
-
-var api_query_event_column_group_statistics = function api_query_event_column_group_statistics(formData) {
-  return weddingInstance.post('/QueryEventColumnGroupStatistics', formData);
-}; // 賓客報到分析 - 資料 QueryCheckinStatistics
-
-var api_query_checkin_statistics = function api_query_checkin_statistics(formData) {
-  return weddingInstance.post('/QueryCheckinStatistics', formData);
-}; // EDM QueryInviteCardSetup
-
-var api_query_invite_card_setup = function api_query_invite_card_setup(formData) {
-  return weddingInstance.post('/QueryInviteCardSetup', formData);
-}; // UpdateActiveInviteCardSetup
-
-var api_update_active_invite_card_setup = function api_update_active_invite_card_setup(formData) {
-  return weddingInstance.post('/UpdateActiveInviteCardSetup', formData);
-}; // SendEMailDemoEDM
-
-var api_send_email_demo_edm = function api_send_email_demo_edm(formData) {
-  return weddingInstance.post('/SendEMailDemoEDM', formData);
-}; // SendMMSDemoEDM
-
-var api_send_mms_demo_edm = function api_send_mms_demo_edm(formData) {
-  return weddingInstance.post('/SendMMSDemoEDM', formData);
-};
-// EXTERNAL MODULE: ./scss/base.scss
-var base = __webpack_require__(72778);
-// EXTERNAL MODULE: ./scss/edm.scss
-var edm = __webpack_require__(26760);
 ;// CONCATENATED MODULE: ./pages/PageEdm.js
 /* provided dependency */ var $ = __webpack_require__(65638);
-function PageEdm_toConsumableArray(arr) { return PageEdm_arrayWithoutHoles(arr) || PageEdm_iterableToArray(arr) || PageEdm_unsupportedIterableToArray(arr) || PageEdm_nonIterableSpread(); }
+function PageEdm_toConsumableArray(arr) { return PageEdm_arrayWithoutHoles(arr) || PageEdm_iterableToArray(arr) || _unsupportedIterableToArray(arr) || PageEdm_nonIterableSpread(); }
 
 function PageEdm_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
 function PageEdm_iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
-function PageEdm_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return PageEdm_arrayLikeToArray(arr); }
+function PageEdm_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function PageEdm_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
@@ -13192,17 +13220,21 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function PageEdm_slicedToArray(arr, i) { return PageEdm_arrayWithHoles(arr) || PageEdm_iterableToArrayLimit(arr, i) || PageEdm_unsupportedIterableToArray(arr, i) || PageEdm_nonIterableRest(); }
+function PageEdm_slicedToArray(arr, i) { return PageEdm_arrayWithHoles(arr) || PageEdm_iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || PageEdm_nonIterableRest(); }
 
 function PageEdm_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function PageEdm_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return PageEdm_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return PageEdm_arrayLikeToArray(o, minLen); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function PageEdm_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function PageEdm_iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function PageEdm_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
 
 
 
@@ -13222,7 +13254,7 @@ var MySwal = sweetalert2_react_content_umd_default()((sweetalert2_all_default())
 var PageEdm = function PageEdm() {
   var LoginInfo = sessionStorage && sessionStorage.data ? JSON.parse(sessionStorage.data) : null;
   var SToken = LoginInfo ? LoginInfo.Token : null;
-  if (!LoginInfo || !SToken) location.href = 'start.html'; // 確認是否登入 && 檢查token是否有效
+  if (!LoginInfo || !SToken) location.href = 'index.html'; // 確認是否登入 && 檢查token是否有效
 
   (0,react.useEffect)(function () {
     MySwal.fire({
@@ -13243,25 +13275,76 @@ var PageEdm = function PageEdm() {
         var result = res.data;
 
         if (!result.Msg || result.Msg !== 'OK') {
-          location.href = 'start.html';
+          location.href = 'index.html';
         }
       }).catch(function (err) {
-        location.href = 'start.html';
+        location.href = 'index.html';
       });
     } else {
-      location.href = 'start.html';
+      location.href = 'index.html';
     }
-  }, []); // 初始化
+  }, []); // 版面樣式(背景顏色)
 
-  var _useState = (0,react.useState)({}),
+  var bgColor = [{
+    id: 1,
+    name: 'yellow',
+    classes: 'btn-circle-yellow'
+  }, {
+    id: 2,
+    name: 'purple',
+    classes: 'btn-circle-purple'
+  }, {
+    id: 3,
+    name: 'blue',
+    classes: 'btn-circle-blue'
+  }, {
+    id: 4,
+    name: 'red',
+    classes: 'btn-circle-red'
+  }]; // 取得 背景顏色(樣式)
+
+  var _useState = (0,react.useState)(function () {
+    if (localStorage && localStorage.themeId) {
+      return parseInt(localStorage.themeId);
+    }
+
+    return 1;
+  }),
       _useState2 = PageEdm_slicedToArray(_useState, 2),
-      orderInfo = _useState2[0],
-      setOrderInfo = _useState2[1];
+      activeBg = _useState2[0],
+      setActiveBg = _useState2[1];
 
-  var _useState3 = (0,react.useState)([]),
+  var linearBg = function linearBg() {
+    var activeColor = bgColor.find(function (item) {
+      return item.id === activeBg;
+    });
+    return activeColor.name;
+  }; // 改變背景顏色(樣式) & 存入 localStorage.themeId
+
+
+  var changeBg = function changeBg(themeId) {
+    localStorage.setItem('themeId', themeId);
+    setActiveBg(themeId);
+  }; // 步驟(step)
+
+
+  var stepList = [false, false, false, false, false, true, false];
+
+  var _useState3 = (0,react.useState)(stepList),
       _useState4 = PageEdm_slicedToArray(_useState3, 2),
-      inviteCard = _useState4[0],
-      setInviteCard = _useState4[1];
+      activeStep = _useState4[0],
+      setActiveStep = _useState4[1]; // 初始化
+
+
+  var _useState5 = (0,react.useState)({}),
+      _useState6 = PageEdm_slicedToArray(_useState5, 2),
+      orderInfo = _useState6[0],
+      setOrderInfo = _useState6[1];
+
+  var _useState7 = (0,react.useState)([]),
+      _useState8 = PageEdm_slicedToArray(_useState7, 2),
+      inviteCard = _useState8[0],
+      setInviteCard = _useState8[1];
 
   var initData = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -13325,15 +13408,15 @@ var PageEdm = function PageEdm() {
     initData();
   }, []); // 處理過的資料
 
-  var _useState5 = (0,react.useState)(0),
-      _useState6 = PageEdm_slicedToArray(_useState5, 2),
-      isUpload = _useState6[0],
-      setIsUpload = _useState6[1];
+  var _useState9 = (0,react.useState)(0),
+      _useState10 = PageEdm_slicedToArray(_useState9, 2),
+      isUpload = _useState10[0],
+      setIsUpload = _useState10[1];
 
-  var _useState7 = (0,react.useState)(''),
-      _useState8 = PageEdm_slicedToArray(_useState7, 2),
-      ident = _useState8[0],
-      setIdent = _useState8[1];
+  var _useState11 = (0,react.useState)(''),
+      _useState12 = PageEdm_slicedToArray(_useState11, 2),
+      ident = _useState12[0],
+      setIdent = _useState12[1];
 
   var initEDM = function initEDM(orderInfo) {
     var isUpload = orderInfo.UserUpload_Photo !== null ? 1 : 0;
@@ -13342,10 +13425,10 @@ var PageEdm = function PageEdm() {
     MySwal.close();
   };
 
-  var _useState9 = (0,react.useState)(0),
-      _useState10 = PageEdm_slicedToArray(_useState9, 2),
-      index = _useState10[0],
-      setIndex = _useState10[1];
+  var _useState13 = (0,react.useState)(0),
+      _useState14 = PageEdm_slicedToArray(_useState13, 2),
+      index = _useState14[0],
+      setIndex = _useState14[1];
 
   var handleSelect = function handleSelect(selectedIndex, e) {
     setIndex(selectedIndex);
@@ -13369,21 +13452,23 @@ var PageEdm = function PageEdm() {
 
 
   var handleGoBack = function handleGoBack() {
-    location.href = 'main.html';
+    location.href = 'location.html';
   }; // 下一步
 
 
   var handleGoNext = function handleGoNext() {
     var ActiveID = inviteCard[index].ID;
+    var theme = linearBg();
     MySwal.fire({
-      title: "處理中，請稍候",
-      html: /*#__PURE__*/react.createElement(components_Loading, null),
+      //title: "處理中請稍候",
+      html: /*#__PURE__*/react.createElement(components_LoadProcessing, {
+        theme: theme
+      }),
       customClass: {
-        popup: 'bg-white'
+        popup: 'bg-img'
       },
       showConfirmButton: false,
-      showCancelButton: false,
-      confirmButtonColor: "#713f94"
+      showCancelButton: false
     });
     setTimeout(function () {
       var sendActiveInviteCardSetup = /*#__PURE__*/function () {
@@ -13445,15 +13530,17 @@ var PageEdm = function PageEdm() {
     var fileData = new FormData(); //files[0].name會回傳包含副檔名的檔案名稱
     //所以要做檔案類型的判斷也可以用file[0].name做
 
+    var theme = linearBg();
     MySwal.fire({
-      title: msgTitle,
-      html: /*#__PURE__*/react.createElement(components_Loading, null),
+      //title: "上傳中請稍候",
+      html: /*#__PURE__*/react.createElement(components_UploadProcessing, {
+        theme: theme
+      }),
       customClass: {
-        popup: 'bg-white'
+        popup: 'bg-img'
       },
       showConfirmButton: false,
-      showCancelButton: false,
-      confirmButtonColor: "#713f94"
+      showCancelButton: false
     });
     setTimeout(function () {
       fileData.append('SToken', SToken);
@@ -13468,8 +13555,8 @@ var PageEdm = function PageEdm() {
         async: true,
         success: function success(data) {
           if (data.Msg == "OK") {
-            MySwal.fire(msgOK, "", "success");
             setIsUpload(isUpload + 1);
+            MySwal.close();
           } else {
             MySwal.fire(msgError, "", "error");
           }
@@ -13478,19 +13565,29 @@ var PageEdm = function PageEdm() {
     }, 500);
   };
 
-  return /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement(components_HeaderDiv, null), /*#__PURE__*/react.createElement("section", {
+  return /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement("section", {
     className: "wrapper-s vh-100 bg-pic-edm"
   }, /*#__PURE__*/react.createElement("div", {
-    className: "mbr-overlay opacity-40"
-  }), /*#__PURE__*/react.createElement(esm_Container, null, /*#__PURE__*/react.createElement("div", {
+    className: "bg-linear ".concat('bg-' + linearBg())
+  }), /*#__PURE__*/react.createElement("div", {
+    className: "main-brand"
+  }, /*#__PURE__*/react.createElement("div", {
+    className: "img-cover"
+  }, /*#__PURE__*/react.createElement("img", {
+    src: logo_b_2x,
+    title: "WEDDING PASS",
+    alt: "WEDDING PASS"
+  }))), /*#__PURE__*/react.createElement(esm_Container, {
+    className: "pt-157"
+  }, /*#__PURE__*/react.createElement("div", {
     className: "media-container-row"
   }, /*#__PURE__*/react.createElement(esm_Col, {
     xs: 12,
     md: 8,
     className: "title text-center"
   }, /*#__PURE__*/react.createElement("h3", {
-    className: "mbr-section-subtitle align-center mbr-white mbr-light pb-0 mbr-fonts-style display-2"
-  }, orderInfo.LeadingStatus === 9 ? /*#__PURE__*/react.createElement("strong", null, "\u9078\u64C7\u60A8\u7684\u96FB\u5B50\u559C\u5E16") : /*#__PURE__*/react.createElement("strong", null, "Step 5. \u7522\u751F\u60A8\u7684\u96FB\u5B50\u559C\u5E16")), /*#__PURE__*/react.createElement(esm_Carousel, {
+    className: "mbr-section-subtitle step-title"
+  }, orderInfo.LeadingStatus === 9 ? '選擇您的電子喜帖' : 'Step 6. 產生您的電子喜帖'), /*#__PURE__*/react.createElement(esm_Carousel, {
     indicators: false,
     interval: null,
     controls: false,
@@ -13503,41 +13600,49 @@ var PageEdm = function PageEdm() {
       key: item.ID
     }, /*#__PURE__*/react.createElement("div", {
       className: "item"
-    }, /*#__PURE__*/react.createElement("div", {
-      className: "polaroid"
-    }, isUpload === 0 ? /*#__PURE__*/react.createElement("img", {
-      className: "sliderImage",
-      src: item.Img
-    }) : /*#__PURE__*/react.createElement("img", {
-      className: "sliderImage",
-      src: "http://backend.wedding-pass.com/WeddingPass/inviteCard_Order/".concat(ident, "/").concat(item.ID, "/_preview.jpg")
+    }, isUpload ? /*#__PURE__*/react.createElement("div", {
+      className: "polaroid",
+      style: {
+        backgroundImage: "url(".concat(item.Img, ")")
+      }
+    }, /*#__PURE__*/react.createElement("img", {
+      src: "../images/phone-portrait.png",
+      className: "phone-bg"
+    })) : /*#__PURE__*/react.createElement("div", {
+      className: "polaroid",
+      style: {
+        backgroundImage: "url(\"http://backend.wedding-pass.com/WeddingPass/inviteCard_Order/\"+ ".concat(ident, " +\"/\"+ ").concat(item.ID, " +\"/_preview.jpg\")")
+      }
+    }, /*#__PURE__*/react.createElement("img", {
+      src: "../images/phone-portrait.png",
+      className: "phone-bg"
     }))));
   }), /*#__PURE__*/react.createElement("a", {
     className: "carousel-control carousel-control-prev",
     onClick: function onClick(e) {
       return handlePrev();
     }
-  }, /*#__PURE__*/react.createElement("span", {
-    className: "carousel-control-prev-icon"
-  }), /*#__PURE__*/react.createElement("span", {
-    className: "sr-only"
-  }, "Previous")), /*#__PURE__*/react.createElement("a", {
+  }, /*#__PURE__*/react.createElement(FontAwesomeIcon, {
+    icon: faChevronLeft,
+    size: "lg",
+    className: "text-white"
+  })), /*#__PURE__*/react.createElement("a", {
     className: "carousel-control carousel-control-next",
     onClick: function onClick(e) {
       return handleNext();
     }
-  }, /*#__PURE__*/react.createElement("span", {
-    className: "carousel-control-next-icon"
-  }), /*#__PURE__*/react.createElement("span", {
-    className: "sr-only"
-  }, "Next")))))), /*#__PURE__*/react.createElement("nav", {
-    className: "navbar fixed-bottom justify-content-center d-flex row mx-auto position-fixed container main px-0"
+  }, /*#__PURE__*/react.createElement(FontAwesomeIcon, {
+    icon: faChevronRight,
+    size: "lg",
+    className: "text-white"
+  })))))), /*#__PURE__*/react.createElement("div", {
+    className: "w-100 bottom-nav"
   }, /*#__PURE__*/react.createElement("div", {
-    className: "w-100 d-flex justify-content-center mt-05"
-  }, /*#__PURE__*/react.createElement(esm_Col, {
-    xs: 12
+    className: "step-btns"
+  }, /*#__PURE__*/react.createElement("div", {
+    className: "w-btn d-flex justify-content-center mt-05"
   }, /*#__PURE__*/react.createElement("button", {
-    className: "btn btn-3d btn-block px-0",
+    className: "btn btn-3d btn-block px-0 ".concat('display-' + linearBg()),
     onClick: function onClick() {
       return UploadVideo('upload_img');
     }
@@ -13551,38 +13656,54 @@ var PageEdm = function PageEdm() {
     onChange: function onChange() {
       return fileUpload('upload_img');
     }
-  }))), orderInfo.LeadingStatus === 9 ? /*#__PURE__*/react.createElement("div", {
-    className: "w-100 d-flex justify-content-center mt-05"
-  }, isUpload !== 0 && /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement(esm_Col, {
-    xs: 6
-  }, /*#__PURE__*/react.createElement("button", {
+  })), orderInfo.LeadingStatus === 9 ? /*#__PURE__*/react.createElement("div", {
+    className: "w-btn d-flex justify-content-center mt-05"
+  }, isUpload !== 0 && /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement("button", {
     type: "button",
-    className: "btn btn-3d btn-block",
+    className: "btn btn-3d btn-block ".concat('display-' + linearBg()),
     tabIndex: "-1",
     onClick: function onClick() {
       return handleGoBack();
     }
-  }, "\u4E0A\u3127\u9801")), /*#__PURE__*/react.createElement(esm_Col, {
-    xs: 6
-  }, /*#__PURE__*/react.createElement("button", {
+  }, "\u4E0A\u3127\u6B65"), /*#__PURE__*/react.createElement("button", {
     type: "button",
-    className: "btn btn-3d btn-block",
+    className: "btn btn-3d btn-block ".concat('display-' + linearBg()),
     tabIndex: "-1",
     onClick: function onClick() {
       return handleGoNext();
     }
-  }, "\u4E0B\u4E00\u6B65")))) : /*#__PURE__*/react.createElement("div", {
-    className: "w-100 d-flex justify-content-center mt-05"
-  }, isUpload !== 0 && /*#__PURE__*/react.createElement(esm_Col, {
-    xs: 12
-  }, /*#__PURE__*/react.createElement("button", {
+  }, "\u4E0B\u4E00\u6B65"))) : /*#__PURE__*/react.createElement("div", {
+    className: "w-btn d-flex justify-content-center mt-05"
+  }, isUpload !== 0 && /*#__PURE__*/react.createElement("button", {
     type: "button",
-    className: "btn btn-3d btn-block",
+    className: "btn btn-3d btn-block ".concat('display-' + linearBg()),
     tabIndex: "-1",
     onClick: function onClick() {
       return handleGoNext();
     }
-  }, "\u4E0B\u4E00\u6B65"))))));
+  }, "\u4E0B\u4E00\u6B65"))), /*#__PURE__*/react.createElement("div", {
+    className: "nav-bottom d-flex justify-content-between"
+  }, /*#__PURE__*/react.createElement("ul", {
+    className: "nav nav-bg"
+  }, bgColor.map(function (item) {
+    return /*#__PURE__*/react.createElement("li", {
+      key: item.name
+    }, /*#__PURE__*/react.createElement("button", {
+      type: "button",
+      className: "btn btn-circle ".concat(item.classes, " ").concat(item.id === activeBg ? 'active' : ''),
+      onClick: function onClick() {
+        return changeBg(item.id);
+      }
+    }));
+  })), /*#__PURE__*/react.createElement("ul", {
+    className: "nav nav-list"
+  }, activeStep.map(function (item, index) {
+    return /*#__PURE__*/react.createElement("li", {
+      key: index
+    }, /*#__PURE__*/react.createElement("div", {
+      className: "btn-list ".concat(item ? 'btn-circle-' + linearBg() : '')
+    }));
+  }))))));
 };
 
 /* harmony default export */ var pages_PageEdm = (PageEdm);
@@ -44032,7 +44153,7 @@ module.exports = function (urlString) {
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1633047216033
+      // 1635808516523
       var cssReload = __webpack_require__(47134)(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -44048,7 +44169,7 @@ module.exports = function (urlString) {
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1633047215669
+      // 1635808516114
       var cssReload = __webpack_require__(47134)(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -48697,6 +48818,78 @@ if (typeof this !== 'undefined' && this.Sweetalert2){  this.swal = this.sweetAle
 
 "undefined"!=typeof document&&function(e,t){var n=e.createElement("style");if(e.getElementsByTagName("head")[0].appendChild(n),n.styleSheet)n.styleSheet.disabled||(n.styleSheet.cssText=t);else try{n.innerHTML=t}catch(e){n.innerText=t}}(document,".swal2-popup.swal2-toast{box-sizing:border-box;grid-column:1/4!important;grid-row:1/4!important;grid-template-columns:1fr 99fr 1fr;padding:1em;overflow-y:hidden;background:#fff;box-shadow:0 0 .625em #d9d9d9;pointer-events:all}.swal2-popup.swal2-toast>*{grid-column:2}.swal2-popup.swal2-toast .swal2-title{margin:1em;padding:0;font-size:1em;text-align:initial}.swal2-popup.swal2-toast .swal2-loading{justify-content:center}.swal2-popup.swal2-toast .swal2-input{height:2em;margin:.5em;font-size:1em}.swal2-popup.swal2-toast .swal2-validation-message{font-size:1em}.swal2-popup.swal2-toast .swal2-footer{margin:.5em 0 0;padding:.5em 0 0;font-size:.8em}.swal2-popup.swal2-toast .swal2-close{grid-column:3/3;grid-row:1/99;align-self:center;width:.8em;height:.8em;margin:0;font-size:2em}.swal2-popup.swal2-toast .swal2-html-container{margin:1em;padding:0;font-size:1em;text-align:initial}.swal2-popup.swal2-toast .swal2-html-container:empty{padding:0}.swal2-popup.swal2-toast .swal2-loader{grid-column:1;grid-row:1/99;align-self:center;width:2em;height:2em;margin:.25em}.swal2-popup.swal2-toast .swal2-icon{grid-column:1;grid-row:1/99;align-self:center;width:2em;min-width:2em;height:2em;margin:0 .5em 0 0}.swal2-popup.swal2-toast .swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:1.8em;font-weight:700}.swal2-popup.swal2-toast .swal2-icon.swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line]{top:.875em;width:1.375em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:.3125em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:.3125em}.swal2-popup.swal2-toast .swal2-actions{justify-content:flex-start;height:auto;margin:0;margin-top:.3125em;padding:0}.swal2-popup.swal2-toast .swal2-styled{margin:.25em .5em;padding:.4em .6em;font-size:1em}.swal2-popup.swal2-toast .swal2-styled:focus{box-shadow:0 0 0 1px #fff,0 0 0 3px rgba(100,150,200,.5)}.swal2-popup.swal2-toast .swal2-success{border-color:#a5dc86}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line]{position:absolute;width:1.6em;height:3em;transform:rotate(45deg);border-radius:50%}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=left]{top:-.8em;left:-.5em;transform:rotate(-45deg);transform-origin:2em 2em;border-radius:4em 0 0 4em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=right]{top:-.25em;left:.9375em;transform-origin:0 1.5em;border-radius:0 4em 4em 0}.swal2-popup.swal2-toast .swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-success .swal2-success-fix{top:0;left:.4375em;width:.4375em;height:2.6875em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line]{height:.3125em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=tip]{top:1.125em;left:.1875em;width:.75em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=long]{top:.9375em;right:.1875em;width:1.375em}.swal2-popup.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-tip{-webkit-animation:swal2-toast-animate-success-line-tip .75s;animation:swal2-toast-animate-success-line-tip .75s}.swal2-popup.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-long{-webkit-animation:swal2-toast-animate-success-line-long .75s;animation:swal2-toast-animate-success-line-long .75s}.swal2-popup.swal2-toast.swal2-show{-webkit-animation:swal2-toast-show .5s;animation:swal2-toast-show .5s}.swal2-popup.swal2-toast.swal2-hide{-webkit-animation:swal2-toast-hide .1s forwards;animation:swal2-toast-hide .1s forwards}.swal2-container{display:grid;position:fixed;z-index:1060;top:0;right:0;bottom:0;left:0;box-sizing:border-box;grid-template-areas:\"top-start     top            top-end\" \"center-start  center         center-end\" \"bottom-start  bottom-center  bottom-end\" \"gap gap gap\";grid-template-rows:auto auto auto .625em;height:100%;padding:.625em .625em 0;overflow-x:hidden;transition:background-color .1s;-webkit-overflow-scrolling:touch}.swal2-container::after{content:\"\";grid-column:1/4;grid-row:4;height:.625em}.swal2-container.swal2-backdrop-show,.swal2-container.swal2-noanimation{background:rgba(0,0,0,.4)}.swal2-container.swal2-backdrop-hide{background:0 0!important}.swal2-container.swal2-bottom-start,.swal2-container.swal2-center-start,.swal2-container.swal2-top-start{grid-template-columns:minmax(0,1fr) auto auto}.swal2-container.swal2-bottom,.swal2-container.swal2-center,.swal2-container.swal2-top{grid-template-columns:auto minmax(0,1fr) auto}.swal2-container.swal2-bottom-end,.swal2-container.swal2-center-end,.swal2-container.swal2-top-end{grid-template-columns:auto auto minmax(0,1fr)}.swal2-container.swal2-top-start>.swal2-popup{align-self:start}.swal2-container.swal2-top>.swal2-popup{grid-column:2;align-self:start;justify-self:center}.swal2-container.swal2-top-end>.swal2-popup,.swal2-container.swal2-top-right>.swal2-popup{grid-column:3;align-self:start;justify-self:end}.swal2-container.swal2-center-left>.swal2-popup,.swal2-container.swal2-center-start>.swal2-popup{grid-row:2;align-self:center}.swal2-container.swal2-center>.swal2-popup{grid-column:2;grid-row:2;align-self:center;justify-self:center}.swal2-container.swal2-center-end>.swal2-popup,.swal2-container.swal2-center-right>.swal2-popup{grid-column:3;grid-row:2;align-self:center;justify-self:end}.swal2-container.swal2-bottom-left>.swal2-popup,.swal2-container.swal2-bottom-start>.swal2-popup{grid-column:1;grid-row:3;align-self:end}.swal2-container.swal2-bottom>.swal2-popup{grid-column:2;grid-row:3;justify-self:center;align-self:end}.swal2-container.swal2-bottom-end>.swal2-popup,.swal2-container.swal2-bottom-right>.swal2-popup{grid-column:3;grid-row:3;align-self:end;justify-self:end}.swal2-container.swal2-grow-fullscreen>.swal2-popup,.swal2-container.swal2-grow-row>.swal2-popup{grid-column:1/4;width:100%}.swal2-container.swal2-grow-column>.swal2-popup,.swal2-container.swal2-grow-fullscreen>.swal2-popup{grid-row:1/4;align-self:stretch}.swal2-container.swal2-no-transition{transition:none!important}.swal2-popup{display:none;position:relative;box-sizing:border-box;grid-template-columns:minmax(0,100%);width:32em;max-width:100%;padding:0 0 1.25em;border:none;border-radius:5px;background:#fff;color:#545454;font-family:inherit;font-size:1rem}.swal2-popup:focus{outline:0}.swal2-popup.swal2-loading{overflow-y:hidden}.swal2-title{position:relative;max-width:100%;margin:0;padding:.8em 1em 0;color:#595959;font-size:1.875em;font-weight:600;text-align:center;text-transform:none;word-wrap:break-word}.swal2-actions{display:flex;z-index:1;box-sizing:border-box;flex-wrap:wrap;align-items:center;justify-content:center;width:100%;margin:1.25em auto 0;padding:0}.swal2-actions:not(.swal2-loading) .swal2-styled[disabled]{opacity:.4}.swal2-actions:not(.swal2-loading) .swal2-styled:hover{background-image:linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.1))}.swal2-actions:not(.swal2-loading) .swal2-styled:active{background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2))}.swal2-loader{display:none;align-items:center;justify-content:center;width:2.2em;height:2.2em;margin:0 1.875em;-webkit-animation:swal2-rotate-loading 1.5s linear 0s infinite normal;animation:swal2-rotate-loading 1.5s linear 0s infinite normal;border-width:.25em;border-style:solid;border-radius:100%;border-color:#2778c4 transparent #2778c4 transparent}.swal2-styled{margin:.3125em;padding:.625em 1.1em;transition:box-shadow .1s;box-shadow:0 0 0 3px transparent;font-weight:500}.swal2-styled:not([disabled]){cursor:pointer}.swal2-styled.swal2-confirm{border:0;border-radius:.25em;background:initial;background-color:#7367f0;color:#fff;font-size:1em}.swal2-styled.swal2-confirm:focus{box-shadow:0 0 0 3px rgba(115,103,240,.5)}.swal2-styled.swal2-deny{border:0;border-radius:.25em;background:initial;background-color:#ea5455;color:#fff;font-size:1em}.swal2-styled.swal2-deny:focus{box-shadow:0 0 0 3px rgba(234,84,85,.5)}.swal2-styled.swal2-cancel{border:0;border-radius:.25em;background:initial;background-color:#6e7d88;color:#fff;font-size:1em}.swal2-styled.swal2-cancel:focus{box-shadow:0 0 0 3px rgba(110,125,136,.5)}.swal2-styled.swal2-default-outline:focus{box-shadow:0 0 0 3px rgba(100,150,200,.5)}.swal2-styled:focus{outline:0}.swal2-styled::-moz-focus-inner{border:0}.swal2-footer{justify-content:center;margin:1em 0 0;padding:1em 1em 0;border-top:1px solid #eee;color:#545454;font-size:1em}.swal2-timer-progress-bar-container{position:absolute;right:0;bottom:0;left:0;grid-column:auto!important;height:.25em;overflow:hidden;border-bottom-right-radius:5px;border-bottom-left-radius:5px}.swal2-timer-progress-bar{width:100%;height:.25em;background:rgba(0,0,0,.2)}.swal2-image{max-width:100%;margin:2em auto 1em}.swal2-close{z-index:2;align-items:center;justify-content:center;width:1.2em;height:1.2em;margin-top:0;margin-right:0;margin-bottom:-1.2em;padding:0;overflow:hidden;transition:color .1s,box-shadow .1s;border:none;border-radius:5px;background:0 0;color:#ccc;font-family:serif;font-family:monospace;font-size:2.5em;cursor:pointer;justify-self:end}.swal2-close:hover{transform:none;background:0 0;color:#f27474}.swal2-close:focus{outline:0;box-shadow:inset 0 0 0 3px rgba(100,150,200,.5)}.swal2-close::-moz-focus-inner{border:0}.swal2-html-container{z-index:1;justify-content:center;margin:1em 1.6em .3em;padding:0;overflow:auto;color:#545454;font-size:1.125em;font-weight:400;line-height:normal;text-align:center;word-wrap:break-word;word-break:break-word}.swal2-checkbox,.swal2-file,.swal2-input,.swal2-radio,.swal2-select,.swal2-textarea{margin:1em 2em 0}.swal2-file,.swal2-input,.swal2-textarea{box-sizing:border-box;width:auto;transition:border-color .1s,box-shadow .1s;border:1px solid #d9d9d9;border-radius:.1875em;background:inherit;box-shadow:inset 0 1px 1px rgba(0,0,0,.06),0 0 0 3px transparent;color:inherit;font-size:1.125em}.swal2-file.swal2-inputerror,.swal2-input.swal2-inputerror,.swal2-textarea.swal2-inputerror{border-color:#f27474!important;box-shadow:0 0 2px #f27474!important}.swal2-file:focus,.swal2-input:focus,.swal2-textarea:focus{border:1px solid #b4dbed;outline:0;box-shadow:inset 0 1px 1px rgba(0,0,0,.06),0 0 0 3px rgba(100,150,200,.5)}.swal2-file::-moz-placeholder,.swal2-input::-moz-placeholder,.swal2-textarea::-moz-placeholder{color:#ccc}.swal2-file:-ms-input-placeholder,.swal2-input:-ms-input-placeholder,.swal2-textarea:-ms-input-placeholder{color:#ccc}.swal2-file::placeholder,.swal2-input::placeholder,.swal2-textarea::placeholder{color:#ccc}.swal2-range{margin:1em 2em 0;background:#fff}.swal2-range input{width:80%}.swal2-range output{width:20%;color:inherit;font-weight:600;text-align:center}.swal2-range input,.swal2-range output{height:2.625em;padding:0;font-size:1.125em;line-height:2.625em}.swal2-input{height:2.625em;padding:0 .75em}.swal2-file{width:75%;margin-right:auto;margin-left:auto;background:inherit;font-size:1.125em}.swal2-textarea{height:6.75em;padding:.75em}.swal2-select{min-width:50%;max-width:100%;padding:.375em .625em;background:inherit;color:inherit;font-size:1.125em}.swal2-checkbox,.swal2-radio{align-items:center;justify-content:center;background:#fff;color:inherit}.swal2-checkbox label,.swal2-radio label{margin:0 .6em;font-size:1.125em}.swal2-checkbox input,.swal2-radio input{flex-shrink:0;margin:0 .4em}.swal2-input-label{display:flex;justify-content:center;margin:1em auto 0}.swal2-validation-message{align-items:center;justify-content:center;margin:1em 0 0;padding:.625em;overflow:hidden;background:#f0f0f0;color:#666;font-size:1em;font-weight:300}.swal2-validation-message::before{content:\"!\";display:inline-block;width:1.5em;min-width:1.5em;height:1.5em;margin:0 .625em;border-radius:50%;background-color:#f27474;color:#fff;font-weight:600;line-height:1.5em;text-align:center}.swal2-icon{position:relative;box-sizing:content-box;justify-content:center;width:5em;height:5em;margin:2.5em auto .6em;border:.25em solid transparent;border-radius:50%;border-color:#000;font-family:inherit;line-height:5em;cursor:default;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:3.75em}.swal2-icon.swal2-error{border-color:#f27474;color:#f27474}.swal2-icon.swal2-error .swal2-x-mark{position:relative;flex-grow:1}.swal2-icon.swal2-error [class^=swal2-x-mark-line]{display:block;position:absolute;top:2.3125em;width:2.9375em;height:.3125em;border-radius:.125em;background-color:#f27474}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:1.0625em;transform:rotate(45deg)}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:1em;transform:rotate(-45deg)}.swal2-icon.swal2-error.swal2-icon-show{-webkit-animation:swal2-animate-error-icon .5s;animation:swal2-animate-error-icon .5s}.swal2-icon.swal2-error.swal2-icon-show .swal2-x-mark{-webkit-animation:swal2-animate-error-x-mark .5s;animation:swal2-animate-error-x-mark .5s}.swal2-icon.swal2-warning{border-color:#facea8;color:#f8bb86}.swal2-icon.swal2-info{border-color:#9de0f6;color:#3fc3ee}.swal2-icon.swal2-question{border-color:#c9dae1;color:#87adbd}.swal2-icon.swal2-success{border-color:#a5dc86;color:#a5dc86}.swal2-icon.swal2-success [class^=swal2-success-circular-line]{position:absolute;width:3.75em;height:7.5em;transform:rotate(45deg);border-radius:50%}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=left]{top:-.4375em;left:-2.0635em;transform:rotate(-45deg);transform-origin:3.75em 3.75em;border-radius:7.5em 0 0 7.5em}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=right]{top:-.6875em;left:1.875em;transform:rotate(-45deg);transform-origin:0 3.75em;border-radius:0 7.5em 7.5em 0}.swal2-icon.swal2-success .swal2-success-ring{position:absolute;z-index:2;top:-.25em;left:-.25em;box-sizing:content-box;width:100%;height:100%;border:.25em solid rgba(165,220,134,.3);border-radius:50%}.swal2-icon.swal2-success .swal2-success-fix{position:absolute;z-index:1;top:.5em;left:1.625em;width:.4375em;height:5.625em;transform:rotate(-45deg)}.swal2-icon.swal2-success [class^=swal2-success-line]{display:block;position:absolute;z-index:2;height:.3125em;border-radius:.125em;background-color:#a5dc86}.swal2-icon.swal2-success [class^=swal2-success-line][class$=tip]{top:2.875em;left:.8125em;width:1.5625em;transform:rotate(45deg)}.swal2-icon.swal2-success [class^=swal2-success-line][class$=long]{top:2.375em;right:.5em;width:2.9375em;transform:rotate(-45deg)}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-line-tip{-webkit-animation:swal2-animate-success-line-tip .75s;animation:swal2-animate-success-line-tip .75s}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-line-long{-webkit-animation:swal2-animate-success-line-long .75s;animation:swal2-animate-success-line-long .75s}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-circular-line-right{-webkit-animation:swal2-rotate-success-circular-line 4.25s ease-in;animation:swal2-rotate-success-circular-line 4.25s ease-in}.swal2-progress-steps{flex-wrap:wrap;align-items:center;max-width:100%;margin:1.25em auto;padding:0;background:inherit;font-weight:600}.swal2-progress-steps li{display:inline-block;position:relative}.swal2-progress-steps .swal2-progress-step{z-index:20;flex-shrink:0;width:2em;height:2em;border-radius:2em;background:#2778c4;color:#fff;line-height:2em;text-align:center}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step{background:#2778c4}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step{background:#add8e6;color:#fff}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line{background:#add8e6}.swal2-progress-steps .swal2-progress-step-line{z-index:10;flex-shrink:0;width:2.5em;height:.4em;margin:0 -1px;background:#2778c4}[class^=swal2]{-webkit-tap-highlight-color:transparent}.swal2-show{-webkit-animation:swal2-show .3s;animation:swal2-show .3s}.swal2-hide{-webkit-animation:swal2-hide .15s forwards;animation:swal2-hide .15s forwards}.swal2-noanimation{transition:none}.swal2-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}.swal2-rtl .swal2-close{margin-right:initial;margin-left:0}.swal2-rtl .swal2-timer-progress-bar{right:0;left:auto}@-webkit-keyframes swal2-toast-show{0%{transform:translateY(-.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0)}}@keyframes swal2-toast-show{0%{transform:translateY(-.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0)}}@-webkit-keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@-webkit-keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@-webkit-keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}@keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}@-webkit-keyframes swal2-show{0%{transform:scale(.7)}45%{transform:scale(1.05)}80%{transform:scale(.95)}100%{transform:scale(1)}}@keyframes swal2-show{0%{transform:scale(.7)}45%{transform:scale(1.05)}80%{transform:scale(.95)}100%{transform:scale(1)}}@-webkit-keyframes swal2-hide{0%{transform:scale(1);opacity:1}100%{transform:scale(.5);opacity:0}}@keyframes swal2-hide{0%{transform:scale(1);opacity:1}100%{transform:scale(.5);opacity:0}}@-webkit-keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@-webkit-keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@-webkit-keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@-webkit-keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(.4);opacity:0}50%{margin-top:1.625em;transform:scale(.4);opacity:0}80%{margin-top:-.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(.4);opacity:0}50%{margin-top:1.625em;transform:scale(.4);opacity:0}80%{margin-top:-.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@-webkit-keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0);opacity:1}}@keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0);opacity:1}}@-webkit-keyframes swal2-rotate-loading{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@keyframes swal2-rotate-loading{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow:hidden}body.swal2-height-auto{height:auto!important}body.swal2-no-backdrop .swal2-container{background-color:transparent!important;pointer-events:none}body.swal2-no-backdrop .swal2-container .swal2-popup{pointer-events:all}body.swal2-no-backdrop .swal2-container .swal2-modal{box-shadow:0 0 10px rgba(0,0,0,.4)}@media print{body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow-y:scroll!important}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown)>[aria-hidden=true]{display:none}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) .swal2-container{position:static!important}}body.swal2-toast-shown .swal2-container{box-sizing:border-box;width:360px;max-width:100%;background-color:transparent;pointer-events:none}body.swal2-toast-shown .swal2-container.swal2-top{top:0;right:auto;bottom:auto;left:50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-top-end,body.swal2-toast-shown .swal2-container.swal2-top-right{top:0;right:0;bottom:auto;left:auto}body.swal2-toast-shown .swal2-container.swal2-top-left,body.swal2-toast-shown .swal2-container.swal2-top-start{top:0;right:auto;bottom:auto;left:0}body.swal2-toast-shown .swal2-container.swal2-center-left,body.swal2-toast-shown .swal2-container.swal2-center-start{top:50%;right:auto;bottom:auto;left:0;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-center{top:50%;right:auto;bottom:auto;left:50%;transform:translate(-50%,-50%)}body.swal2-toast-shown .swal2-container.swal2-center-end,body.swal2-toast-shown .swal2-container.swal2-center-right{top:50%;right:0;bottom:auto;left:auto;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-left,body.swal2-toast-shown .swal2-container.swal2-bottom-start{top:auto;right:auto;bottom:0;left:0}body.swal2-toast-shown .swal2-container.swal2-bottom{top:auto;right:auto;bottom:0;left:50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-end,body.swal2-toast-shown .swal2-container.swal2-bottom-right{top:auto;right:0;bottom:0;left:auto}");
 
+/***/ }),
+
+/***/ 83882:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "8b11bc31bd9c5db183f3.png";
+
+/***/ }),
+
+/***/ 86720:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "e7c488d1db0c3a95241e.png";
+
+/***/ }),
+
+/***/ 58181:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "dd11feb8fe844202b6b9.png";
+
+/***/ }),
+
+/***/ 68152:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "e7c488d1db0c3a95241e.png";
+
+/***/ }),
+
+/***/ 8983:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "dd11feb8fe844202b6b9.png";
+
+/***/ }),
+
+/***/ 96252:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "e4f66a1f184010bf2731.png";
+
+/***/ }),
+
+/***/ 68979:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "e4f66a1f184010bf2731.png";
+
+/***/ }),
+
+/***/ 29702:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "8b18fb07f245254595ce.png";
+
+/***/ }),
+
+/***/ 85510:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "bf318981d32d6786a3b0.png";
+
 /***/ })
 
 /******/ 	});
@@ -48793,7 +48986,7 @@ if (typeof this !== 'undefined' && this.Sweetalert2){  this.swal = this.sweetAle
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	!function() {
-/******/ 		__webpack_require__.h = function() { return "046b624d4485dfed042d"; }
+/******/ 		__webpack_require__.h = function() { return "a14cd58ec5619942c0ae"; }
 /******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -49863,7 +50056,7 @@ if (typeof this !== 'undefined' && this.Sweetalert2){  this.swal = this.sweetAle
 /******/ 	// module cache are used so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	var __webpack_exports__ = __webpack_require__(99111);
+/******/ 	var __webpack_exports__ = __webpack_require__(66185);
 /******/ 	
 /******/ })()
 ;

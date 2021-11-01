@@ -1,3 +1,9 @@
+@import 'variable.scss';
+
+.wrapper-s {
+  padding-top: 0 !important;
+}
+
 .swal2-title {
   font-size: 1.7rem !important;
   font-weight: 500;
@@ -39,3 +45,295 @@
   }
 }
 
+/** 2021/10/23 */
+// 畫面中間 "WEDDING PASS" & "Step xxx"
+//@media (min-width: 992px) {
+  .wrapper-inner {
+    display: flex;
+    width: 85.52vw;
+    height: 68.5vh;
+    padding: 4px 0 0 0;
+    z-index: 2;
+  
+    // WEDDING PASS
+    .main-brand {
+      width: 52.1%;
+      height: 100%;
+      border-right: 3px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 0 7.4% 5.36vw;
+  
+      .img-cover {
+        width: 29.8vw;
+        img {
+          width: 100%;
+        }
+      }
+    }
+    
+    // STEP ..
+    .main-content  {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      width: 47.9%;
+      height: 100%;
+    
+      .main-inner {
+        width: 32.76vw;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-bottom: 6.48vh;
+      }
+    
+      .step-title {
+        h1 {
+          line-height: 56px;
+          font-weight: 400;
+          font-size: 22px;
+        }
+      }
+  
+      .input-form {
+        width: 100%;
+        height: 61.5%;
+        form {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+      }
+  
+      .form-group {
+        margin: 0;
+  
+        input {
+          font-size: calc(26px * .75);
+          color: #8D8D8D;
+          padding-left: 2.39vw;
+          text-align: left;
+          background: rgba(255,255,255,.7);
+  
+          &.display-7 {
+            height: 10vh;
+            border-radius: 9px;
+          }
+  
+          // 手機區域號碼
+          &.local-num {
+            width: 31.7%;
+          }
+  
+          // 手機號碼
+          &.mobile-num {
+            width: 62.5%;
+          }
+        }
+  
+        &.form-group-sms-num {
+          // 簡訊驗證碼
+          input.sms-num {
+            width: 3.4375vw;
+            margin-right: 2.1875vw;
+            text-align: center;
+            padding: 0;
+  
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .btn {
+    &.display-4 {
+      font-size: calc(26px * .75);
+      box-shadow: 0px 2px 3px #00000029;
+      border-radius: 12px;
+      opacity: 0.84;
+      color: #fff;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      height: 9.26vh;
+      width: 100%;
+    }
+  
+    &.display-yellow {
+      background: $main_yellow 0% 0% no-repeat padding-box;
+      border: 1px solid $main_yellow;
+    }
+  
+    &.display-blue {
+      background: $main_blue 0% 0% no-repeat padding-box;
+      border: 1px solid $main_blue;
+    }
+  
+    &.display-red {
+      background: $main_red 0% 0% no-repeat padding-box;
+      border: 1px solid $main_red;
+    }
+  
+    &.display-purple {
+      background: $main_purple;
+      border: 1px solid $main_purple;
+    }
+  
+    &.btn-circle {
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      border-width: 1px;
+      line-height: 1;
+      margin-right: 21px;
+  
+      &.btn-circle-yellow {
+        border-color: #E3D09B;
+        background-color: #E3D09B;
+      }
+  
+      &.btn-circle-purple {
+        border-color: #C792CC;
+        background-color: #C792CC;
+      }
+  
+      &.btn-circle-blue {
+        border-color: #63B1EE;
+        background-color: #63B1EE;
+      }
+  
+      &.btn-circle-red {
+        border-color: $main_red;
+        background-color: $main_red;
+      }
+  
+      &.active {
+        border-color: #0E0E0E;
+      }
+    }
+  }
+  
+  // 下方 "版型樣式圓點" & "Step 圓點"
+  .bottom-nav {
+    height: 9.16vh;
+    padding-top: 18px;
+    z-index: 2;
+  
+    .nav-bg {
+      padding-left: 3.73vw;
+    
+      li {
+        line-height: 1;
+    
+        &:last-child {
+          .btn {
+            margin: 0;
+          }
+        }
+      }
+    }
+    
+    .nav-list {
+      width: 48.2%;
+      display: flex;
+      justify-content: center;
+    
+      li {
+        line-height: 1;
+    
+        &:last-child {
+          .btn-list {
+            margin: 0;
+          }
+        }
+      }
+    }
+    
+    .btn-list {
+      width: 18px;
+      height: 18px;
+      border-color: #FFF;
+      background-color: #FFF;
+      margin-right: 27px;
+      border-radius: 50%;
+    
+      &.btn-circle-yellow {
+        border-color: #E3D09B;
+        background-color: #E3D09B;
+      }
+    
+      &.btn-circle-purple {
+        border-color: #C792CC;
+        background-color: #C792CC;
+      }
+    
+      &.btn-circle-blue {
+        border-color: #63B1EE;
+        background-color: #63B1EE;
+      }
+    
+      &.btn-circle-red {
+        border-color: $main_red;
+        background-color: $main_red;
+      }
+    }
+  }
+  
+  .swal2-html-container {
+    width: auto;
+    margin: 0 !important;
+    padding: 0;
+  }
+  
+  .swal2-popup {
+    border-radius: 28px !important;
+  }
+  
+  .bg-img {
+    width: auto !important;
+    padding-bottom: 0 !important;
+  }
+//}
+
+@media (min-width: 1281px) {
+  .wrapper-inner .main-content .step-title h1 {
+    font-size: calc(40px * .75);
+  }
+
+  .wrapper-inner .main-content .form-group input,
+  .btn.display-4 {
+    font-size: calc(26px * .75);
+  }
+}
+
+@media (min-width: 1541px) {
+  .wrapper-inner .main-content .step-title h1 {
+    font-size: 36px;
+  }
+
+  .wrapper-inner .main-content .form-group input,
+  .btn.display-4 {
+    font-size: 26px;
+  }
+}
+
+@media (min-width: 1680px) {
+  .wrapper-inner .main-content .step-title h1 {
+    font-size: 40px;
+  }
+
+  .wrapper-inner .main-content .form-group input,
+  .btn.display-4 {
+    font-size: 26px;
+  }
+}

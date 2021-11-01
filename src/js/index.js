@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 
-import PageIndex from '../pages/PageIndex';
+import PageStart from '../pages/PageStart';
 
 ReactDom.render(
-  <PageIndex />,
+  <PageStart />,
   document.getElementById('app')
 );

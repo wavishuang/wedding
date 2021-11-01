@@ -8,8 +8,9 @@ import Carousel from 'react-bootstrap/Carousel';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
-import HeaderDiv from '../components/HeaderDiv';
 import Loading from '../components/Loading';
+import UploadProcessing from '../components/UploadProcessing';
+import LoadProcessing from '../components/LoadProcessing';
 
 import { _uuid } from '../utils/tools';
 import { 
@@ -22,12 +23,17 @@ import {
 import '../scss/base.scss';
 import '../scss/edm.scss';
 
+import BrandImg from '../images/logo_b-2x.png';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+
 const MySwal = withReactContent(Swal);
 
 const PageEdm = function() {
   const LoginInfo = (sessionStorage && sessionStorage.data) ? JSON.parse(sessionStorage.data) : null;
   const SToken = LoginInfo ? LoginInfo.Token : null;
-  if(!LoginInfo || !SToken) location.href = 'start.html';
+  if(!LoginInfo || !SToken) location.href = 'index.html';
   // 確認是否登入 && 檢查token是否有效
   useEffect(() => {
     MySwal.fire({
@@ -49,16 +55,47 @@ const PageEdm = function() {
         .then(res => {
           const result = res.data;
           if(!result.Msg || result.Msg !== 'OK') {
-            location.href = 'start.html';
+            location.href = 'index.html';
           }
         })
         .catch(err => {
-          location.href = 'start.html';
+          location.href = 'index.html';
         });
     } else {
-      location.href = 'start.html';
+      location.href = 'index.html';
     }
   }, []);
+
+  // 版面樣式(背景顏色)
+  const bgColor = [
+    { id: 1, name: 'yellow', classes: 'btn-circle-yellow'},
+    { id: 2, name: 'purple', classes: 'btn-circle-purple'},
+    { id: 3, name: 'blue', classes: 'btn-circle-blue'},
+    { id: 4, name: 'red', classes: 'btn-circle-red'}
+  ];
+
+  // 取得 背景顏色(樣式)
+  const [activeBg, setActiveBg] = useState(() => {
+    if(localStorage && localStorage.themeId) {
+      return parseInt(localStorage.themeId);
+    }
+    return 1;
+  });
+
+  const linearBg = () => {
+    const activeColor = bgColor.find(item => item.id === activeBg);
+    return activeColor.name;
+  }
+
+  // 改變背景顏色(樣式) & 存入 localStorage.themeId
+  const changeBg = (themeId) => {
+    localStorage.setItem('themeId', themeId);
+    setActiveBg(themeId);
+  }
+
+  // 步驟(step)
+  let stepList = [false, false, false, false, false, true, false];
+  const [activeStep, setActiveStep] = useState(stepList);
 
   // 初始化
   const [orderInfo, setOrderInfo] = useState({});
@@ -129,22 +166,22 @@ const PageEdm = function() {
 
   // 上一頁
   const handleGoBack = () => {
-    location.href = 'main.html';
+    location.href = 'location.html';
   }
 
   // 下一步
   const handleGoNext = () => {
     const ActiveID = inviteCard[index].ID;
+    const theme = linearBg();
 
     MySwal.fire({
-      title: "處理中，請稍候",
-      html: <Loading />,
+      //title: "處理中請稍候",
+      html: <LoadProcessing theme={theme} />,
       customClass: {
-        popup: 'bg-white'
+        popup: 'bg-img',
       },
       showConfirmButton: false,
       showCancelButton: false,
-      confirmButtonColor: "#713f94",
     });
     
     setTimeout(function(){
@@ -189,15 +226,16 @@ const PageEdm = function() {
     //files[0].name會回傳包含副檔名的檔案名稱
     //所以要做檔案類型的判斷也可以用file[0].name做
 
+    const theme = linearBg();
+
     MySwal.fire({
-      title: msgTitle,
-      html: <Loading />,
+      //title: "上傳中請稍候",
+      html: <UploadProcessing theme={theme} />,
       customClass: {
-        popup: 'bg-white',
+        popup: 'bg-img',
       },
       showConfirmButton: false,
       showCancelButton: false,
-      confirmButtonColor: "#713f94",
     });
 
     setTimeout(function () {
@@ -214,8 +252,8 @@ const PageEdm = function() {
         async: true,
         success: function (data) {
           if (data.Msg == "OK") {
-            MySwal.fire(msgOK, "", "success");
             setIsUpload(isUpload + 1);
+            MySwal.close();
           } else {
             MySwal.fire(msgError, "", "error");
           }
@@ -226,17 +264,24 @@ const PageEdm = function() {
 
   return (
     <Fragment>
-      <HeaderDiv />
-
       <section className="wrapper-s vh-100 bg-pic-edm">
-        <div className="mbr-overlay opacity-40"></div>
-        <Container>
+
+        {/** 漸層底色 */}
+        <div className={`bg-linear ${'bg-'+ linearBg()}`}></div>
+
+        <div className="main-brand">
+          <div className="img-cover">
+            <img src={BrandImg} title="WEDDING PASS" alt="WEDDING PASS" />
+          </div>
+        </div>
+
+        <Container className="pt-157">
           <div className="media-container-row">
             <Col xs={12} md={8} className="title text-center">
-              <h3 className="mbr-section-subtitle align-center mbr-white mbr-light pb-0 mbr-fonts-style display-2">
+              <h3 className="mbr-section-subtitle step-title">
                 {orderInfo.LeadingStatus === 9 ?
-                <strong>選擇您的電子喜帖</strong> :
-                <strong>Step 5. 產生您的電子喜帖</strong>
+                '選擇您的電子喜帖' :
+                'Step 6. 產生您的電子喜帖'
                 }
               </h3>
 
@@ -244,61 +289,82 @@ const PageEdm = function() {
                 {inviteCard.map(item => (
                   <Carousel.Item className="carousel-item" key={item.ID}>
                     <div className="item">
-                      <div className="polaroid">
-                        {isUpload === 0 ?
+                      {isUpload ? 
+                        <div className="polaroid" style={{backgroundImage: `url(${item.Img})`}}>
+                          <img src={"../images/phone-portrait.png"} className="phone-bg" />
+                        </div> :
+                        <div className="polaroid" style={{backgroundImage: `url("http://backend.wedding-pass.com/WeddingPass/inviteCard_Order/"+ ${ident} +"/"+ ${item.ID} +"/_preview.jpg")`}}>
+                          <img src={"../images/phone-portrait.png"} className="phone-bg" />
+                        </div>
+                      }
+                      {/*<div className="polaroid">
+                        <img src={"../images/phone-portrait.png"} className="phone-bg" />
+                        isUpload === 0 ?
                         <img className="sliderImage" src={item.Img} /> :
                         <img className="sliderImage" src={`http://backend.wedding-pass.com/WeddingPass/inviteCard_Order/${ident}/${item.ID}/_preview.jpg`} />
-                        }
-                      </div>
+                      </div>*/}
                     </div>
                   </Carousel.Item>
                 ))}
 
                 <a className="carousel-control carousel-control-prev" onClick={(e) => handlePrev()}>
-                  <span className="carousel-control-prev-icon"></span>
-                  <span className="sr-only">Previous</span>
+                  {/*<span className="carousel-control-prev-icon"></span><span className="sr-only">Previous</span>*/}
+                  <FontAwesomeIcon icon={faChevronLeft} size="lg" className="text-white" />
                 </a>
                   
                 <a className="carousel-control carousel-control-next" onClick={(e) => handleNext()}>
-                  <span className="carousel-control-next-icon"></span>
-                  <span className="sr-only">Next</span>
+                  {/*<span className="carousel-control-next-icon"></span>
+                  <span className="sr-only">Next</span>*/}
+                  <FontAwesomeIcon icon={faChevronRight} size="lg" className="text-white" />
                 </a>
               </Carousel>
             </Col>
           </div>
         </Container>
 
-        <nav className="navbar fixed-bottom justify-content-center d-flex row mx-auto position-fixed container main px-0">      
-          <div className="w-100 d-flex justify-content-center mt-05">
-            <Col xs={12}>
-              <button className="btn btn-3d btn-block px-0" onClick={() => UploadVideo('upload_img')}>上傳婚紗照</button>
+        <div className="w-100 bottom-nav">
+          <div className="step-btns">
+            <div className="w-btn d-flex justify-content-center mt-05">
+              <button className={`btn btn-3d btn-block px-0 ${'display-'+linearBg()}`} onClick={() => UploadVideo('upload_img')}>上傳婚紗照</button>
               <input hidden disabled={false} name="file" type="file" id="upload_img" accept="image/png, image/jpeg" onChange={() => fileUpload('upload_img')} />
-            </Col>
-          </div>
+            </div>
 
-          {orderInfo.LeadingStatus === 9 ?
-          <div className="w-100 d-flex justify-content-center mt-05">
-            {isUpload !== 0 &&
-            <>
-              <Col xs={6}>
-                <button type="button" className="btn btn-3d btn-block" tabIndex="-1" onClick={() => handleGoBack()}>上ㄧ頁</button>
-              </Col>
-              <Col xs={6}>
-                <button type="button" className="btn btn-3d btn-block" tabIndex="-1" onClick={() => handleGoNext()}>下一步</button>
-              </Col>
-            </>
-            }
-          </div> :
-
-          <div className="w-100 d-flex justify-content-center mt-05">
-            {isUpload !== 0 &&
-            <Col xs={12}>
-              <button type="button" className="btn btn-3d btn-block" tabIndex="-1" onClick={() => handleGoNext()}>下一步</button>
-            </Col>
+          
+            {orderInfo.LeadingStatus === 9 ?
+              <div className="w-btn d-flex justify-content-center mt-05">
+                {isUpload !== 0 &&
+                <>
+                  <button type="button" className={`btn btn-3d btn-block ${'display-'+linearBg()}`} tabIndex="-1" onClick={() => handleGoBack()}>上ㄧ步</button>
+                  <button type="button" className={`btn btn-3d btn-block ${'display-'+linearBg()}`} tabIndex="-1" onClick={() => handleGoNext()}>下一步</button>
+                </>
+                }
+              </div> :
+              <div className="w-btn d-flex justify-content-center mt-05">
+                {isUpload !== 0 &&
+                  <button type="button" className={`btn btn-3d btn-block ${'display-'+linearBg()}`} tabIndex="-1" onClick={() => handleGoNext()}>下一步</button>
+                }
+              </div>
             }
           </div>
-          }
-        </nav>
+
+          <div className="nav-bottom d-flex justify-content-between">
+            <ul className="nav nav-bg">
+              {bgColor.map(item => 
+                <li key={item.name}>
+                  <button type="button" className={`btn btn-circle ${item.classes} ${item.id === activeBg ? 'active': ''}`} onClick={() => changeBg(item.id)}></button>
+                </li>
+              )}
+            </ul>
+
+            <ul className="nav nav-list">
+              {activeStep.map((item, index) => 
+                <li key={index}>
+                  <div className={`btn-list ${item ? 'btn-circle-'+ linearBg(): ''}`}></div>
+                </li>
+              )}
+            </ul>
+          </div>
+        </div>
       </section>
     </Fragment>
   );

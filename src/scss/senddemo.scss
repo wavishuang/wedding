@@ -1,0 +1,549 @@
+@import 'variable.scss';
+@import 'custom_modal.scss';
+
+@import '../css/formstyler/jquery.formstyler.css';
+@import '../css/formstyler/jquery.formstyler.theme.css';
+@import '../css/datepicker/jquery.datetimepicker.min.css';
+
+@import '../css/recaptcha.css';
+
+.carousel-inner {
+  margin-top: 37px;
+}
+
+.polaroid {
+  //box-shadow: 0 1rem 1.2rem rgba(0,0,0,0.6);
+  height: 100%;
+  text-align: center;
+  width: auto;
+  background-size: 77% 88%;
+  background-repeat: no-repeat;
+  background-position: center 50%;
+}
+
+.polaroid > img{
+  height: 100%;
+  object-fit: scale-down;
+  //border: 1vh #fff solid;
+  //border-bottom: 3vh #fff solid
+}
+
+.carousel-control {
+  padding-bottom: 10vh;
+
+  .svg-inline--fa.fa-w-10 {
+    width: 1.28125vw;
+    height: auto;
+  }
+
+  &.carousel-control-next, 
+  &.carousel-control-prev {
+    width: 6%;
+  }
+}
+      
+.sliderCheck {
+  border: dashed 4px #eb6383;
+}
+      
+.item {
+  text-align: center;
+  margin: 0 auto;
+  width: auto;
+  display: inline-block;
+  height: calc(100vh - 14.537vh - 56px - 37px); // 64vh;
+  //background: url(../images/phone-portrait.png) center top no-repeat;
+  //transform: scale(0.8, 0.8) rotate(-5deg);
+  transition: all 0.35s;
+
+  .polaroid {
+    &:before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      transition: all 0.35s;
+    }
+  }
+}
+
+.mt-05 {
+  margin-top: .5rem;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+/** 2021/10/23 */
+// 畫面中間 "WEDDING PASS" & "Step xxx"
+.wrapper-s {
+  position: relative;
+  padding-top: 0 !important;
+}
+
+.main-brand {
+  width: 20.82vw;
+  position: absolute;
+  top: 8.798vh;
+  left: 6.2vw;
+
+  .img-cover {
+    width: 100%;
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.pt-157 {
+  padding-top: 14.537vh;
+}
+
+.mbr-section-subtitle {
+  font-size: calc(40px * .65);
+  font-weight: 400;
+  color: #fff;
+  line-height: 56px;
+  margin-bottom: 0;
+}
+
+.btn {
+  &.display-4 {
+    font-size: calc(26px * .75);
+    box-shadow: 0px 2px 3px #00000029;
+    border-radius: 12px;
+    opacity: 0.84;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    height: 9.26vh;
+    width: 100%;
+  }
+
+  &.display-yellow {
+    background: $main_yellow 0% 0% no-repeat padding-box;
+    border: 1px solid $main_yellow;
+  }
+
+  &.display-blue {
+    background: $main_blue 0% 0% no-repeat padding-box;
+    border: 1px solid $main_blue;
+  }
+
+  &.display-red {
+    background: $main_red 0% 0% no-repeat padding-box;
+    border: 1px solid $main_red;
+  }
+
+  &.display-purple {
+    background: $main_purple;
+    border: 1px solid $main_purple;
+  }
+
+  &.btn-circle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    border-width: 1px;
+    line-height: 1;
+    margin-right: 18px;
+
+    &.btn-circle-yellow {
+      border-color: #E3D09B;
+      background-color: #E3D09B;
+    }
+
+    &.btn-circle-purple {
+      border-color: #C792CC;
+      background-color: #C792CC;
+    }
+
+    &.btn-circle-blue {
+      border-color: #63B1EE;
+      background-color: #63B1EE;
+    }
+
+    &.btn-circle-red {
+      border-color: $main_red;
+      background-color: $main_red;
+    }
+
+    &.active {
+      border-color: #0E0E0E;
+    }
+  }
+}
+
+// 下方 "版型樣式圓點" & "Step 圓點"
+.bottom-nav {
+  height: auto;
+  z-index: 2;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  flex-direction:column;
+  justify-content: space-between;
+
+  .step-btns {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    .w-btn {
+      width: 20vw; //23.698vw;
+      margin: 0 4.698vw 2.22vh 0; //0 8.698vw 2.22vh 0;
+
+      .btn-3d {
+        background: $main_red;
+        opacity: 0.84;
+        color: #fff;
+        font-size: calc(26px * .75);
+        padding: 0;
+        border-radius: 12px;
+        border: 0;
+        margin: 0 !important;
+        height: 7vh; //9.26vh;
+
+        &.display-yellow {
+          background: $main_yellow 0% 0% no-repeat padding-box;
+          border: 1px solid $main_yellow;
+        }
+      
+        &.display-blue {
+          background: $main_blue 0% 0% no-repeat padding-box;
+          border: 1px solid $main_blue;
+        }
+      
+        &.display-red {
+          background: $main_red 0% 0% no-repeat padding-box;
+          border: 1px solid $main_red;
+        }
+      
+        &.display-purple {
+          background: $main_purple;
+          border: 1px solid $main_purple;
+        }
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .nav-bottom {
+    height: 7.59vh;
+    margin-top: 5.37vh;
+  }
+
+  .nav-bg {
+    padding-left: 3.73vw;
+  
+    li {
+      line-height: 1;
+  
+      &:last-child {
+        .btn {
+          margin: 0;
+        }
+      }
+    }
+  }
+  
+  .nav-list {
+    width: 20vw; //23.698vw;
+    margin-right: 4.698vw; //8.698vw;
+    display: flex;
+    justify-content: center;
+  
+    li {
+      line-height: 1;
+  
+      &:last-child {
+        .btn-list {
+          margin: 0;
+        }
+      }
+    }
+  }
+  
+  .btn-list {
+    width: 15px; //18px;
+    height: 15px; //18px;
+    border-color: #FFF;
+    background-color: #FFF;
+    margin-right: 12px; //18px; //27px;
+    border-radius: 50%;
+  
+    &.btn-circle-yellow {
+      border-color: #E3D09B;
+      background-color: #E3D09B;
+    }
+  
+    &.btn-circle-purple {
+      border-color: #C792CC;
+      background-color: #C792CC;
+    }
+  
+    &.btn-circle-blue {
+      border-color: #63B1EE;
+      background-color: #63B1EE;
+    }
+  
+    &.btn-circle-red {
+      border-color: $main_red;
+      background-color: $main_red;
+    }
+  }
+}
+
+// 下方 "版型樣式圓點" & "Step 圓點"
+.swal2-html-container {
+  width: auto;
+  margin: 0 !important;
+  padding: 0;
+}
+
+.swal2-popup {
+  border-radius: 28px !important;
+  //background: url(../images/modal/bottom_sheet_modal_venue-red.png) left top no-repeat;
+}
+
+.bg-img {
+  width: 600px !important;
+  height: 483px;
+  padding-bottom: 0 !important; 
+}
+
+.modal-dialog {
+  max-width: 35.9375vw;
+}
+
+.modal-yellow {
+  .modal-content {
+    background-image: url(../images/modal/bottom_sheet_modal_venue-yellow.png);
+  }
+
+  .modal-header.display-5,
+  .modal-body.title-text {
+    color: $main_yellow;
+  }
+
+  .modal-body {
+    .form-control,
+    .btn-3d {
+      background: $main_yellow;
+    }
+  }
+}
+
+.modal-red {
+  .modal-content {
+    background-image: url(../images/modal/bottom_sheet_modal_venue-red.png);
+  }
+
+  .modal-header.display-5,
+  .modal-body.title-text {
+    color: $main_red;
+  }
+
+  .modal-body {
+    .form-control,
+    .btn-3d {
+      background: $main_red;
+    }
+  }
+}
+
+.modal-blue {
+  .modal-content {
+    background-image: url(../images/modal/bottom_sheet_modal_venue-blue.png);
+  }
+
+  .modal-header.display-5,
+  .modal-body.title-text {
+    color: $main_blue;
+  }
+
+  .modal-body {
+    .form-control,
+    .btn-3d {
+      background: $main_blue;
+    }
+  }
+}
+
+.modal-purple {
+  .modal-content {
+    background-image: url(../images/modal/bottom_sheet_modal_venue-purple.png);
+  }
+
+  .modal-header.display-5,
+  .modal-body.title-text {
+    color: $main_purple;
+  }
+
+  .modal-body {
+    .form-control,
+    .btn-3d {
+      background: $main_purple;
+    }
+  }
+}
+
+.modal-content {
+  width: 35.9375vw;
+  height: 42.29vw;
+  
+  background-size: cover;
+  border-radius: 27px;
+
+  .modal-header {
+    position: relative;
+    padding: 0;
+
+    /*.display-5 {
+      font-size: 1.61458vw;
+      line-height: 2.23958vw;
+    }*/
+
+    .header-bg {
+      padding: 4.61vw 0 2.22vw;
+      width: 36.1%;
+      img {
+        width: 100%;
+      }
+    }
+      
+    .close {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      margin: 0;
+    }
+  }
+
+  .modal-body {
+    padding: 0 0 4.427vw;
+    width: 26.6145vw;
+    margin: 0 auto;
+
+    .title-text {
+      font-size: 1.61458vw;
+      line-height: 2.23958vw;
+      margin: 0;
+    }
+
+    form {
+      margin: 1.927vw 0 0;
+
+      .label-text {
+        font-size: 1.458vw;
+        line-height: 2.03125vw;
+        color: #8D8D8D;
+        margin-bottom: 0.677vw;
+      }
+
+      .form-group {
+        margin-bottom: 0;
+      }
+
+      .form-control {
+        font-size: 1.458vw;
+        padding: 0 0 0 2.03125vw;
+        height: 4.3229vw;
+        line-height: 1;
+        min-height: initial;
+        color: #fff;
+        margin-bottom: 2.1875vw;
+        border-radius: 7px;
+        opacity: 0.71;
+
+      }
+
+      .btn-3d {
+        font-size: 1.458vw;
+        border-width: 0;
+        height: 4.3229vw;
+        border-radius: 7px;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+@media (min-width: 1281px) {
+  .mbr-section-subtitle {
+    font-size: calc(40px * .75);
+  }
+
+  .bottom-nav .step-btns {
+    .w-btn {
+      width: 20vw;
+      margin-right: 4.698vw;
+
+      .btn-3d {
+        font-size: calc(26px * .75);
+        height: 7vh;
+      }
+    }
+  }
+
+  .bottom-nav {
+    .nav-list {
+      width: 20vw;
+      margin-right: 4.698vw;
+    }
+
+    .btn-list {
+      width: 18px;
+      height: 18px;
+      margin-right: 18px;
+    }
+  }
+
+  .btn.btn-circle {
+    width: 21px;
+    height: 21px;
+    margin-right: 21px;
+  }
+}
+
+@media (min-width: 1541px) {
+  .mbr-section-subtitle {
+    font-size: 36px;
+  }
+
+  .bottom-nav .step-btns {
+    .w-btn {
+      width: 23.698vw;
+      margin-right: 8.698vw;
+
+      .btn-3d {
+        font-size: 26px;
+        height: 9.26vh;
+      }
+    }
+  }
+
+  .bottom-nav {
+    .nav-list {
+      width: 23.698vw;
+      margin-right: 8.698vw;
+    }
+
+    .btn-list {
+      margin-right: 27px;
+    }
+  }
+}
+
+@media (min-width: 1680px) {
+  .mbr-section-subtitle {
+    font-size: 40px;
+  }
+}

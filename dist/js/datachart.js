@@ -24271,7 +24271,19 @@ var systemInstance = axios_default().create({
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
   }
-});
+}); // Step 3: 新人名字
+
+var api_update_name = function api_update_name(formData) {
+  return weddingInstance.post('/UpdateName', formData);
+}; // Step 4: 婚禮日期
+
+var api_update_date = function api_update_date(formData) {
+  return weddingInstance.post('/UpdateDate', formData);
+}; // Step 5: 婚禮地點
+
+var api_update_location = function api_update_location(formData) {
+  return weddingInstance.post('/UpdateLocation', formData);
+};
 /** 驗證 api */
 // 取得簡訊驗證碼
 
@@ -49621,7 +49633,7 @@ module.exports = function (urlString) {
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1633047216033
+      // 1635808516523
       var cssReload = __webpack_require__(47134)(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -49637,7 +49649,7 @@ module.exports = function (urlString) {
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1633047215513
+      // 1635808516026
       var cssReload = __webpack_require__(47134)(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -54385,7 +54397,7 @@ if (typeof this !== 'undefined' && this.Sweetalert2){  this.swal = this.sweetAle
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	!function() {
-/******/ 		__webpack_require__.h = function() { return "046b624d4485dfed042d"; }
+/******/ 		__webpack_require__.h = function() { return "a14cd58ec5619942c0ae"; }
 /******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
