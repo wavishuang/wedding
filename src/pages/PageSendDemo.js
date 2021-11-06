@@ -175,7 +175,7 @@ const PageSendDemo = function() {
 
     setTimeout(() => {
       MySwal.fire({
-        html: <PopBgIcon theme={theme} type="send-mms-success" icon="error" />,
+        html: <PopBgIcon theme={theme} type="send-mms-success" icon="success" />,
         customClass: {
           popup: `bg-img mms-success bg-${linearBg()}`,
         },
@@ -297,45 +297,7 @@ const PageSendDemo = function() {
               closeOnConfirm: true
             }).then((result) => {
               if (result.isConfirmed) {
-                MySwal.fire({
-                  html: <PopStepImg theme={theme} type="line" />,
-                  customClass: {
-                    popup: `bg-img wedding-regist-next bg-${linearBg()}`,
-                  },
-                  showCancelButton: false,
-                  confirmButtonText: "下一頁",
-                  closeOnConfirm: true
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    MySwal.fire({
-                      html: <PopStepImg theme={theme} type="pic4" />,
-                      customClass: {
-                        popup: `bg-img wedding-regist-next2 bg-${linearBg()}`,
-                      },
-                      showCancelButton: false,
-                      confirmButtonText: "開始使用 WEDDING-PASS婚禮報到",
-                      closeOnConfirm: true
-                    }).then((result) => {
-                      if (result.isConfirmed) {
-                        MySwal.fire({
-                          html: <SendCongratulations theme={theme} />,
-                          customClass: {
-                            popup: `bg-img wedding-regist-next bg-${linearBg()}`,
-                          },
-                          showCancelButton: false,
-                          confirmButtonText: "下一頁",
-                          closeOnConfirm: true
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-                            console.log('SendCongratulations')
-                            //MySwal.close();
-                            //setMailModalShow(true);
-                          }
-                        });
-                      }
-                    });
-                  }
-                });
+                goNextAnalyze();
               }
             });
           } else {
@@ -427,36 +389,6 @@ const PageSendDemo = function() {
             });
           }
         });
-        /*
-        MySwal.fire({
-          html: <PopStepImg theme={theme} type="line4" />,
-          customClass: {
-            popup: `bg-img wedding-regist-next2 bg-${linearBg()}`,
-          },
-          showCancelButton: false,
-          confirmButtonText: "開始使用 WEDDING-PASS婚禮報到",
-          closeOnConfirm: true
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // 下一步 WEDDING-PASS 婚禮報到：
-            MySwal.fire({
-              html: <SendCongratulations theme={theme} />,
-              customClass: {
-                popup: `bg-img wedding-regist-next bg-${linearBg()}`,
-              },
-              showCancelButton: false,
-              confirmButtonText: "下一頁",
-              closeOnConfirm: true
-            }).then((result) => {
-              if (result.isConfirmed) {
-                console.log('SendCongratulations')
-                //MySwal.close();
-                //setMailModalShow(true);
-              }
-            });
-          }
-        });
-        */
       }
     });
   }
