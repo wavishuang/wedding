@@ -9,15 +9,14 @@ const MySwal = withReactContent(Swal);
 import { check_token } from '../actions/actionAuth';
 
 import Loading from '../components/Loading';
-import SendLocation from '../components/SendLocation';
-import SendVenueLoading from '../components/SendVenueLoading';
+import PopBgIcon from '../components/PopBgIcon';
+import PopImg from '../components/PopImg';
 
 import '../scss/base.scss';
 import '../scss/location.scss';
+import '../scss/sswal.scss';
 
 import BrandImg from '../images/logo_b-2x.png';
-
-import ApiCaller from '../utils/ApiCaller';
 
 import { 
   api_update_location
@@ -104,14 +103,12 @@ const PageLocation = function() {
     setWeddingLocation(val);
   }
 
-  // step1: 輸入完手機號碼後登入
-  // step3: 輸入完 "新娘姓名" & "新郎姓名"
   const NextStep = () => {
     const theme = linearBg();
 
     if (weddingLocation == '') {
       MySwal.fire({
-        html: <SendLocation theme={theme} />,
+        html: <PopBgIcon theme={theme} type="location" icon="info" />,
         customClass: {
           popup: `bg-img new-comer bg-${linearBg()}`,
         },
@@ -125,11 +122,11 @@ const PageLocation = function() {
         }
       });
     } else {
+      // 婚宴準備中
       MySwal.fire({
-        //title: "婚禮準備中",
-        html: <SendVenueLoading theme={theme} />,
+        html: <PopImg theme={theme} type="venue-loading" />,
         customClass: {
-          popup: `bg-img`,
+          popup: 'bg-img venue-loading',
         },
         showConfirmButton: false,
         showCancelButton: false,

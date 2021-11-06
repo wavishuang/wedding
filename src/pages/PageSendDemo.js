@@ -10,6 +10,9 @@ import withReactContent from 'sweetalert2-react-content'
 
 import ButtonModalClose from '../components/ButtonModalClose';
 import Loading from '../components/Loading';
+import PopImg from '../components/PopImg';
+import PopBgIcon from '../components/PopBgIcon';
+import PopStepImg from '../components/PopStepImg';
 
 import { _uuid } from '../utils/tools';
 import { 
@@ -21,6 +24,8 @@ import {
 
 import '../scss/base.scss';
 import '../scss/senddemo.scss';
+import '../scss/sswal.scss';
+import '../scss/smodal.scss';
 
 //import BrandImg from '../images/logo_b-2x.png';
 
@@ -138,24 +143,53 @@ const PageSendDemo = function() {
     MySwal.close();
   }
 
+  const handleGroomEmail = (e) => {
+    const val = e.target.value;
+    setGroomEmail(val);
+  }
+
+  const handleBrideEmail = (e) => {
+    const val = e.target.value;
+    setBrideEmail(val);
+  }
+
   // MMS Modal
   const [modalMMSShow, setMMSModalShow] = useState(false);
 
-  // send MMS
+  // send MMS(發送中請稍候)
   const sendMMSSample = () => {
     console.log('send mms');
-    setMailModalShow(false);
+    const theme = linearBg();
+
+    setMMSModalShow(false);
+
+    // 發送中，請稍候
     MySwal.fire({
-      title: "發送中，請稍候",
-      html: <Loading />,
+      html: <PopImg theme={theme} type="send-loading" />,
       customClass: {
-        popup: 'bg-white'
+        popup: 'bg-img send-loading',
       },
       showConfirmButton: false,
       showCancelButton: false,
-      confirmButtonColor: "#713f94",
     });
 
+    setTimeout(() => {
+      MySwal.fire({
+        html: <PopBgIcon theme={theme} type="send-mms-success" icon="error" />,
+        customClass: {
+          popup: `bg-img mms-success bg-${linearBg()}`,
+        },
+        showCancelButton: false,
+        confirmButtonText: "下一步",
+        closeOnConfirm: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setFakeSendMMS(false);
+        }
+      });
+    }, 2000);
+
+    /*
     setTimeout(() => {
       const formData = new FormData();
       formData.append('SToken', SToken);
@@ -168,21 +202,39 @@ const PageSendDemo = function() {
 
         if(res.data && res.data.Msg === 'OK') {
           MySwal.fire({
-            title: "發送成功",
-            text: "WEDDING-PASS 已經將測試的婚禮邀請函發送至您手機簡訊信箱!",
-            icon: "success"
-          }).then(() => {
-            console.log('success');
-            MySwal.close();
-            setMailModalShow(true);
+            html: <PopBgIcon theme={theme} type="send-mms-success" icon="success" />,
+            customClass: {
+              popup: `bg-img mms-success bg-${linearBg()}`,
+            },
+            showCancelButton: false,
+            confirmButtonText: "下一步",
+            closeOnConfirm: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              MySwal.close();
+              setMailModalShow(true);
+            }
           });
         } else {
-          MySwal.fire("發送失敗", data.Msg, "error");
+          MySwal.fire({
+            html: <PopBgIcon theme={theme} type="send-mms-error" icon="error" />,
+            customClass: {
+              popup: `bg-img mms-error bg-${linearBg()}`,
+            },
+            showCancelButton: false,
+            confirmButtonText: "確認",
+            closeOnConfirm: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log('error confirm');
+            }
+          });
         }
       }
 
       sendmms();
     }, 500);
+    */
   }
 
   // Mail Modal
@@ -192,17 +244,37 @@ const PageSendDemo = function() {
   const sendMailSample = () => {
     console.log('send email');
     setMailModalShow(false);
+
+    const theme = linearBg();
+    
+    // 發送中，請稍候
     MySwal.fire({
-      title: "發送中，請稍候",
-      html: <Loading />,
+      html: <PopImg theme={theme} type="send-loading" />,
       customClass: {
-        popup: 'bg-white'
+        popup: 'bg-img send-loading',
       },
       showConfirmButton: false,
       showCancelButton: false,
-      confirmButtonColor: "#713f94",
     });
 
+    setTimeout(() => {
+      MySwal.fire({
+        html: <PopBgIcon theme={theme} type="send-mail-success" icon="success" />,
+        customClass: {
+          popup: `bg-img mail-success bg-${linearBg()}`,
+        },
+        showCancelButton: false,
+        confirmButtonText: "下一步",
+        closeOnConfirm: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // 下一步 WEDDING-PASS 婚禮報到：婚禮結束後 賓客感謝函發送與賓客資料統計
+          goNextAnalyze();
+        }
+      });
+    }, 2000);
+
+    /*
     setTimeout(() => {
       const formData = new FormData();
       formData.append('SToken', SToken);
@@ -210,26 +282,186 @@ const PageSendDemo = function() {
       formData.append('GroomEmail', groomEmail);
       formData.append('BrideEmail', brideEmail);
 
-      const sendemail = async () => {
-        const res = await api_send_email_demo_edm(formData);
-
-        if(res.data && res.data.Msg === 'OK') {
-          MySwal.fire({
-            title: "發送成功",
-            text: "WEDDING-PASS 已經將測試的婚禮邀請函發送至您跟另一半的信箱!",
-            icon: "success"
-          }).then(() => {
-            location.href = "main.html";
-          });
-        } else {
-          MySwal.fire("發送失敗", data.Msg, "error");
+      try {
+        const sendemail = async () => {
+          const res = await api_send_email_demo_edm(formData);
+  
+          if(res.data && res.data.Msg === 'OK') {
+            MySwal.fire({
+              html: <PopBgIcon theme={theme} type="send-mail-success" icon="success" />,
+              customClass: {
+                popup: `bg-img mail-success bg-${linearBg()}`,
+              },
+              showCancelButton: false,
+              confirmButtonText: "下一步",
+              closeOnConfirm: true
+            }).then((result) => {
+              if (result.isConfirmed) {
+                MySwal.fire({
+                  html: <PopStepImg theme={theme} type="line" />,
+                  customClass: {
+                    popup: `bg-img wedding-regist-next bg-${linearBg()}`,
+                  },
+                  showCancelButton: false,
+                  confirmButtonText: "下一頁",
+                  closeOnConfirm: true
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    MySwal.fire({
+                      html: <PopStepImg theme={theme} type="pic4" />,
+                      customClass: {
+                        popup: `bg-img wedding-regist-next2 bg-${linearBg()}`,
+                      },
+                      showCancelButton: false,
+                      confirmButtonText: "開始使用 WEDDING-PASS婚禮報到",
+                      closeOnConfirm: true
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        MySwal.fire({
+                          html: <SendCongratulations theme={theme} />,
+                          customClass: {
+                            popup: `bg-img wedding-regist-next bg-${linearBg()}`,
+                          },
+                          showCancelButton: false,
+                          confirmButtonText: "下一頁",
+                          closeOnConfirm: true
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            console.log('SendCongratulations')
+                            //MySwal.close();
+                            //setMailModalShow(true);
+                          }
+                        });
+                      }
+                    });
+                  }
+                });
+              }
+            });
+          } else {
+            MySwal.fire({
+              html: <PopBgIcon theme={theme} type="send-mail-error" icon="error" />,
+              customClass: {
+                popup: `bg-img mail-error bg-${linearBg()}`,
+              },
+              showCancelButton: false,
+              confirmButtonText: "確認",
+              closeOnConfirm: true
+            }).then((result) => {
+              if (result.isConfirmed) {
+                console.log('error confirm');
+              }
+            });
+          }
+          console.log(res);
         }
-        console.log(res);
+  
+        sendemail();
+      } catch(e) {
+        console.log(e);
       }
-
-      sendemail();
+      
     }, 500);
+    */
   }
+
+  // 下一步 WEDDING-PASS 婚禮報到：婚禮結束後 賓客感謝函發送與賓客資料統計
+  const goNextAnalyze = () => {
+    const theme = linearBg();
+    MySwal.fire({
+      html: <PopStepImg theme={theme} type="line" />,
+      customClass: {
+        popup: `bg-img wedding-regist-next bg-${linearBg()}`,
+      },
+      showCancelButton: false,
+      confirmButtonText: "下一頁",
+      closeOnConfirm: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // 下一步 WEDDING-PASS 婚禮報到：希望可以讓您們在婚禮籌備上 多一點幸福，少一點煩惱
+        MySwal.fire({
+          html: <PopStepImg theme={theme} type="pic4" />,
+          customClass: {
+            popup: `bg-img wedding-regist-next2 bg-${linearBg()}`,
+          },
+          showCancelButton: false,
+          confirmButtonText: "開始使用 WEDDING-PASS婚禮報到",
+          closeOnConfirm: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            MySwal.fire({
+              html: <PopStepImg theme={theme} type="congratulations" />,
+              customClass: {
+                popup: `bg-img congratulations bg-${linearBg()}`,
+              },
+              showCancelButton: false,
+              confirmButtonText: "下一頁",
+              closeOnConfirm: true
+            }).then((result) => {
+              if (result.isConfirmed) {
+                MySwal.fire({
+                  html: <PopStepImg theme={theme} type="provide" />,
+                  customClass: {
+                    popup: `bg-img provide bg-${linearBg()}`,
+                  },
+                  showCancelButton: false,
+                  confirmButtonText: "下一頁",
+                  closeOnConfirm: true
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    MySwal.fire({
+                      html: <PopStepImg theme={theme} type="sweet" />,
+                      customClass: {
+                        popup: `bg-img sweet bg-${linearBg()}`,
+                      },
+                      showCancelButton: false,
+                      confirmButtonText: "下一頁",
+                      closeOnConfirm: true
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                      }
+                    });
+                  }
+                });
+              }
+            });
+          }
+        });
+        /*
+        MySwal.fire({
+          html: <PopStepImg theme={theme} type="line4" />,
+          customClass: {
+            popup: `bg-img wedding-regist-next2 bg-${linearBg()}`,
+          },
+          showCancelButton: false,
+          confirmButtonText: "開始使用 WEDDING-PASS婚禮報到",
+          closeOnConfirm: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // 下一步 WEDDING-PASS 婚禮報到：
+            MySwal.fire({
+              html: <SendCongratulations theme={theme} />,
+              customClass: {
+                popup: `bg-img wedding-regist-next bg-${linearBg()}`,
+              },
+              showCancelButton: false,
+              confirmButtonText: "下一頁",
+              closeOnConfirm: true
+            }).then((result) => {
+              if (result.isConfirmed) {
+                console.log('SendCongratulations')
+                //MySwal.close();
+                //setMailModalShow(true);
+              }
+            });
+          }
+        });
+        */
+      }
+    });
+  }
+
+  const [fakeSendMMS, setFakeSendMMS] = useState(true);
 
   return (
     <Fragment>
@@ -265,10 +497,14 @@ const PageSendDemo = function() {
         <div className="w-100 bottom-nav">
           <div className="step-btns">
             <div className="w-btn d-flex justify-content-center mt-05">
-              {orderInfo.LeadingStatus === 6 
+            {fakeSendMMS 
+            ? <a className={`btn btn-3d btn-block px-0 text-light  ${'display-'+linearBg()}`} onClick={() => setMMSModalShow(true)}>測試發送邀請函</a>
+            : <a className={`btn btn-3d btn-block px-0 text-light  ${'display-'+linearBg()}`} onClick={() => setMailModalShow(true)}>測試發送邀請函</a>
+            }
+              {/*orderInfo.LeadingStatus === 6 
                 ? <a className={`btn btn-3d btn-block px-0 text-light  ${'display-'+linearBg()}`} onClick={() => setMMSModalShow(true)}>測試發送邀請函</a>
                 : <a className={`btn btn-3d btn-block px-0 text-light  ${'display-'+linearBg()}`} onClick={() => setMailModalShow(true)}>測試發送邀請函</a>
-              }
+              */}
             </div>
           </div>
 
@@ -297,7 +533,6 @@ const PageSendDemo = function() {
           <div className="header-bg">
             <img src="../images/modal/picture_1-2x.png" alt="測試:MMS手機圖文簡訊邀請函發送" title="測試:MMS手機圖文簡訊邀請函發送" />
           </div>
-          {/*<Modal.Title className="mbr-fonts-style display-5">測試:MMS手機圖文簡訊邀請函發送</Modal.Title>*/}
           <ButtonModalClose handleModalClose={() => setMMSModalShow(false)} />
         </Modal.Header>
         <Modal.Body>
@@ -315,30 +550,27 @@ const PageSendDemo = function() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={modalMailShow} onHide={() => setMailModalShow(false)} centered>
-        <Modal.Header>
-          <Modal.Title className="mbr-fonts-style display-5">測試：Email 電子邀請函發送</Modal.Title>
+      <Modal show={modalMailShow} className={`modal-mail-test ${'modal-'+linearBg()}`} onHide={() => setMailModalShow(false)} centered>
+        <Modal.Header className="d-flex flex-column align-items-center">
+          <div className="header-bg">
+            <img src="../images/modal/picture_email_test.png" alt="測試：Email 電子邀請函發送" title="測試：Email 電子邀請函發送" />
+          </div>
+          {/*<Modal.Title className="mbr-fonts-style display-5">測試：Email 電子邀請函發送</Modal.Title>*/}
           <ButtonModalClose handleModalClose={() => setMailModalShow(false)} />
         </Modal.Header>
         <Modal.Body>
-          <form className="mbr-form form-with-styler">
-            <div className="dragArea row">
-              <div className="col form-group">
-                <label>新娘Mail</label>
-                <input type="email" placeholder="新娘Mail" className="form-control display-7" value={groomEmail} disabled={orderInfo.LeadingStatus === 9} />
-              </div>
+          <h2 className="title-text text-center">測試:Email電子邀請函發送</h2>
+          <form className="mbr-form form-with-styler d-flex flex-column justify-content-space-between">
+            <div className="form-group">
+              <label className="label-text">新娘Mail</label>
+              <input type="email" placeholder="新娘Mail" className="form-control display-7" value={groomEmail} disabled={orderInfo.LeadingStatus === 9} onChange={(e) => handleGroomEmail(e)} />
             </div>
-            <div className="dragArea row">
-              <div className="col form-group">
-                <label>新郎Mail</label>
-                <input type="email" placeholder="新郎Mail" required="required" className="form-control display-7" value={brideEmail} disabled={orderInfo.LeadingStatus === 9} />
-                <small className="text-main-color fw-600">WEDDING-PASS 婚禮報到<br />會將您選擇的這一張電子邀請函<br />發送至您跟另一半的 Email信箱<br />常用手機收發Email的賓客會是一個很好的選擇。</small>
-              </div>
+            <div className="form-group mt-43">
+              <label className="label-text">新郎Mail</label>
+              <input type="email" placeholder="新郎Mail" required="required" className="form-control display-7" value={brideEmail} disabled={orderInfo.LeadingStatus === 9} onChange={(e) => handleBrideEmail(e)} />
             </div>
-            <div className="text-center">
-              <div className="col-auto">
-                <button type="button" onClick={() => sendMailSample()} className="btn btn-3d rounded-sm">測試發送</button>
-              </div>
+            <div className="text-center w-100">
+              <button type="button" onClick={() => sendMailSample()} className="btn btn-3d btn-block">測試發送</button>
             </div>
           </form>
         </Modal.Body>

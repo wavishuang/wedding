@@ -4,10 +4,12 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal);
 
-import SendProcessing from '../components/SendProcessing';
+import PopImg from '../components/PopImg';
 
 import '../scss/base.scss';
 import '../scss/start.scss';
+import '../scss/sswal.scss';
+
 import BrandImg from '../images/logo_b-2x.png';
 
 import ApiCaller from '../utils/ApiCaller';
@@ -21,13 +23,6 @@ const PageStart = function() {
   const inputRef5 = useRef(null);
   const inputRef6 = useRef(null);
   const inputSubmit = useRef(null);
-
-  /*
-  useEffect(() => {
-    setSendSMS(true);
-    setActiveStep([false, true, false, false, false, false, false]);
-  }, []);
-  */
 
   /**
    * 版面樣式
@@ -87,14 +82,15 @@ const PageStart = function() {
 
   // step1: 輸入完手機號碼後登入
   const Login = () => {
+    console.log('login');
     const theme = linearBg();
     console.log("theme:", theme);
 
+    // "簡訊發送中",
     MySwal.fire({
-      // title: "驗證簡訊發送中",
-      html: <SendProcessing theme={theme} />,
+      html: <PopImg theme={theme} type={'sendsms'} />,
       customClass: {
-        popup: 'bg-img',
+        popup: 'bg-img sendsms',
       },
       showConfirmButton: false,
       showCancelButton: false,
@@ -118,15 +114,6 @@ const PageStart = function() {
       });
     }, 500);
   }
-
-  /**
-   * Step2: 輸入 & 簡訊驗證碼
-   
-  useEffect(() => {
-    setSendSMS(true);
-    setActiveStep([false, true, false, false, false, false, false]);
-  }, []);
-  */
   
   const [singleSms, setSingleSms] = useState(
     ['', '', '', '', '', '']
@@ -181,7 +168,9 @@ const PageStart = function() {
   */
 
   // 簡訊驗證
-  const CheckLogin = () => {
+  const validationkSMS = () => {
+    console.log('簡訊驗證');
+
     let checkSMS = '';
     let errorFlag = false;
     singleSms.map(w => {
@@ -198,11 +187,11 @@ const PageStart = function() {
 
     const theme = linearBg();
 
+    // 處理中
     MySwal.fire({
-      //title: "簡訊驗證中",
-      html: <SendProcessing theme={theme} />,
+      html: <PopImg theme={theme} type="loading" />,
       customClass: {
-        popup: 'bg-img',
+        popup: 'bg-img loading',
       },
       showConfirmButton: false,
       showCancelButton: false,
@@ -273,7 +262,7 @@ const PageStart = function() {
                       <input ref={inputRef6} type="tel" maxLength="1" className="form-control display-7 sms-num" value={singleSms[5]} onChange={(e) => handleSignleSMS(e, 5)} onKeyUp={(e) => handleNextSMS(e, 6)} />
                     </div>
                     <div className="input-group-btn mbr-section-btn text-center mt-2-rem">
-                      <button ref={inputSubmit} type="button" className={`btn display-4 ${'display-'+linearBg()}`} onClick={() => CheckLogin()}>請輸入簡訊驗證碼</button>
+                      <button ref={inputSubmit} type="button" className={`btn display-4 ${'display-'+linearBg()}`} onClick={() => validationkSMS()}>請輸入簡訊驗證碼</button>
                     </div>
                   </Fragment>
                   ) : (

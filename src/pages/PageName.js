@@ -9,11 +9,13 @@ const MySwal = withReactContent(Swal);
 import { check_token } from '../actions/actionAuth';
 
 import Loading from '../components/Loading';
-import SendNewComer from '../components/SendNewComer';
-import LoadProcessing from '../components/LoadProcessing';
+
+import PopBgIcon from '../components/PopBgIcon';
+import PopImg from '../components/PopImg';
 
 import '../scss/base.scss';
 import '../scss/name.scss';
+import '../scss/sswal.scss';
 
 import BrandImg from '../images/logo_b-2x.png';
 
@@ -26,8 +28,6 @@ import IconBrideYellow from '../images/icon/icon_bride-yellow.png';
 import IconBridePurple from '../images/icon/icon_bride-purple.png';
 import IconBrideBlue from '../images/icon/icon_bride-blue.png';
 import IconBrideRed from '../images/icon/icon_bride-red.png';
-
-import ApiCaller from '../utils/ApiCaller';
 
 import { 
   api_update_name
@@ -127,7 +127,7 @@ const PageName = function() {
 
     if (brideName == '' && groomName == '') {
       MySwal.fire({
-        html: <SendNewComer theme={theme} />,
+        html: <PopBgIcon theme={theme} type="new-comer" icon="info" />,
         customClass: {
           popup: `bg-img new-comer bg-${linearBg()}`,
         },
@@ -142,11 +142,11 @@ const PageName = function() {
         }
       });
     } else {
+      // 處理中
       MySwal.fire({
-        //title: "處理中請稍候",
-        html: <LoadProcessing theme={theme} />,
+        html: <PopImg theme={theme} type="loading" />,
         customClass: {
-          popup: 'bg-img',
+          popup: 'bg-img loading',
         },
         showConfirmButton: false,
         showCancelButton: false,

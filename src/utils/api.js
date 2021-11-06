@@ -22,7 +22,7 @@ const systemUrl = 'http://backend.wedding-pass.com/WebService_System_Ryan.asmx';
 
 const weddingInstance = axios.create({
   baseURL: weddingUrl,
-  timeout: 8000,
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
   }

@@ -301,24 +301,6 @@
   }
 }
 
-// 下方 "版型樣式圓點" & "Step 圓點"
-.swal2-html-container {
-  width: auto;
-  margin: 0 !important;
-  padding: 0;
-}
-
-.swal2-popup {
-  border-radius: 28px !important;
-  //background: url(../images/modal/bottom_sheet_modal_venue-red.png) left top no-repeat;
-}
-
-.bg-img {
-  width: 600px !important;
-  height: 483px;
-  padding-bottom: 0 !important; 
-}
-
 @media (min-width: 1281px) {
   .mbr-section-subtitle {
     font-size: calc(40px * .75);

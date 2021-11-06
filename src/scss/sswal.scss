@@ -1,0 +1,375 @@
+/**
+  簡訊發送中： 602*485
+  處理中請稍候：600*483
+  輸入新人名稱：530*596.12
+*/
+@import 'variable.scss';
+
+.swal2-html-container {
+  width: auto;
+  margin: 0 !important;
+  padding: 0;
+
+  // 輸入新人姓名
+  .modal-send-comer {
+    p {
+      font-size: 28px; 
+      padding-top: 45px;
+    }
+  }
+}
+
+.swal2-popup {
+  border-radius: 28px !important;
+}
+
+.bg-img {
+  width: auto !important;
+  padding-bottom: 0 !important;
+
+  .swal2-actions {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &.new-comer {
+    width: 530px !important;
+    height: 596.12px;
+    padding-bottom: 69px !important;
+
+    // 預設 button
+    .swal2-styled {
+      margin: 0 0 16px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &.swal2-confirm,
+      &.swal2-cancel {
+        font-size: 21px;
+        width: 352px;
+        height: 63px;
+        border-radius: 7px;
+      }
+
+      &.swal2-confirm {
+        border: 0;
+      }
+
+      &.swal2-cancel {
+        &:hover {
+          background: #fff;
+        }
+      }
+    }
+
+    &.bg-blue {
+      background: url(../images/modal/bottom_sheet_modal_venue-blue.png) left top no-repeat;
+      
+      .swal2-styled {
+        &.swal2-confirm {
+          background-color: $main_blue !important;
+        }
+
+        &.swal2-cancel {
+          background-color: #fff;
+          border: 1px solid $main_blue;
+          color: $main_blue;
+        }
+      }
+
+      p {
+        color: $main_blue;
+      }
+    }
+
+    &.bg-red {
+      background: url(../images/modal/bottom_sheet_modal_venue-red.png) left top no-repeat;
+
+      .swal2-styled {
+        &.swal2-confirm {
+          background-color: $main_red !important;
+        }
+
+        &.swal2-cancel {
+          background-color: #fff;
+          border: 1px solid $main_red;
+          color: $main_red;
+        }
+      }
+
+      p {
+        color: $main_red;
+      }
+    }
+
+    &.bg-yellow {
+      background: url(../images/modal/bottom_sheet_modal_venue-yellow.png) left top no-repeat;
+
+      .swal2-styled {
+        &.swal2-confirm {
+          background-color: $main_yellow !important;
+        }
+
+        &.swal2-cancel {
+          background-color: #fff;
+          border: 1px solid $main_yellow;
+          color: $main_yellow;
+        }
+      }
+
+      p {
+        color: $main_yellow;
+      }
+    }
+
+    &.bg-purple {
+      background: url(../images/modal/bottom_sheet_modal_venue-purple.png) left top no-repeat;
+
+      .swal2-styled {
+        &.swal2-confirm {
+          background-color: $main_purple !important;
+        }
+
+        &.swal2-cancel {
+          background-color: #fff;
+          border: 1px solid $main_purple;
+          color: $main_purple;
+        }
+      }
+
+      p {
+        color: $main_purple;
+      }
+    }
+  }
+
+  &.mms-test {
+    width: 591px !important;
+    height: 476px;
+  }
+
+  &.mms-success,
+  &.mms-error,
+  &.mail-success,
+  &.mail-error {
+    width: 569px !important;
+    height: 609px;
+    padding-bottom: 67px !important;
+
+    .swal2-styled {
+      margin: 0 0 16px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &.swal2-confirm {
+        font-size: 22px;
+        width: 196px;
+        height: 67px;
+        border-radius: 7px;
+        margin-bottom: 0;
+        border: 0;
+        font-weight: 400;
+      }
+
+      &.swal2-cancel {
+        &:hover {
+          background: #fff;
+        }
+      }
+    }
+
+    &.bg-blue {
+      background: #fff url(../images/modal/bottom_sheet_modal_venue-blue.png) left top no-repeat;
+      
+      .swal2-styled {
+        &.swal2-confirm {
+          background-color: $main_blue !important;
+        }
+      }
+
+      p {
+        color: $main_blue;
+      }
+    }
+
+    &.bg-red {
+      background: #fff url(../images/modal/bottom_sheet_modal_venue-red.png) left top no-repeat;
+
+      .swal2-styled {
+        &.swal2-confirm {
+          background-color: $main_red !important;
+        }
+      }
+
+      p {
+        color: $main_red;
+      }
+    }
+
+    &.bg-yellow {
+      background: #fff url(../images/modal/bottom_sheet_modal_venue-yellow.png) left top no-repeat;
+
+      .swal2-styled {
+        &.swal2-confirm {
+          background-color: $main_yellow !important;
+        }
+      }
+
+      p {
+        color: $main_yellow;
+      }
+    }
+
+    &.bg-purple {
+      background: #fff url(../images/modal/bottom_sheet_modal_venue-purple.png) left top no-repeat;
+
+      .swal2-styled {
+        &.swal2-confirm {
+          background-color: $main_purple !important;
+        }
+      }
+
+      p {
+        color: $main_purple;
+      }
+    }
+
+    .swal2-actions {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-send-comer {
+      p {
+        margin-bottom: 0;
+
+        &.title {
+          font-size: 30px;
+          line-height: 42px;
+          padding-top: 59.47px;
+        }
+
+        &.mms-msg {
+          font-size: 25px;
+          padding-top: 53px;
+          height: 96px;
+        }
+      }
+    }
+  }
+
+  // 婚禮報到
+  &.wedding-regist-next,
+  &.wedding-regist-next2,
+  &.congratulations,
+  &.provide,
+  &.sweet {
+    width: 639px !important;
+    height: 678px;
+
+    .modal-send-comer {
+      p {
+        margin-bottom: 0;
+
+        &.title {
+          padding: 2.1948vw 0 0;
+          font-size: 1.345vw;
+          line-height: 1.38;
+        }
+
+        &.mms-msg {
+          font-size: 0.9896vw;
+          padding-top: 1.822vw;
+        }
+      }
+    }
+
+    .swal2-actions {
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 0 2rem;
+      margin: 0;
+    }
+
+    .swal2-styled {
+      margin: 0;
+
+      &.swal2-confirm {
+        font-size: 0.9896vw;
+        width: 9.1146vw;
+        height: 2.65625vw;
+        border-radius: 7px;
+        margin-bottom: 0;
+        border: 0;
+        font-weight: 400;
+        padding: 0;
+        box-shadow: -1px 2px 2px #2D2D2D29;
+      }
+    }
+
+    &.bg-blue {
+      background: #fff url(../images/modal/bottom_sheet_modal_finish4-blue.png) left top no-repeat;
+      
+      .swal2-styled {
+        &.swal2-confirm {
+          background-color: $main_blue !important;
+        }
+      }
+
+      p {
+        color: $main_blue;
+      }
+    }
+
+    &.bg-red {
+      background: #fff url(../images/modal/bottom_sheet_modal_finish4-red.png) left top no-repeat;
+
+      .swal2-styled {
+        &.swal2-confirm {
+          background-color: $main_red !important;
+        }
+      }
+
+      p {
+        color: $main_red;
+      }
+    }
+
+    &.bg-yellow {
+      background: #fff url(../images/modal/bottom_sheet_modal_finish4-yellow.png) left top no-repeat;
+
+      .swal2-styled {
+        &.swal2-confirm {
+          background-color: $main_yellow !important;
+        }
+      }
+
+      p {
+        color: $main_yellow;
+      }
+    }
+
+    &.bg-purple {
+      background: #fff url(../images/modal/bottom_sheet_modal_finish4-purple.png) left top no-repeat;
+
+      .swal2-styled {
+        &.swal2-confirm {
+          background-color: $main_purple !important;
+        }
+      }
+
+      p {
+        color: $main_purple;
+      }
+    }
+  }
+
+  &.wedding-regist-next2 .swal2-styled.swal2-confirm {
+    width: 14.16vw;
+    font-size: 0.78125vw;
+  }
+}

@@ -9,8 +9,9 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 import Loading from '../components/Loading';
+import PopImg from '../components/PopImg';
+
 import UploadProcessing from '../components/UploadProcessing';
-import LoadProcessing from '../components/LoadProcessing';
 
 import { _uuid } from '../utils/tools';
 import { 
@@ -22,6 +23,7 @@ import {
 
 import '../scss/base.scss';
 import '../scss/edm.scss';
+import '../scss/sswal.scss';
 
 import BrandImg from '../images/logo_b-2x.png';
 
@@ -174,16 +176,22 @@ const PageEdm = function() {
     const ActiveID = inviteCard[index].ID;
     const theme = linearBg();
 
+    // 處理中
     MySwal.fire({
-      //title: "處理中請稍候",
-      html: <LoadProcessing theme={theme} />,
+      html: <PopImg theme={theme} type="loading" />,
       customClass: {
-        popup: 'bg-img',
+        popup: 'bg-img loading',
       },
       showConfirmButton: false,
       showCancelButton: false,
     });
+
+    // Fake
+    setTimeout(() => {
+      location.href = "senddemo.html";
+    }, 2000);
     
+    /*
     setTimeout(function(){
       const sendActiveInviteCardSetup = async () => {
         const formData = new FormData();
@@ -200,11 +208,31 @@ const PageEdm = function() {
 
       sendActiveInviteCardSetup();
     }, 500);
+    */
   }
 
-  // file uploaod
+  // file uploaod 上傳婚紗照
+  const [fakeStep, setFakeStep] = useState(6);
+
   const UploadVideo = (columnName) => {
-    document.getElementById(columnName).click();
+    // document.getElementById(columnName).click();
+
+    // fake 上傳婚紗照
+    const theme = linearBg();
+
+    MySwal.fire({
+      html: <PopImg theme={theme} type="upload-wedding-photo" />,
+      customClass: {
+        popup: 'bg-img upload-wedding-photo',
+      },
+      showConfirmButton: false,
+      showCancelButton: false,
+    });
+
+    setTimeout(() => {
+      MySwal.close();
+      setFakeStep(7);
+    }, 2000);
   }
 
   // file upload
@@ -297,24 +325,15 @@ const PageEdm = function() {
                           <img src={"../images/phone-portrait.png"} className="phone-bg" />
                         </div>
                       }
-                      {/*<div className="polaroid">
-                        <img src={"../images/phone-portrait.png"} className="phone-bg" />
-                        isUpload === 0 ?
-                        <img className="sliderImage" src={item.Img} /> :
-                        <img className="sliderImage" src={`http://backend.wedding-pass.com/WeddingPass/inviteCard_Order/${ident}/${item.ID}/_preview.jpg`} />
-                      </div>*/}
                     </div>
                   </Carousel.Item>
                 ))}
 
                 <a className="carousel-control carousel-control-prev" onClick={(e) => handlePrev()}>
-                  {/*<span className="carousel-control-prev-icon"></span><span className="sr-only">Previous</span>*/}
                   <FontAwesomeIcon icon={faChevronLeft} size="lg" className="text-white" />
                 </a>
                   
                 <a className="carousel-control carousel-control-next" onClick={(e) => handleNext()}>
-                  {/*<span className="carousel-control-next-icon"></span>
-                  <span className="sr-only">Next</span>*/}
                   <FontAwesomeIcon icon={faChevronRight} size="lg" className="text-white" />
                 </a>
               </Carousel>
@@ -329,8 +348,13 @@ const PageEdm = function() {
               <input hidden disabled={false} name="file" type="file" id="upload_img" accept="image/png, image/jpeg" onChange={() => fileUpload('upload_img')} />
             </div>
 
-          
-            {orderInfo.LeadingStatus === 9 ?
+            {fakeStep > 6 &&
+            <div className="w-btn d-flex justify-content-center mt-05">
+              <button type="button" className={`btn btn-3d btn-block ${'display-'+linearBg()}`} tabIndex="-1" onClick={() => handleGoNext()}>下一步</button>
+            </div>
+            }
+
+            {/*orderInfo.LeadingStatus === 9 ?
               <div className="w-btn d-flex justify-content-center mt-05">
                 {isUpload !== 0 &&
                 <>
@@ -344,7 +368,7 @@ const PageEdm = function() {
                   <button type="button" className={`btn btn-3d btn-block ${'display-'+linearBg()}`} tabIndex="-1" onClick={() => handleGoNext()}>下一步</button>
                 }
               </div>
-            }
+              */}
           </div>
 
           <div className="nav-bottom d-flex justify-content-between">

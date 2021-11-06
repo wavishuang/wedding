@@ -9,10 +9,11 @@ const MySwal = withReactContent(Swal);
 import { check_token } from '../actions/actionAuth';
 
 import Loading from '../components/Loading';
-import LoadProcessing from '../components/LoadProcessing';
+import PopImg from '../components/PopImg';
 
 import '../scss/base.scss';
 import '../scss/date.scss';
+import '../scss/sswal.scss';
 
 import BrandImg from '../images/logo_b-2x.png';
 
@@ -116,11 +117,11 @@ const PageDate = function() {
 
     console.log('next step:', theme);
 
+    // 處理中
     MySwal.fire({
-      //title: "處理中請稍候",
-      html: <LoadProcessing theme={theme} />,
+      html: <PopImg theme={theme} type="loading" />,
       customClass: {
-        popup: 'bg-img',
+        popup: 'bg-img loading',
       },
       showConfirmButton: false,
       showCancelButton: false,
@@ -129,11 +130,11 @@ const PageDate = function() {
     if (weddingDate == '') {
       MySwal.fire('請選擇婚禮日期', '', 'error');
     } else {
+      // 處理中
       MySwal.fire({
-        //title: "處理中請稍候",
-        html: <LoadProcessing theme={theme} />,
+        html: <PopImg theme={theme} type="loading" />,
         customClass: {
-          popup: 'bg-img',
+          popup: 'bg-img loading',
         },
         showConfirmButton: false,
         showCancelButton: false,
